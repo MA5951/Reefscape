@@ -1,0 +1,65 @@
+{
+  "name": "OffSeason2024",
+  "sourceUrl": "https://www.youtube.com/",
+  "rotations": [
+    {
+      "axis": "x",
+      "degrees": 90
+    },
+    {
+      "axis": "z",
+      "degrees": -90
+    },
+    {
+      "axis": "y",
+      "degrees": 0
+    }
+  ],
+  "position": [0.0775,-1.112, 0],
+  "cameras": [{
+      "name": "Limelight G3",
+      "rotations": [
+        {
+          "axis": "y",
+          "degrees": -16.4
+        },
+        {
+          "axis": "z",
+          "degrees": 0
+        }
+      ],
+      "position": [
+        0,
+        0,
+        0.368
+      ],
+      "resolution": [
+        1280,
+        800
+      ],
+      "fov": 80
+    }],
+  "components": [
+{
+      "zeroedRotations": [
+        {
+          "axis": "x",
+          "degrees": 68
+
+        },
+        {
+          "axis": "z",
+          "degrees": -90
+        },
+        {
+          "axis": "y",
+          "degrees": 0
+        }
+      ],
+      "zeroedPosition": [
+        -0.18,
+        -1.11,
+        -0.587
+      ]
+    }]
+}
