@@ -13,12 +13,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Subsystem.PoseEstimation.PoseEstimator;
 import frc.robot.Subsystem.Swerve.SwerveConstants;
 
-/*
- * is motor conecterd to can
- * is motor stuk
- * rotet the motor and check if the iner match the extrnal
- * jumping  
- */
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;

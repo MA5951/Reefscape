@@ -53,8 +53,7 @@ public class VisionFilters {
     }
 
     public boolean isValidForUpdate(Pose2d visionPose2d) {
-        visionPose = visionPose2d;
-        return inVelocityFilter() && inField() && notInFieldObstacles() && inOdometryRange()
+        return inVelocityFilter() && inField(visionPose) && notInFieldObstacles(visionPose) && inOdometryRange()
                 && shouldUpdateByRobotState() && notDeafultPose() && isVisionMatchingVelocity();
     }
 
@@ -65,13 +64,13 @@ public class VisionFilters {
                 robotSpeeds.omegaRadiansPerSecond <= config.robotUpdateSpeed.omegaRadiansPerSecond;
     }
 
-    private boolean inField() {
-        return config.fieldRectangle.contains(robotPoSupplier.get().getTranslation());
+    private boolean inField(Pose2d visionPose) {
+        return config.fieldRectangle.contains(visionPose.getTranslation());
     }
 
-    private boolean notInFieldObstacles() {
+    private boolean notInFieldObstacles(Pose2d visionPose) {
         if (config.fieldObstaclesRectangles != null) {
-            robotPose = robotPoSupplier.get().getTranslation();
+            robotPose = visionPose.getTranslation();
             for (Rectangle2d obstacles : config.fieldObstaclesRectangles) {
                 if (obstacles.contains(robotPose)) {
                     return false;

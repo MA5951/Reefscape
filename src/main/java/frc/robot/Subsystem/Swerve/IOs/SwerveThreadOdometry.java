@@ -43,8 +43,8 @@ public class SwerveThreadOdometry implements SwerveOdometry{
     private SkidDetector skidDetector;
     private CollisionDtector collisionDtector;
 
-    private boolean skidDetected;
-    private boolean collisionDetected;
+    private boolean skidDetected = false;
+    private boolean collisionDetected = false;
     private boolean stuckDetected;
     private double lastSkid;
     private double lastCollid;
@@ -105,11 +105,10 @@ public class SwerveThreadOdometry implements SwerveOdometry{
 
         includeMeasurement = true;
 
-        skidDetected = Math.abs(skidDetector.getSkiddingRatio() - 1) < config.skidRatio;
-        collisionDetected = collisionDtector.getForceVectorSize() > config.collisionForce;
+        //TODO:
+        // skidDetected = Math.abs(skidDetector.getSkiddingRatio() - 1) < config.skidRatio;
+        // collisionDetected = collisionDtector.getForceVectorSize() > config.collisionForce;
 
-        skidDetected = false;
-        collisionDetected = false;
 
         avrageCurrent = 0;
 

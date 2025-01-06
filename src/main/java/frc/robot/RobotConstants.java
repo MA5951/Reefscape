@@ -22,8 +22,8 @@ public class RobotConstants {
 
     //FieldConstants
     public static final Translation2d FieldZeroCorner = new Translation2d(0 , 0);
-    public static final Translation2d FieldFarCorner = new Translation2d(16.58 , 8.20);
-    public static final Translation2d FieldMiddlePoint = new Translation2d(16.58 / 2, 8.20 / 2);
+    public static final Translation2d FieldFarCorner = new Translation2d(17.55 , 8.05);
+    public static final Translation2d FieldMiddlePoint = new Translation2d(17.55 / 2, 8.05 / 2);
 
 
 }
