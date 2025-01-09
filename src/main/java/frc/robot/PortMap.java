@@ -45,4 +45,11 @@ public class PortMap {
         public final static String CAMERA_NAME = "limelight-camera";
     }
 
+    public class Arm {
+        public static final CANBus ArmBus = CanBus.CANivoreBus;
+
+        public static final int armMotor = 1;
+        public static final int armEncoder = 0;
+        public static final int armLimitSwitch = 0;
+    }
 }
