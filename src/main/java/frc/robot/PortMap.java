@@ -42,8 +42,8 @@ public class PortMap {
     }
 
     public class Elevator {
-        public static final int elevatorLeftMotor = 40;
-        public static final int elevatorRightMotor = 41;
+        public static final int elevatorMasterMotor = 40;
+        public static final int elevatorSlaveMotor = 41;
         public static final int elevatorLimitSwich = 42;
 
     }
