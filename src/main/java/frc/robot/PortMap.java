@@ -41,6 +41,13 @@ public class PortMap {
         public static final int Pigeon2ID = 12;
     }
 
+    public class Elevator {
+        public static final int elevatorLeftMotor = 40;
+        public static final int elevatorRightMotor = 41;
+        public static final int elevatorLimitSwich = 42;
+
+    }
+
     public class Vision {
         public final static String CAMERA_NAME = "limelight-camera";
     }
