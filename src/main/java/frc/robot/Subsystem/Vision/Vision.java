@@ -20,9 +20,9 @@ import frc.robot.Subsystem.Vision.Filters.VisionFilters;
 public class Vision extends SubsystemBase {
   private static Vision vision;
 
-  private VisionIO visionIO = VisionConstants.getVisionIO();
+  private VisionIO visionIO = VisionCOnstants.getVisionIO();
 
-  private VisionFilters visionFilters = new VisionFilters(visionIO, VisionConstants.AUTO_FILTERS_CONFIG, () -> PoseEstimator.getInstance().getEstimatedRobotPose(), () -> SwerveSubsystem.getInstance().getRobotRelativeSpeeds()
+  private VisionFilters visionFilters = new VisionFilters(visionIO, VisionCOnstants.AUTO_FILTERS_CONFIG, () -> PoseEstimator.getInstance().getEstimatedRobotPose(), () -> SwerveSubsystem.getInstance().getRobotRelativeSpeeds()
   , () -> SwerveSubsystem.getInstance().getVelocityVector());
 
   private LoggedPose2d visionPose2dLog;
@@ -63,8 +63,8 @@ public class Vision extends SubsystemBase {
     if (getTagID() >= 0 && getTagID() - 1 < 0) {
       return -1;
     }
-    double deltaHight = VisionConstants.TAG_HIGHTS[6] - VisionConstants.ROBOT_TO_CAMERA_XYZ.getZ();
-    double deltaAngle = getTy() + VisionConstants.ROBOT_TO_CAMERA_ROTATION.getX(); // TODO: Cheack with rader what axis should it be
+    double deltaHight = VisionCOnstants.TAG_HIGHTS[6] - VisionCOnstants.ROBOT_TO_CAMERA_XYZ.getZ();
+    double deltaAngle = getTy() + VisionCOnstants.ROBOT_TO_CAMERA_ROTATION.getX(); // TODO: Cheack with rader what axis should it be
     return deltaHight / Math.tan(Math.toRadians(deltaAngle));
   }
 
@@ -108,9 +108,9 @@ public class Vision extends SubsystemBase {
     visionIO.update();
 
     if (DriverStation.isAutonomous()) {
-      visionFilters.updateFilterConfig(VisionConstants.AUTO_FILTERS_CONFIG);
+      visionFilters.updateFilterConfig(VisionCOnstants.AUTO_FILTERS_CONFIG);
     } else{
-      visionFilters.updateFilterConfig(VisionConstants.TELEOP_FILTERS_CONFIG);
+      visionFilters.updateFilterConfig(VisionCOnstants.TELEOP_FILTERS_CONFIG);
     }
 
     visionPoseEstimate = visionIO.getEstimatedPose();

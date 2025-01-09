@@ -12,7 +12,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.RobotConstants;
 import frc.robot.Subsystem.Vision.Filters.VisionFiltersConfig;
 
-public class VisionConstants {
+public class VisionCOnstants {
 
     public final static Translation3d ROBOT_TO_CAMERA_XYZ = new Translation3d(0.1, 0, 0.5);
     public final static Rotation3d ROBOT_TO_CAMERA_ROTATION = new Rotation3d(0, Math.toRadians(-15), 0);
