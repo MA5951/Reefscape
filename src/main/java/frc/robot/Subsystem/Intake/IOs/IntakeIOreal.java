@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.PortMap;
 import frc.robot.Subsystem.Intake.IntakeConstants;
 
-public class IntakeIOreal implements IntakeIO {
+public class IntakeIOReal implements IntakeIO {
 
     protected TalonFX intakeMotor;
     protected TalonFXConfiguration motorConfig;
@@ -38,7 +38,7 @@ public class IntakeIOreal implements IntakeIO {
     private LoggedDouble velocityLog;
     private LoggedDouble apliedVoltsLog;
 
-    public IntakeIOreal() {
+    public IntakeIOReal() {
         intakeMotor = new TalonFX(PortMap.Intake.intakeMotor , PortMap.CanBus.RioBus);
         motorConfig = new TalonFXConfiguration();
 
@@ -47,15 +47,15 @@ public class IntakeIOreal implements IntakeIO {
         leftRearIR = new DigitalInput(PortMap.Intake.leftRearIR);
         rightRearIR = new DigitalInput(PortMap.Intake.rightRearIR);
 
-        motorCurrent = intakeMotor.getSupplyCurrent();
+        motorCurrent = intakeMotor.getStatorCurrent();
         motorPosition = intakeMotor.getPosition();
         motorVelocity = intakeMotor.getVelocity();
         apliedVolts = intakeMotor.getMotorVoltage();
 
-        currentLog = new LoggedDouble("/Subsystem/Intake/IO/Current");
-        positionLog = new LoggedDouble("/Subsystem/Intake/IO/Position");
-        velocityLog = new LoggedDouble("/Subsystem/Intake/IO/Velocity");
-        apliedVoltsLog = new LoggedDouble("/Subsystem/Intake/IO/aplied Volts");
+        currentLog = new LoggedDouble("/Subsystems/Intake/IO/Current");
+        positionLog = new LoggedDouble("/Subsystems/Intake/IO/Position");
+        velocityLog = new LoggedDouble("/Subsystems/Intake/IO/Velocity");
+        apliedVoltsLog = new LoggedDouble("/Subsystems/Intake/IO/aplied Volts");
 
         config();   
     }
@@ -72,7 +72,7 @@ public class IntakeIOreal implements IntakeIO {
         motorConfig.CurrentLimits.SupplyCurrentLowerTime = IntakeConstants.PEAK_CURRENT_TIME;
 
         motorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        motorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        motorConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
         motorConfig.HardwareLimitSwitch.ForwardLimitEnable = false;
         motorConfig.HardwareLimitSwitch.ReverseLimitEnable = false;

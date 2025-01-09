@@ -11,7 +11,7 @@ public class Intake extends StateControlledSubsystem {
   private IntakeIO intakeIO;
 
   public Intake() {
-    super(null, "intake");
+    super(IntakeConstants.SUBSYSTEM_STATES, "Intake");
   }
 
   public boolean getFrontSensor() {
@@ -44,6 +44,11 @@ public class Intake extends StateControlledSubsystem {
 
   public void setVoltage(double volt) {
     intakeIO.setVoltage(volt);
+  }
+
+  @Override
+  public boolean canMove() {
+    return true;
   }
 
   public static Intake getInstance() {

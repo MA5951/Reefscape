@@ -5,7 +5,7 @@ import com.ma5951.utils.ControlledMotors.Sim.TalonFXMotorSim;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 
-public class IntakeIOSim extends IntakeIOreal {
+public class IntakeIOSim extends IntakeIOReal {
 
     private TalonFXMotorSim intakeMotorSim;
 
