@@ -26,4 +26,6 @@ public interface ElevatorIO {
     void setVoltage(double volt);
     
     void setHight(double angle);
+
+    void updatePeriodic();
 }

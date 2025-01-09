@@ -1,13 +1,12 @@
 
 package frc.robot.Subsystem.Elevator.IOs;
 
+import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.StrictFollower;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -27,7 +26,7 @@ public class ElevatorIOReal implements ElevatorIO {
     private DigitalInput limitSwitch;
 
     private MotionMagicVoltage MotionMagic = new MotionMagicVoltage(0);
-    private TalonFXConfiguration masterConfig;
+    protected TalonFXConfiguration masterConfig;
     private StrictFollower masterFollower;
 
     private StatusSignal<Current> masterMotorCurrent;
@@ -35,6 +34,7 @@ public class ElevatorIOReal implements ElevatorIO {
     private StatusSignal<AngularVelocity> masterMotorVelocity;
     private StatusSignal<Voltage> masterMotorAppliedVoltage;
     private StatusSignal<Double> masterError;
+    private StatusSignal<Double> masterSetPoint;
     
     public ElevatorIOReal() {
         masterMotor = new TalonFX(PortMap.Elevator.elevatorMasterMotor, PortMap.CanBus.CANivoreBus);
@@ -44,16 +44,14 @@ public class ElevatorIOReal implements ElevatorIO {
 
         limitSwitch = new DigitalInput(PortMap.Elevator.elevatorLimitSwich);
 
-        masterMotor.getStatorCurrent();
+        masterMotorCurrent = masterMotor.getStatorCurrent();
         masterMotorPosition = masterMotor.getPosition();
         masterMotorVelocity = masterMotor.getVelocity();
         masterMotorAppliedVoltage = masterMotor.getMotorVoltage();
         masterError = masterMotor.getClosedLoopError();
+        masterSetPoint = masterMotor.getClosedLoopReference();
 
         configMotors();
-
-        
-
     }
 
     public void configMotors() {
@@ -92,11 +90,11 @@ public class ElevatorIOReal implements ElevatorIO {
     }
 
     public double getPosition() {
-        return masterMotorPosition.getValueAsDouble();
+        return masterMotorPosition.getValueAsDouble() * ElevatorConstants.SPROKET_CIRCUMFERENCE;
     }
 
     public double getVelocity() {
-        return masterMotorVelocity.getValueAsDouble();
+        return masterMotorVelocity.getValueAsDouble() * 2 * Math.PI * (ElevatorConstants.SPROKET_PITCH_DIAMETER / 2);
     }
 
     public double getAppliedVolts() {
@@ -104,30 +102,29 @@ public class ElevatorIOReal implements ElevatorIO {
     }
 
     public double getError() {
-        return masterError.getValueAsDouble();
+        return masterError.getValueAsDouble() * ElevatorConstants.SPROKET_CIRCUMFERENCE;
     }
 
     
     public double getSetPoint() {
-        return mas
+        return masterSetPoint.getValueAsDouble() * ElevatorConstants.SPROKET_CIRCUMFERENCE;
     }
 
-    @Override
-    public void resetPosition(double newPose) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'resetPosition'");
+    public void resetPosition(double newHight) {
+        masterMotor.setPosition(newHight / ElevatorConstants.SPROKET_CIRCUMFERENCE);
     }
 
-    @Override
     public void setVoltage(double volt) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setVoltage'");
+        masterMotor.setVoltage(volt);
+        slaveMotor.setControl(masterFollower);
     }
 
     public void updatePID(double Kp , double Ki , double Kd) {
         masterConfig.Slot0.kP = Kp;
         masterConfig.Slot0.kI = Ki;
         masterConfig.Slot0.kD = Kd;
+
+        masterMotor.getConfigurator().apply(masterConfig);
     }
 
     public void setNutralMode(boolean isbrake) {
@@ -136,12 +133,27 @@ public class ElevatorIOReal implements ElevatorIO {
         } else {
             masterConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         }
+
         masterMotor.getConfigurator().apply(masterConfig);
         slaveMotor.getConfigurator().apply(masterConfig);
     }
 
-    public void setHight(double angle) {
-        masterMotor.setControl(MotionMagic.withPosition(angle).withSlot(ElevatorConstants.CONTROL_SLOT));  
+    public void setHight(double hight) {
+        masterMotor.setControl(MotionMagic.withPosition(hight / ElevatorConstants.SPROKET_CIRCUMFERENCE).withSlot(ElevatorConstants.CONTROL_SLOT));  
+        slaveMotor.setControl(masterFollower);
+    }
+
+    public void updatePeriodic() {
+        BaseStatusSignal.refreshAll(
+            masterMotorCurrent,
+            masterMotorPosition,
+            masterMotorVelocity,
+            masterMotorAppliedVoltage,
+            masterError,
+            masterSetPoint
+        );
+
+
     }
 }
 

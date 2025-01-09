@@ -1,6 +1,11 @@
 
 package frc.robot.Subsystem.Elevator;
 
+import frc.robot.Robot;
+import frc.robot.Subsystem.Elevator.IOs.ElevatorIO;
+import frc.robot.Subsystem.Elevator.IOs.ElevatorIOReal;
+import frc.robot.Subsystem.Elevator.IOs.ElevatorIOSim;
+
 public class ElevatorConstants {
 
     public static final double MAX_HIGHT = 0;
@@ -15,6 +20,8 @@ public class ElevatorConstants {
     public static final double HIGHT_ZERO = 0;
 
     public static final double GEAR = 0;
+    public static final double SPROKET_PITCH_DIAMETER = 0;
+    public static final double SPROKET_CIRCUMFERENCE = SPROKET_PITCH_DIAMETER * Math.PI;
 
     public static final int CONTROL_SLOT = 0;
     public static final double kP = 0;
@@ -39,5 +46,13 @@ public class ElevatorConstants {
     public static final double CONTINUOUS_LOWER_LIMIT = 40; 
     public static final double CONTINUOUS_CURRENT_DURATION = 20;
     public static final boolean ENABLE_CURRENT_LIMIT = false;
+
+    public static final ElevatorIO getElevatorIO() {
+        if (Robot.isReal()) {
+            return new ElevatorIOReal();
+        }
+
+        return new ElevatorIOSim();
+    }
  
 }
