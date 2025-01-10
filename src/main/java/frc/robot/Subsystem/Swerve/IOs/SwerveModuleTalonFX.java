@@ -73,9 +73,9 @@ public class SwerveModuleTalonFX implements SwerveModule {
             int turningID, int absoluteEncoderID, boolean isDriveMotorReversed,
             boolean isTurningMotorReversed) {
 
-        driveMotor = new TalonFX(driveID, PortMap.Swerve.SwervBus);
-        turningMotor = new TalonFX(turningID, PortMap.Swerve.SwervBus);
-        absoluteEcoder = new CANcoder(absoluteEncoderID, PortMap.Swerve.SwervBus);
+        driveMotor = new TalonFX(driveID, PortMap.CanBus.RioBus);
+        turningMotor = new TalonFX(turningID, PortMap.CanBus.RioBus);
+        absoluteEcoder = new CANcoder(absoluteEncoderID, PortMap.CanBus.RioBus);
 
         this.isDriveMotorReversed = isDriveMotorReversed;
         this.isTurningMotorReversed = isTurningMotorReversed;
@@ -173,7 +173,7 @@ public class SwerveModuleTalonFX implements SwerveModule {
     }
 
     public void resetSteer() {
-        turningMotor.setPosition((getAbsolutePosition() / 360));
+        turningMotor.setPosition(((getAbsolutePosition()) / 360));
     }
 
     public double getDriveCurrent() {

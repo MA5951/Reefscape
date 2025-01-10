@@ -82,6 +82,10 @@ public class DeafultRobotContainer {
         currentRobotState = state;
     }
 
+    public State getCurrentState() {
+        return currentRobotState;
+    }
+
     // Autonomuse  ------------------------------------------------
 
     protected void setAutoOptions(AutoOption[] autoOptions) {

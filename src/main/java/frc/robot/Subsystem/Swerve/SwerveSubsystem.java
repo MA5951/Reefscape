@@ -82,7 +82,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     for (int i = 0; i < 4 ; i++) {
       modulesArry[i].setNeutralModeDrive(true);
-      modulesArry[i].setNeutralModeTurn(true);
+      modulesArry[i].setNeutralModeTurn(false);
     }
 
     
@@ -214,6 +214,12 @@ public class SwerveSubsystem extends SubsystemBase {
     }
     currentChassisSpeeds = kinematics.toChassisSpeeds(getSwerveModuleStates());
     gyroData = gyro.update(currentChassisSpeeds);
+  }
+
+  public void resetEncoders() {
+    for (int i = 0; i < 4 ; i++) {
+      modulesArry[i].resetSteer();
+    }
   }
 
   public static SwerveSubsystem getInstance() {

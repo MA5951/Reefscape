@@ -16,7 +16,7 @@ import edu.wpi.first.math.geometry.Rectangle2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
-import frc.robot.Subsystem.Vision.VisionIO;
+import frc.robot.Subsystem.Vision.IOs.VisionIO;
 
 @SuppressWarnings("static-access")
 public class VisionFilters {
@@ -28,7 +28,6 @@ public class VisionFilters {
     private ChassisSpeeds robotSpeeds;
     private Pose2d deafultPose = new Pose2d();
     private Supplier<Double> robotVelocityVectorSupplier;
-    private Pose2d visionPose;
     private double robotVelocity;
 
     public VisionFilters(VisionIO VisionIO, VisionFiltersConfig configuration, Supplier<Pose2d> robotPose,
@@ -53,8 +52,8 @@ public class VisionFilters {
     }
 
     public boolean isValidForUpdate(Pose2d visionPose2d) {
-        return inVelocityFilter() && inField(visionPose) && notInFieldObstacles(visionPose) && inOdometryRange()
-                && shouldUpdateByRobotState() && notDeafultPose() && isVisionMatchingVelocity();
+        return inVelocityFilter() && inField(visionPose2d) && notInFieldObstacles(visionPose2d) && inOdometryRange(visionPose2d)
+                && shouldUpdateByRobotState() && notDeafultPose() && isVisionMatchingVelocity(visionPose2d);
     }
 
     private boolean inVelocityFilter() {
@@ -81,7 +80,7 @@ public class VisionFilters {
         return true;
     }
 
-    private boolean inOdometryRange() {
+    private boolean inOdometryRange(Pose2d visionPose) {
         if ((config.visionToOdometryInTeleop && DriverStation.isTeleop()) || DriverStation.isAutonomous()) {
             robotPose = robotPoSupplier.get().getTranslation();
             return robotPose.getDistance(visionPose.getTranslation()) < config.visionToOdometry;
@@ -89,11 +88,11 @@ public class VisionFilters {
         return true;
     }
 
-    public boolean isFlickering() {
-        return isVisionMatchingVelocity();
+    public boolean isFlickering(Pose2d visiPose2d) {
+        return isVisionMatchingVelocity(visiPose2d);
     }
 
-    private boolean isVisionMatchingVelocity() {
+    private boolean isVisionMatchingVelocity(Pose2d visionPose) {
         robotVelocity = robotVelocityVectorSupplier.get();
         if (robotVelocity < config.maxVelocityForVisionVelocityFilter) {
             return (robotPoSupplier.get().getTranslation().getDistance(

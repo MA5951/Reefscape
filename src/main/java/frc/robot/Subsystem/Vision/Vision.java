@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Subsystem.PoseEstimation.PoseEstimator;
 import frc.robot.Subsystem.Swerve.SwerveSubsystem;
 import frc.robot.Subsystem.Vision.Filters.VisionFilters;
+import frc.robot.Subsystem.Vision.IOs.VisionIO;
 
 public class Vision extends SubsystemBase {
   private static Vision vision;

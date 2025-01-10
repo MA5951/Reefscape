@@ -3,7 +3,11 @@ package frc.robot;
 
 
 import com.ma5951.utils.RobotControl.DeafultRobotContainer;
+import com.pathplanner.lib.path.PathConstraints;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -36,6 +40,14 @@ public class RobotContainer extends DeafultRobotContainer{
     //setAutoOptions(null);
   }
 
+  public void setIDLE() {
+    setCurrentState(RobotConstants.IDLE);
+  }
+
+  public void setALIGN() {
+    setCurrentState(RobotConstants.ALIGN);
+  }
+
   private void configureBindings() {
 
     //Update Offset
@@ -44,9 +56,17 @@ public class RobotContainer extends DeafultRobotContainer{
     //Manuel Vision Update
     new Trigger(() -> driverController.getPSButton()).onTrue(new InstantCommand(() -> Vision.getInstance().updateOdometry()));
 
+    //Start Align
+    new Trigger(() -> driverController.getCircleButton()).whileTrue(new InstantCommand(() -> setALIGN()))
+    .whileFalse(new InstantCommand(() -> setIDLE()));
     
+    new Trigger(() -> driverController.getCrossButton()).onTrue(new InstantCommand(() -> SwerveSubsystem.getInstance().resetEncoders()));
 
+  }
 
+  @Override
+  public Command getAutonomousCommand() {
+    return SwerveAutoFollower.pathFindToPose(new Pose2d(3.215, 4.070, Rotation2d.kZero), new PathConstraints(3, 3, 300, 400));
   }
 
 }

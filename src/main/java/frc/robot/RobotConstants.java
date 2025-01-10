@@ -19,6 +19,7 @@ public class RobotConstants {
 
     //States
     public static final State IDLE = new State("IDLE");
+    public static final State ALIGN = new State("ALIGN");
 
     //FieldConstants
     public static final Translation2d FieldZeroCorner = new Translation2d(0 , 0);

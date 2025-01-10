@@ -1,4 +1,4 @@
-package frc.robot.Subsystem.Vision;
+package frc.robot.Subsystem.Vision.IOs;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +26,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Subsystem.Swerve.SwerveConstants;
+import frc.robot.Subsystem.Vision.VisionConstants;
 
 public class VisionSim implements VisionIO {
 
@@ -34,8 +35,7 @@ public class VisionSim implements VisionIO {
     private SimCameraProperties cameraProp;
     private PhotonCamera camera;
     private PhotonCameraSim cameraSim;
-    private PhotonPipelineResult result;
-    private PhotonPoseEstimator poseEstimator;
+    private PhotonPipelineResult result;    private PhotonPoseEstimator poseEstimator;
     // private List<Integer> lastFilterArry;
     private PoseEstimate toReturn = new PoseEstimate();
 

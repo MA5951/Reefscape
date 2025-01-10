@@ -161,7 +161,7 @@ public class SwerveConstants {
 
         public static final Gyro getGyro() {
                 if (Robot.isReal()) {
-                        return new GyroPiegon2("Piegon 2", PortMap.CanBus.CANivoreBus, PortMap.Swerve.Pigeon2ID);
+                        return new GyroPiegon2("Piegon 2", PortMap.CanBus.RioBus, PortMap.Swerve.Pigeon2ID);
                 }
 
                 return new GyroSim("Gyro Sim");

@@ -98,5 +98,6 @@
     {
       "guid": "030000006d04000018c2000000000000"
     }
-  ]
+  ],
+  "useEnableDisableHotkeys": true
 }

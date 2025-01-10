@@ -10,6 +10,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotConstants;
+import frc.robot.RobotContainer;
 import frc.robot.Subsystem.Swerve.SwerveSubsystem;
 import frc.robot.Subsystem.Vision.Vision;
 
@@ -50,10 +52,14 @@ public class TeleopSwerveController extends Command {
   public void execute() {
 
     driveControllerSpeeds = driveController.update();
-    xyControllerLog.update("Drive Controller");
-    theathControllerLog.update("Drive Controller");
-    robotSpeeds = driveControllerSpeeds;
 
+    if (RobotContainer.currentRobotState == RobotConstants.ALIGN) {
+
+    } else {
+      xyControllerLog.update("Drive Controller");
+      theathControllerLog.update("Drive Controller");
+      robotSpeeds = driveControllerSpeeds;
+    }
     swerve.drive(robotSpeeds);
   }
 

@@ -20,13 +20,13 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   public static boolean isStartingPose = false;
   private LoggedPose2d simulationPose2d;
-  private MALog maLog;
+  //private MALog maLog;
 
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
     simulationPose2d = new LoggedPose2d("/Simulation/Pose");
-    maLog = MALog.getInstance(RobotConstants.COMP_LOG);
+    //maLog = MALog.getInstance(RobotConstants.COMP_LOG);
 
     PathfindingCommand.warmupCommand().schedule();
   }
@@ -41,8 +41,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    maLog.stopLog();
-    ;
+    //maLog.stopLog();
+    
   }
 
   @Override
@@ -52,8 +52,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    maLog.startAutoLog();
-    m_robotContainer.updateAutoInit();
+    //maLog.startAutoLog();
+    //m_robotContainer.updateAutoInit();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
@@ -67,7 +67,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    maLog.startTeleopLog();
+    //maLog.startTeleopLog();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -79,7 +79,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-    maLog.startTestLog();
+    //maLog.startTestLog();
     CommandScheduler.getInstance().cancelAll();
   }
 

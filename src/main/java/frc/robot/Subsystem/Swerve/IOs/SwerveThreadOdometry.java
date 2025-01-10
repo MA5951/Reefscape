@@ -28,6 +28,7 @@ import frc.robot.Subsystem.Swerve.Util.SwerveModuleData;
 import frc.robot.Subsystem.Swerve.Util.SwerveOdometry;
 import frc.robot.Utils.ModuleLimits;
 
+@SuppressWarnings("unused")
 public class SwerveThreadOdometry implements SwerveOdometry{
 
     private OdometryConfig config;
