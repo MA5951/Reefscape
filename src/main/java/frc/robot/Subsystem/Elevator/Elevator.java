@@ -53,6 +53,14 @@ public class Elevator extends StateControlledSubsystem {
     elevatorIO.setHight(hight);
   }
 
+  public static Elevator getInstance() {
+    if (elevator == null) {
+      elevator = new Elevator();
+    }
+    return elevator;
+  }
+
+
   @Override
   public void periodic() {
     elevatorIO.updatePeriodic();
