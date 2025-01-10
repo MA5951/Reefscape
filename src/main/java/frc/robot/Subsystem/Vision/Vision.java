@@ -11,6 +11,8 @@ import com.ma5951.utils.Logger.LoggedPose2d;
 import com.ma5951.utils.Vision.Limelights.LimelightHelpers;
 import com.ma5951.utils.Vision.Limelights.LimelightHelpers.PoseEstimate;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Subsystem.PoseEstimation.PoseEstimator;
@@ -46,6 +48,10 @@ public class Vision extends SubsystemBase {
     targetCountLog = new LoggedInt("/Subsystems/Vision/Target Count");
     isValidLog = new LoggedBool("/Subsystems/Vision/Is Valid For Update");
     isValidForResetLog = new LoggedBool("/Subsystems/Vision/Is Valid For Reset");
+  }
+
+  public Pose2d getPoseForRelativReefAlign() {
+    return new Pose2d( getTa(), getTx(),Rotation2d.kZero);
   }
 
   public void filterTags(int[] tagsArry) {
@@ -126,6 +132,8 @@ public class Vision extends SubsystemBase {
     targetCountLog.update(visionIO.getTargetCount());
     isValidLog.update(isUpdateForOdometry);
     isValidForResetLog.update(isUpdateGyro);
+
+    System.out.println(getTa());
 
     if (isUpdateForOdometry) {
       updateOdometry();

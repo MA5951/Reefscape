@@ -1,5 +1,6 @@
 package frc.robot.Subsystem.Vision.IOs;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,6 @@ import com.ma5951.utils.Vision.Limelights.LimelightHelpers.RawDetection;
 import com.ma5951.utils.Vision.Limelights.LimelightHelpers.RawFiducial;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -35,16 +35,16 @@ public class VisionSim implements VisionIO {
     private SimCameraProperties cameraProp;
     private PhotonCamera camera;
     private PhotonCameraSim cameraSim;
-    private PhotonPipelineResult result;    private PhotonPoseEstimator poseEstimator;
+    private PhotonPipelineResult result;
+    private PhotonPoseEstimator poseEstimator;
     // private List<Integer> lastFilterArry;
     private PoseEstimate toReturn = new PoseEstimate();
 
     public VisionSim() {
         visionSim = new VisionSystemSim("main");
-        try {
-            tagLayout = AprilTagFieldLayout
-                    .loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
 
+        try {
+            tagLayout = new AprilTagFieldLayout(Path.of("src\\main\\java\\com\\ma5951\\utils\\Vision\\AprilTags\\2025-reefscape.json"));
         } catch (Exception e) {
         }
 
@@ -52,7 +52,7 @@ public class VisionSim implements VisionIO {
 
         cameraProp = new SimCameraProperties();
         cameraProp.setCalibration(1280, 800, Rotation2d.fromDegrees(86));
-        cameraProp.setFPS(38);
+        cameraProp.setFPS(24);
         cameraProp.setCalibError(0.125, 0.04);// 0.6 0.2
         cameraProp.setAvgLatencyMs(30);
         cameraProp.setLatencyStdDevMs(5);
@@ -83,7 +83,7 @@ public class VisionSim implements VisionIO {
         toReturn = new PoseEstimate();
         poseEstimator.update(result).ifPresent((estimator) -> {
             toReturn = new PoseEstimate(estimator.estimatedPose.toPose2d(), Timer.getFPGATimestamp(), 0d, 0, 0d, 0d, 0d,
-                    new RawFiducial[] {},true);
+                    new RawFiducial[] {}, true);
         });
         return toReturn;
     }
@@ -177,13 +177,13 @@ public class VisionSim implements VisionIO {
 
     // private PhotonPipelineResult filterTagsID() {
 
-    //     for (PhotonTrackedTarget tag : result.targets) {
-    //         if (lastFilterArry.contains(Integer.valueOf(tag.fiducialId))) {
-    //             result.targets.remove(tag);
-    //         }
-    //     }
+    // for (PhotonTrackedTarget tag : result.targets) {
+    // if (lastFilterArry.contains(Integer.valueOf(tag.fiducialId))) {
+    // result.targets.remove(tag);
+    // }
+    // }
 
-    //     return result;
+    // return result;
     // }
 
     public void update() {

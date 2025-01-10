@@ -2,7 +2,6 @@
 package com.ma5951.utils.DashBoard;
 
 import java.util.function.Consumer;
-import java.util.function.DoubleConsumer;
 import java.util.function.Function;
 
 import edu.wpi.first.util.sendable.Sendable;

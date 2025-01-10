@@ -266,11 +266,14 @@ public class SwerveConstants {
         public final static double ANGLE_PID_TOLORANCE = Math.toRadians(3);
 
         // Swerve AutoAdjustXY
-        public final static double XY_KP = 0.45;
-        public final static double XY_KI = 0;
-        public final static double XY_KD = 0.0;
-        public final static Constraints XY_CONSTRAINTS = new Constraints(3.5, 3);
-        public final static double XY_TOLORANCE = 0.05;
+        public final static double X_KP = 0.4;
+        public final static double X_KI = 0;
+        public final static double X_KD = 0.014;
+        public final static double Y_KP = 0.15;
+        public final static double Y_KI = 0;
+        public final static double Y_KD = 0.0017;
+        public final static Constraints XY_CONSTRAINTS = new Constraints(4.9, 6);
+        public final static double XY_TOLORANCE = 0.2;
 
         // Swerve RelativAngleAdjust
         public final static double RELATIV_THATA_KP = 0.00615;
