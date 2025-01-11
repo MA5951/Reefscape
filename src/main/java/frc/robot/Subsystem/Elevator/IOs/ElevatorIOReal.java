@@ -9,6 +9,7 @@ import com.ctre.phoenix6.controls.StrictFollower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ma5951.utils.Logger.LoggedDouble;
 
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -35,6 +36,13 @@ public class ElevatorIOReal implements ElevatorIO {
     private StatusSignal<Voltage> masterMotorAppliedVoltage;
     private StatusSignal<Double> masterError;
     private StatusSignal<Double> masterSetPoint;
+
+    private LoggedDouble masterMotorCurrentLog;
+    private LoggedDouble masterMotorPositionLog;
+    private LoggedDouble masterMotorVelocityLog;
+    private LoggedDouble masterMotorAppliedVoltageLog;
+    private LoggedDouble masterErrorLog;
+    private LoggedDouble masterSetPointLog;
     
     public ElevatorIOReal() {
         masterMotor = new TalonFX(PortMap.Elevator.elevatorMasterMotor, PortMap.CanBus.CANivoreBus);
@@ -50,6 +58,13 @@ public class ElevatorIOReal implements ElevatorIO {
         masterMotorAppliedVoltage = masterMotor.getMotorVoltage();
         masterError = masterMotor.getClosedLoopError();
         masterSetPoint = masterMotor.getClosedLoopReference();
+
+        masterMotorCurrentLog = new LoggedDouble("Subsystems/Elevator/IO/Master Motor Current");
+        masterMotorPositionLog = new LoggedDouble("/Subsystems/Elevator/IO/Master Motor Position");
+        masterMotorVelocityLog = new LoggedDouble("/Subsystem/Elevator/IO/Master Motor Velocity");
+        masterMotorAppliedVoltageLog = new LoggedDouble("/Subsystem/Elevator/IO/Master Motor Applied Voltage");
+        masterErrorLog = new LoggedDouble("/Subsystem/Elevator/IO/Master Error");
+        masterSetPointLog = new LoggedDouble("Subsystem/Elevator/IO/Master Set Point");
 
         configMotors();
     }
@@ -153,7 +168,12 @@ public class ElevatorIOReal implements ElevatorIO {
             masterSetPoint
         );
 
-
+        masterMotorCurrentLog.update(getCurrent());
+        masterMotorPositionLog.update(getPosition());
+        masterMotorVelocityLog.update(getVelocity());
+        masterMotorAppliedVoltageLog.update(getVelocity());
+        masterErrorLog.update(getError());
+        masterSetPointLog.update(getSetPoint());
     }
 }
 
