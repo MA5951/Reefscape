@@ -3,6 +3,9 @@ package frc.robot.Subsystem.Intake;
 
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
 
+import frc.robot.RobotConstants;
+import frc.robot.RobotContainer;
+import frc.robot.RobotControl.Field;
 import frc.robot.Subsystem.Intake.IOs.IntakeIO;
 
 public class Intake extends StateControlledSubsystem {
@@ -46,9 +49,17 @@ public class Intake extends StateControlledSubsystem {
     intakeIO.setVoltage(volt);
   }
 
+  public boolean IntakeCANMOVE() {
+    return RobotContainer.currentRobotState == RobotConstants.INTAKE
+        && RobotConstants.SUPER_STRUCTURE.getGamePiece() == Field.GamePiece.CORAL
+        && !getRearSensor()
+        ||
+        RobotConstants.SUPER_STRUCTURE.getGamePiece() != Field.GamePiece.BALL;
+  }
+
   @Override
   public boolean canMove() {
-    return true;
+    return IntakeCANMOVE();
   }
 
   public static Intake getInstance() {

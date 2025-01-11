@@ -57,7 +57,7 @@ public class GenericSuperStracture {
               && currentPoseSupplier.get().getY() <= boundingBoxMax.getY();
     }
 
-    public boolean hasGamePice() {
+    public boolean hasGamePiece() {
         return false;
     }
 

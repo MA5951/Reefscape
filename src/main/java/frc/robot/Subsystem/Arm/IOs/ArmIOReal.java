@@ -42,11 +42,11 @@ public class ArmIOReal implements ArmIO {
     private LoggedDouble setPointLog;
 
     public ArmIOReal() {
-        armMotor = new TalonFX(PortMap.Arm.armMotor, PortMap.CanBus.CANivoreBus);
+        armMotor = new TalonFX(PortMap.Arm.armMotor, PortMap.CanBus.RioBus);
         armConfig = new TalonFXConfiguration();
         positionControl = new PositionVoltage(0);
 
-        encoder = new CANcoder(PortMap.Arm.armEncoder, PortMap.CanBus.CANivoreBus);
+        encoder = new CANcoder(PortMap.Arm.armEncoder, PortMap.CanBus.RioBus);
 
         motorPosition = armMotor.getPosition();
         motorVelocity = armMotor.getVelocity();
@@ -108,7 +108,7 @@ public class ArmIOReal implements ArmIO {
     }
 
     public double getError() {
-            return error.getValueAsDouble();
+        return error.getValueAsDouble();
     }
 
     public double getSetPoint() {
@@ -141,13 +141,12 @@ public class ArmIOReal implements ArmIO {
 
     public void updatePeriodic() {
         BaseStatusSignal.refreshAll(
-            motorPosition,
-            motorVelocity,
-            motorCurrent,
-            motorVoltage,
-            error,
-            setPoint
-        );
+                motorPosition,
+                motorVelocity,
+                motorCurrent,
+                motorVoltage,
+                error,
+                setPoint);
 
         motorPositionLog.update(getPosition());
         motorVelocityLog.update(getVelocity());

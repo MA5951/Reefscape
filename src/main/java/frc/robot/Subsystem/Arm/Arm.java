@@ -7,11 +7,10 @@ import frc.robot.Subsystem.Arm.IOs.ArmIO;
 public class Arm extends StateControlledSubsystem {
     private static Arm arm;
 
-    private ArmIO armIO;
+    private ArmIO armIO = ArmConstants.getArmIO();
 
     public Arm() {
         super(ArmConstants.SUBSYSTEM_STATES, "Arm");
-        armIO = ArmConstants.getArmIO();
     }
 
     public double getAbsolutePosition() {
@@ -57,7 +56,7 @@ public class Arm extends StateControlledSubsystem {
     }
 
     public boolean atPoint(double targetAngle) {
-        return Math.abs(getPosition() - targetAngle) <= ArmConstants.TOLERANCE;
+        return armIO.getError() <= ArmConstants.TOLERANCE;
     }
 
     @Override

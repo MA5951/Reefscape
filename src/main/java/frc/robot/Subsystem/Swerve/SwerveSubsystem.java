@@ -64,7 +64,7 @@ public class SwerveSubsystem extends SubsystemBase {
             new SwerveModuleState()
   });
 
-  public SwerveSubsystem() {
+  private SwerveSubsystem() {
 
     setpointGenerator = new SwerveSetpointGenerator(kinematics , new Translation2d[] {
       SwerveConstants.frontLeftLocation,
