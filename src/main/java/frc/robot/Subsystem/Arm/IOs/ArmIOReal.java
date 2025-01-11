@@ -1,11 +1,14 @@
 package frc.robot.Subsystem.Arm.IOs;
 
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ma5951.utils.Logger.LoggedDouble;
 import com.ma5951.utils.Utils.ConvUtil;
 
 import edu.wpi.first.units.measure.Angle;
@@ -17,24 +20,46 @@ import frc.robot.Subsystem.Arm.ArmConstants;
 
 public class ArmIOReal implements ArmIO {
 
-    private TalonFX armMotor;
-    private TalonFXConfiguration armConfig;
+    protected TalonFX armMotor;
+    protected TalonFXConfiguration armConfig;
     private PositionVoltage positionControl;
+
+    private CANcoder Encoder;
 
     private StatusSignal<Angle> motorPosition;
     private StatusSignal<AngularVelocity> motorVelocity;
     private StatusSignal<Current> motorCurrent;
     private StatusSignal<Voltage> motorVoltage;
+    private StatusSignal<Double> error;
+    private StatusSignal<Double> setPoint;
+
+    private LoggedDouble motorPositionLog;
+    private LoggedDouble motorVelocityLog;
+    private LoggedDouble motorCurrentLog;
+    private LoggedDouble motorVoltageLog;
+    private LoggedDouble errorLog;
+    private LoggedDouble setPointLog;
 
     public ArmIOReal() {
         armMotor = new TalonFX(PortMap.Arm.armMotor, PortMap.CanBus.CANivoreBus);
         armConfig = new TalonFXConfiguration();
         positionControl = new PositionVoltage(0);
 
+        Encoder = new CANcoder(PortMap.Arm.armEncoder, PortMap.CanBus.CANivoreBus);
+
         motorPosition = armMotor.getPosition();
         motorVelocity = armMotor.getVelocity();
         motorCurrent = armMotor.getStatorCurrent();
         motorVoltage = armMotor.getMotorVoltage();
+        error = armMotor.getClosedLoopError();
+        setPoint = armMotor.getClosedLoopReference();
+
+        motorPositionLog = new LoggedDouble("/Subststems/Arm/IO/Motor Position");
+        motorVelocityLog = new LoggedDouble("/Subsystems/Arm/IO/Motor Velocity");
+        motorCurrentLog = new LoggedDouble("/Subsystems/Arm/Motor Current");
+        motorVoltageLog = new LoggedDouble("Subsystems/Arm/IO/Motor Voltage");
+        errorLog = new LoggedDouble("/Subsystem/Arm/IO/Error");
+        setPointLog = new LoggedDouble("/Subsystem/Arm/IO/Set Point");
 
         configMotor();
     }
@@ -61,7 +86,7 @@ public class ArmIOReal implements ArmIO {
     }
 
     public double getAbsolutePosition() {
-        return motorPosition.getValue() + ArmConstants.ABS_ENCODER_OFFSET;
+        return motorPosition.getValueAsDouble() + ArmConstants.ABS_ENCODER_OFFSET;
     }
 
     public double getCurrent() {
@@ -81,15 +106,15 @@ public class ArmIOReal implements ArmIO {
     }
 
     public double getError() {
-            return getSetPoint() - getPosition();
+            return error.getValueAsDouble();
     }
 
     public double getSetPoint() {
-        return positionControl.getPositionMeasure() + ArmConstants.kS * Math.signum(positionControl.getPositionMeasure());
+        return setPoint.getValueAsDouble();
     }
 
     public void resetPosition(double newPose) {
-        armMotor.setRotorPosition(newPose);
+        armMotor.setPosition(newPose);
     }
 
     public void updatePID(double Kp, double Ki, double Kd) {
@@ -113,6 +138,20 @@ public class ArmIOReal implements ArmIO {
     }
 
     public void updatePeriodic() {
-        // Refresh all signals
+        BaseStatusSignal.refreshAll(
+            motorPosition,
+            motorVelocity,
+            motorCurrent,
+            motorVoltage,
+            error,
+            setPoint
+        );
+
+        motorPositionLog.update(getPosition());
+        motorVelocityLog.update(getVelocity());
+        motorCurrentLog.update(getCurrent());
+        motorVoltageLog.update(getAppliedVolts());
+        errorLog.update(getError());
+        setPointLog.update(getSetPoint());
     }
 }

@@ -34,9 +34,6 @@ public class Arm extends StateControlledSubsystem {
         return armIO.getAppliedVolts();
     }
 
-    public double getError() {
-        return armIO.getError();
-    }
 
     public double getSetPoint() {
         return armIO.getSetPoint();
@@ -46,9 +43,6 @@ public class Arm extends StateControlledSubsystem {
         armIO.resetPosition(newPose);
     }
 
-    public void updatePID(double Kp, double Ki, double Kd) {
-        armIO.updatePID(Kp, Ki, Kd);
-    }
 
     public void setNeutralMode(boolean isBrake) {
         armIO.setNeutralMode(isBrake);

@@ -50,6 +50,5 @@ public class PortMap {
 
         public static final int armMotor = 1;
         public static final int armEncoder = 0;
-        public static final int armLimitSwitch = 0;
     }
 }

@@ -33,11 +33,15 @@ public class ArmConstants {
 
     public static final int CONTROL_SLOT = 0;
     public static final double TOLERANCE = 1.0; // Degrees
+    public static final double kSTALL_TOURQE = 0;
 
     public static final double PEAK_CURRENT_LIMIT = 40;
     public static final double CONTINUOUS_CURRENT_LIMIT = 30;
     public static final double CONTINUOUS_CURRENT_DURATION = 0.1;
     public static final boolean ENABLE_CURRENT_LIMIT = true;
+
+    public static final double kCAN_MOVE_CURRENT_LIMIT = 0;
+    public static final double kMANUEL_VOLTAGE_LIMIT = 0;
 
     public static final State IDLE = StatesConstants.IDLE;
     public static final State HOME = new State("HOME");
