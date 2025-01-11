@@ -40,7 +40,7 @@ public abstract class StateControlledSubsystem extends SubsystemBase {
         systemCanMoveLog = new LoggedBool("/RobotControl/" + name + "/Can Move");
         board = new MAShuffleboard(name);
         systemName = name;
-        System.out.println(systemName + " Manuel");
+        //System.out.println(systemName + " Manuel");
         board.addBoolean(systemName + " Manuel", false);
 
     }

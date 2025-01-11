@@ -133,7 +133,7 @@ public class Vision extends SubsystemBase {
     isValidLog.update(isUpdateForOdometry);
     isValidForResetLog.update(isUpdateGyro);
 
-    System.out.println(getTa());
+    //System.out.println(getTa());
 
     if (isUpdateForOdometry) {
       updateOdometry();

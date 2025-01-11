@@ -2,6 +2,7 @@
 package frc.robot;
 
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.ma5951.utils.RobotControl.DeafultRobotContainer;
 import com.pathplanner.lib.path.PathConstraints;
 
@@ -19,6 +20,8 @@ import frc.robot.commands.Swerve.TeleopSwerveController;
 
 public class RobotContainer extends DeafultRobotContainer{
 
+  private TalonFX leftMotor;
+  private TalonFX rightMotor;
 
   public RobotContainer() {
     super(
@@ -30,6 +33,8 @@ public class RobotContainer extends DeafultRobotContainer{
     Vision.getInstance();
     PoseEstimator.getInstance();
     SwerveAutoFollower.getInstance();
+
+    
     
     configureBindings();
     setUpAutoCommands();
