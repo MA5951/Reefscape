@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    if (RobotContainer.driverController.getRightY() > 0.1) {
+    if (Math.abs(RobotContainer.driverController.getRightY()) > 0.1) {
       leftMotor.set(RobotContainer.driverController.getRightY() * 0.8);
       rightMotor.set(RobotContainer.driverController.getRightY() * 0.8);
     } else {
