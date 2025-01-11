@@ -16,9 +16,11 @@ public class RobotConstants {
 
     //Robot Control
     public static final SuperStructure SUPER_STRUCTURE = new SuperStructure();
-
+    
     //States
     public static final State IDLE = new State("IDLE");
+    public static final State INTAKE = new State("IDLE");
+    public static final State EJECT = new State("IDLE");
 
     //FieldConstants
     public static final Translation2d FieldZeroCorner = new Translation2d(0 , 0);
