@@ -24,7 +24,7 @@ public class ArmIOReal implements ArmIO {
     protected TalonFXConfiguration armConfig;
     private PositionVoltage positionControl;
 
-    private CANcoder Encoder;
+    private CANcoder encoder;
 
     private StatusSignal<Angle> motorPosition;
     private StatusSignal<AngularVelocity> motorVelocity;
@@ -32,6 +32,7 @@ public class ArmIOReal implements ArmIO {
     private StatusSignal<Voltage> motorVoltage;
     private StatusSignal<Double> error;
     private StatusSignal<Double> setPoint;
+    private StatusSignal<Angle> encoderPosition;
 
     private LoggedDouble motorPositionLog;
     private LoggedDouble motorVelocityLog;
@@ -45,7 +46,7 @@ public class ArmIOReal implements ArmIO {
         armConfig = new TalonFXConfiguration();
         positionControl = new PositionVoltage(0);
 
-        Encoder = new CANcoder(PortMap.Arm.armEncoder, PortMap.CanBus.CANivoreBus);
+        encoder = new CANcoder(PortMap.Arm.armEncoder, PortMap.CanBus.CANivoreBus);
 
         motorPosition = armMotor.getPosition();
         motorVelocity = armMotor.getVelocity();
@@ -53,6 +54,7 @@ public class ArmIOReal implements ArmIO {
         motorVoltage = armMotor.getMotorVoltage();
         error = armMotor.getClosedLoopError();
         setPoint = armMotor.getClosedLoopReference();
+        encoderPosition = encoder.getAbsolutePosition();
 
         motorPositionLog = new LoggedDouble("/Subststems/Arm/IO/Motor Position");
         motorVelocityLog = new LoggedDouble("/Subsystems/Arm/IO/Motor Velocity");
@@ -86,7 +88,7 @@ public class ArmIOReal implements ArmIO {
     }
 
     public double getAbsolutePosition() {
-        return motorPosition.getValueAsDouble() + ArmConstants.ABS_ENCODER_OFFSET;
+        return encoderPosition.getValueAsDouble() + ArmConstants.ABS_ENCODER_OFFSET;
     }
 
     public double getCurrent() {
