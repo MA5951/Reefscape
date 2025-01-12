@@ -29,10 +29,10 @@ public class RobotContainer extends DeafultRobotContainer {
         PortMap.Controllers.operatorID,
         PortMap.Controllers.driveRumbleID,
         PortMap.Controllers.operatorRumbleID);
-    swerve = SwerveSubsystem.getInstance();
-    vision = Vision.getInstance();
-    poseEstimator = PoseEstimator.getInstance();
-    swerveAutoFollower = SwerveAutoFollower.getInstance();
+    //swerve = SwerveSubsystem.getInstance();
+    //vision = Vision.getInstance();
+    //poseEstimator = PoseEstimator.getInstance();
+    //swerveAutoFollower = SwerveAutoFollower.getInstance();
     intake = Intake.getInstance();
     arm = Arm.getInstance();
 
@@ -42,8 +42,8 @@ public class RobotContainer extends DeafultRobotContainer {
   }
 
   public void configureTeleopCommands() {
-    CommandScheduler.getInstance().setDefaultCommand(SwerveSubsystem.getInstance(),
-        new TeleopSwerveController(driverController));
+    // CommandScheduler.getInstance().setDefaultCommand(SwerveSubsystem.getInstance(),
+    //     new TeleopSwerveController(driverController));
     
   }
 

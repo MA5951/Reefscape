@@ -19,6 +19,7 @@ import frc.robot.Utils.ModuleLimits;
 import frc.robot.Utils.PPHolonomicDriveController;
 import frc.robot.Subsystem.Swerve.IOs.GyroPiegon2;
 import frc.robot.Subsystem.Swerve.IOs.GyroSim;
+import frc.robot.Subsystem.Swerve.IOs.Swerve50HzOdometry;
 import frc.robot.Subsystem.Swerve.IOs.SwerveModuleSim;
 import frc.robot.Subsystem.Swerve.IOs.SwerveModuleTalonFX;
 import frc.robot.Subsystem.Swerve.IOs.SwerveThreadOdometry;
@@ -168,7 +169,8 @@ public class SwerveConstants {
         }
 
         public static final SwerveOdometry getOdometry() {
-                return new SwerveThreadOdometry(ODOMETRY_CONFIG);
+                //return new SwerveThreadOdometry(ODOMETRY_CONFIG);
+                return new Swerve50HzOdometry(ODOMETRY_CONFIG);
         }
 
         public static final PPHolonomicDriveController getHolonomicController() {

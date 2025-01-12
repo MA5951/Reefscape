@@ -51,10 +51,17 @@ public class Intake extends StateControlledSubsystem {
 
   public boolean IntakeCANMOVE() {
     return RobotContainer.currentRobotState == RobotConstants.INTAKE
-        && RobotConstants.SUPER_STRUCTURE.getGamePiece() == Field.GamePiece.CORAL
-        && !getRearSensor()
+        && RobotContainer.arm.atPoint()
+        && ((RobotConstants.SUPER_STRUCTURE.getGamePiece() == Field.GamePiece.CORAL
+        && !getRearSensor())
         ||
-        RobotConstants.SUPER_STRUCTURE.getGamePiece() != Field.GamePiece.BALL;
+        RobotConstants.SUPER_STRUCTURE.getGamePiece() != Field.GamePiece.BALL);
+  }
+
+  public boolean EjectCANMOVE() {
+    return RobotContainer.currentRobotState == RobotConstants.EJECT
+    && RobotContainer.arm.atPoint()
+    && getRearSensor();
   }
 
   @Override

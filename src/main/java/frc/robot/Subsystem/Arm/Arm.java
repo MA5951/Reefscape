@@ -55,13 +55,17 @@ public class Arm extends StateControlledSubsystem {
         armIO.setAngle(angle);
     }
 
-    public boolean atPoint(double targetAngle) {
+    public boolean atPoint() {
         return armIO.getError() <= ArmConstants.TOLERANCE;
+    }
+
+    public boolean limitsCANMOVE() {
+        return getSetPoint() < ArmConstants.MAX_ANGLE && getSetPoint() > ArmConstants.MIN_ANGLE;
     }
 
     @Override
     public boolean canMove() {
-        return true; // Add logic for specific movement constraints if needed.
+        return true;
     }
 
     public static Arm getInstance() {
