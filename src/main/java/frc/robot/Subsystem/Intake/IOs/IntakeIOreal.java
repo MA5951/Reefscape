@@ -54,6 +54,7 @@ public class IntakeIOReal implements IntakeIO {
         currentLog = new LoggedDouble("/Subsystems/Intake/IO/Current");
         positionLog = new LoggedDouble("/Subsystems/Intake/IO/Position");
         velocityLog = new LoggedDouble("/Subsystems/Intake/IO/Velocity");
+        apliedVoltsLog = new LoggedDouble("/Subsystems/Intake/IO/Applied Volts");
         forwardLimitLog = new LoggedBool("/Subsystems/Intake/IO/Forward Limit");
         reversLimitLog = new LoggedBool("/Subsystems/Intake/IO/Revers Limit");
 

@@ -4,14 +4,21 @@ package frc.robot.RobotControl;
 public class Field {
 
     public enum GamePiece {
-        CORAL,
-        BALL,
-        NONE
+        CORAL(0),
+        BALL(0),
+        NONE(0);
+
+        public final double holdValue;
+
+        GamePiece(double HoldValue) {
+            holdValue = HoldValue;
+        }
+
     }
 
     public enum ScoringLevel {
-        L1(0, 10, 1),
-        L2(0, 10, 1),
+        L1(0, 10, 4),
+        L2(0, 10, 5),
         L3(0, 10, 1),
         L4(0, 10, 1);
 

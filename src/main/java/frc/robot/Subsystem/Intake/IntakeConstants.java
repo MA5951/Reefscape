@@ -20,7 +20,7 @@ public class IntakeConstants {
     public static final double CORAL_HOLDING_VALUE = 0; 
     public static final double INTAKE_BALL_SPEED = 0; 
     public static final double BALL_HOLDING_VALUE = 0;
-    public static final double GEAR = 1;
+    public static final double GEAR = 5;
 
     public static final double PEAK_CURRENT_LIMIT = 35;
     public static final double CONTINUES_CURRENT_LIMIT = 20; 

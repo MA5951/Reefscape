@@ -9,6 +9,7 @@ import com.ma5951.utils.RobotControl.Commands.RobotFunctionStatesCommand;
 import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
 import frc.robot.Subsystem.Arm.Arm;
+import frc.robot.Subsystem.Arm.ArmConstants;
 
 public class ArmDeafultCommand extends RobotFunctionStatesCommand {
     private static Arm arm = RobotContainer.arm;
@@ -49,7 +50,7 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
                 arm.setAngle(0);
                 break;
             case "INTAKE":
-                arm.setAngle(0);
+                arm.setAngle(ArmConstants.INTAKE_CORALS_ANGLE);
                 break;
             case "SCORING":
                 arm.setAngle(RobotConstants.SUPER_STRUCTURE.getScoringPreset().angle);

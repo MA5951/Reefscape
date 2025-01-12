@@ -16,8 +16,8 @@ public class SuperStructure extends GenericSuperStracture {
     public static SwerveSubsystem swerve =  RobotContainer.swerve;
     public static Vision vision =  RobotContainer.vision;
     public static PoseEstimator poseEstimator =  RobotContainer.poseEstimator;
-    public static Intake intake =  RobotContainer.intake;
-    public static Arm arm =  RobotContainer.arm;
+    public static Intake intake =  Intake.getInstance();
+    public static Arm arm =  Arm.getInstance();
     public static Field.ScoringLevel scoringLevel;
 
     private double lastIntakeHight = 0;

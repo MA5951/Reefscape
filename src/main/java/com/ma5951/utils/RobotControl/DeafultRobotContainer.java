@@ -56,9 +56,11 @@ public class DeafultRobotContainer {
         operatorController = new PS5Controller(OperatorControllerID);
         driverControllerRumble = new XboxController(DriverControllerRumbleID);
         operatorControllerRumble = new XboxController(OperatorControllerRumbleID);
-        autoSelector = new AutoSelector(() -> PoseEstimator.getInstance().getEstimatedRobotPose());
+        //autoSelector = new AutoSelector(() -> PoseEstimator.getInstance().getEstimatedRobotPose());
+        autoSelector = new AutoSelector(() -> new Pose2d());
 
-        robotPoseSupplier = () -> PoseEstimator.getInstance().getEstimatedRobotPose();
+        //robotPoseSupplier = () -> PoseEstimator.getInstance().getEstimatedRobotPose();
+        robotPoseSupplier = () -> new Pose2d();//TODO
         batteryVoltagSupplier = () -> RobotController.getBatteryVoltage();
         if (Robot.isReal()) {
             batteryVoltagSupplier = () -> RobotController.getBatteryVoltage();
@@ -134,8 +136,8 @@ public class DeafultRobotContainer {
 
     public void updateAutoInit() {
         if(!Robot.isReal()) {
-            SwerveConstants.SWERVE_DRIVE_SIMULATION.setSimulationWorldPose(getSelectedAuto().getStartPose());
-            PoseEstimator.getInstance().resetPose(getSelectedAuto().getStartPose());
+            //SwerveConstants.SWERVE_DRIVE_SIMULATION.setSimulationWorldPose(getSelectedAuto().getStartPose());
+            //PoseEstimator.getInstance().resetPose(getSelectedAuto().getStartPose());
         }
     }
 

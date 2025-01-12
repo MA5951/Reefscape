@@ -89,9 +89,11 @@ public class RobotContainer extends DeafultRobotContainer {
         .onTrue(new InstantCommand(() -> Vision.getInstance().updateOdometry()));
 
     // Intake
-    new Trigger(() -> driverController.getR1Button())
-        .onTrue(new InstantCommand(() -> RobotConstants.SUPER_STRUCTURE.setIntakeHight(0))
-            .andThen(new InstantCommand(() -> setINTAKE())));
+    // new Trigger(() -> driverController.getR1Button())
+    //     .onTrue(new InstantCommand(() -> RobotConstants.SUPER_STRUCTURE.setIntakeHight(0))
+    //         .andThen(new InstantCommand(() -> setINTAKE())));
+
+            new Trigger(() -> driverController.getR1Button()).onTrue(new InstantCommand(() -> setINTAKE()));
 
     new Trigger(() -> currentRobotState == RobotConstants.INTAKE
         && RobotConstants.SUPER_STRUCTURE.getGamePiece() == Field.GamePiece.CORAL
