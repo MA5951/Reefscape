@@ -1,6 +1,7 @@
 package frc.robot.Subsystem.Arm;
 
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
+import com.ma5951.utils.Utils.ConvUtil;
 
 import frc.robot.Subsystem.Arm.IOs.ArmIO;
 
@@ -11,10 +12,11 @@ public class Arm extends StateControlledSubsystem {
 
     public Arm() {
         super(ArmConstants.SUBSYSTEM_STATES, "Arm");
+        resetPose();
     }
 
     public double getFeedForwardVoltage() {
-        return 0.5;
+        return 0.2 * Math.sin(ConvUtil.DegreesToRadians(getPosition()));
     }
 
     public double getAbsolutePosition() {
@@ -56,7 +58,7 @@ public class Arm extends StateControlledSubsystem {
     }
 
     public void setAngle(double angle) {
-        armIO.setAngle(angle);
+        armIO.setAngle(angle + 5, getFeedForwardVoltage());
     }
 
     public boolean atPoint() {
@@ -81,6 +83,7 @@ public class Arm extends StateControlledSubsystem {
 
     @Override
     public void periodic() {
+        super.periodic();
         armIO.updatePeriodic();
     }
 }

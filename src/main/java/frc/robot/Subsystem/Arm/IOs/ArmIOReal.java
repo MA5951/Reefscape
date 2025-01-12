@@ -40,6 +40,7 @@ public class ArmIOReal implements ArmIO {
     private LoggedDouble motorVoltageLog;
     private LoggedDouble errorLog;
     private LoggedDouble setPointLog;
+    private LoggedDouble absPositionLog;
 
     public ArmIOReal() {
         armMotor = new TalonFX(PortMap.Arm.armMotor, PortMap.CanBus.RioBus);
@@ -56,12 +57,13 @@ public class ArmIOReal implements ArmIO {
         setPoint = armMotor.getClosedLoopReference();
         encoderPosition = encoder.getAbsolutePosition();
 
-        motorPositionLog = new LoggedDouble("/Subststems/Arm/IO/Motor Position");
+        motorPositionLog = new LoggedDouble("/Subsystems/Arm/IO/Motor Position");
         motorVelocityLog = new LoggedDouble("/Subsystems/Arm/IO/Motor Velocity");
-        motorCurrentLog = new LoggedDouble("/Subsystems/Arm/Motor Current");
+        motorCurrentLog = new LoggedDouble("/Subsystems/Arm/IO/Motor Current");
         motorVoltageLog = new LoggedDouble("Subsystems/Arm/IO/Motor Voltage");
-        errorLog = new LoggedDouble("/Subsystem/Arm/IO/Error");
-        setPointLog = new LoggedDouble("/Subsystem/Arm/IO/Set Point");
+        errorLog = new LoggedDouble("/Subsystems/Arm/IO/Error");
+        setPointLog = new LoggedDouble("/Subsystems/Arm/IO/Set Point");
+        absPositionLog = new LoggedDouble("/Subsystems/Arm/IO/Abs Pose");
 
         configMotor();
     }
@@ -79,6 +81,8 @@ public class ArmIOReal implements ArmIO {
         armConfig.Slot0.kI = ArmConstants.kI;
         armConfig.Slot0.kD = ArmConstants.kD;
 
+        armConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 1;
+
         armConfig.CurrentLimits.SupplyCurrentLimitEnable = ArmConstants.ENABLE_CURRENT_LIMIT;
         armConfig.CurrentLimits.SupplyCurrentLimit = ArmConstants.PEAK_CURRENT_LIMIT;
         armConfig.CurrentLimits.SupplyCurrentLowerLimit = ArmConstants.CONTINUOUS_CURRENT_LIMIT;
@@ -88,7 +92,7 @@ public class ArmIOReal implements ArmIO {
     }
 
     public double getAbsolutePosition() {
-        return encoderPosition.getValueAsDouble() + ArmConstants.ABS_ENCODER_OFFSET;
+        return (encoderPosition.getValueAsDouble() + ArmConstants.ABS_ENCODER_OFFSET) * 360;
     }
 
     public double getCurrent() {
@@ -108,11 +112,11 @@ public class ArmIOReal implements ArmIO {
     }
 
     public double getError() {
-        return error.getValueAsDouble();
+        return ConvUtil.RotationsToDegrees(error.getValueAsDouble());
     }
 
     public double getSetPoint() {
-        return setPoint.getValueAsDouble();
+        return ConvUtil.RotationsToDegrees(setPoint.getValueAsDouble());
     }
 
     public void resetPosition(double newPose) {
@@ -135,8 +139,8 @@ public class ArmIOReal implements ArmIO {
         armMotor.setVoltage(volt);
     }
 
-    public void setAngle(double angle) {
-        armMotor.setControl(positionControl.withPosition(angle).withSlot(ArmConstants.CONTROL_SLOT));
+    public void setAngle(double angle , double feedorward) {
+        armMotor.setControl(positionControl.withPosition(ConvUtil.DegreesToRotations(angle)).withSlot(ArmConstants.CONTROL_SLOT).withFeedForward(feedorward));
     }
 
     public void updatePeriodic() {
@@ -146,7 +150,8 @@ public class ArmIOReal implements ArmIO {
                 motorCurrent,
                 motorVoltage,
                 error,
-                setPoint);
+                setPoint,
+                encoderPosition);
 
         motorPositionLog.update(getPosition());
         motorVelocityLog.update(getVelocity());
@@ -154,5 +159,6 @@ public class ArmIOReal implements ArmIO {
         motorVoltageLog.update(getAppliedVolts());
         errorLog.update(getError());
         setPointLog.update(getSetPoint());
+        absPositionLog.update(getAbsolutePosition());
     }
 }

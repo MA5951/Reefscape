@@ -19,14 +19,14 @@ public class ArmConstants {
     public static final double ANGLE_L3 = MAX_ANGLE;
     public static final double ANGLE_L4 = 110;
 
-    public static final double INTAKE_CORALS_ANGLE = 35;
+    public static final double INTAKE_CORALS_ANGLE = 45;
     public static final double INTAKE_BALL_ANGLE = 0;
 
     public static final double ABS_ENCODER_OFFSET = 0;
 
     public static final double GEAR_RATIO = 20;
 
-    public static final double kP = 0;
+    public static final double kP = 40;
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kS = 0;

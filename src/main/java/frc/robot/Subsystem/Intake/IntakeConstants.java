@@ -11,7 +11,7 @@ import frc.robot.Subsystem.Intake.IOs.IntakeIOReal;
 
 public class IntakeConstants {
     
-    public static final double INTAKE_SPEED_BEFORE_FIRST_SENSOR = 5; 
+    public static final double INTAKE_SPEED_BEFORE_FIRST_SENSOR = -5; 
     public static final double INTAKE_FACTOR_AFTER_SENSOR = 1;
     public static final double SORTING_SPEED = 0; 
     public static final double EJECT_SPEED_L1 = 0; 

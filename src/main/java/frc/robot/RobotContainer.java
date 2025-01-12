@@ -18,6 +18,7 @@ import frc.robot.Subsystem.Swerve.SwerveAutoFollower;
 import frc.robot.Subsystem.Swerve.SwerveSubsystem;
 import frc.robot.Subsystem.Vision.Vision;
 import frc.robot.commands.Swerve.TeleopSwerveController;
+import frc.robot.commands.deafultCommands.ArmDeafultCommand;
 import frc.robot.commands.deafultCommands.IntakeDeafultCommand;
 
 public class RobotContainer extends DeafultRobotContainer {
@@ -44,6 +45,7 @@ public class RobotContainer extends DeafultRobotContainer {
 
     configureBindings();
     setUpAutoCommands();
+    configureTeleopCommands();
 
   }
 
@@ -52,6 +54,8 @@ public class RobotContainer extends DeafultRobotContainer {
     // new TeleopSwerveController(driverController));
     CommandScheduler.getInstance().setDefaultCommand(intake,
         new IntakeDeafultCommand());
+    CommandScheduler.getInstance().setDefaultCommand(arm,
+        new ArmDeafultCommand());
 
   }
 
@@ -90,10 +94,11 @@ public class RobotContainer extends DeafultRobotContainer {
 
     // Intake
     // new Trigger(() -> driverController.getR1Button())
-    //     .onTrue(new InstantCommand(() -> RobotConstants.SUPER_STRUCTURE.setIntakeHight(0))
-    //         .andThen(new InstantCommand(() -> setINTAKE())));
+    // .onTrue(new InstantCommand(() ->
+    // RobotConstants.SUPER_STRUCTURE.setIntakeHight(0))
+    // .andThen(new InstantCommand(() -> setINTAKE())));
 
-            new Trigger(() -> driverController.getR1Button()).onTrue(new InstantCommand(() -> setINTAKE()));
+    new Trigger(() -> driverController.getR1Button()).onTrue(new InstantCommand(() -> setINTAKE()));
 
     new Trigger(() -> currentRobotState == RobotConstants.INTAKE
         && RobotConstants.SUPER_STRUCTURE.getGamePiece() == Field.GamePiece.CORAL

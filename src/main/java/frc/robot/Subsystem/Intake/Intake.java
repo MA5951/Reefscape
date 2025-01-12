@@ -78,6 +78,7 @@ public class Intake extends StateControlledSubsystem {
 
   @Override
   public void periodic() {
+    super.periodic();
     intakeIO.updatePeriodic();
   }
 }
