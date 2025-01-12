@@ -42,11 +42,8 @@ public class PortMap {
     }
 
     public class Intake {
-        public static final int intakeMotor = 40;
-        public static final int leftFrontIR = 0;
-        public static final int rightFrontIR = 1;
-        public static final int leftRearIR = 2;
-        public static final int rightRearIR = 3;
+        public static final int intakeMotor = 15;
+        
     }
 
     public class Vision {
@@ -54,7 +51,7 @@ public class PortMap {
     }
 
     public class Arm {
-        public static final int armMotor = 1;
+        public static final int armMotor = 16;
         public static final int armEncoder = 0;
     }
 }

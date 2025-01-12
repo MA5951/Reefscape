@@ -8,15 +8,14 @@ import com.ma5951.utils.RobotControl.Commands.RobotFunctionStatesCommand;
 
 import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
-import frc.robot.Subsystem.Intake.Intake;
-import frc.robot.Subsystem.Intake.IntakeConstants;
+import frc.robot.Subsystem.Arm.Arm;
 
-public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
-    private static Intake intake = RobotContainer.intake;
+public class ArmDeafultCommand extends RobotFunctionStatesCommand {
+    private static Arm arm = RobotContainer.arm;
 
-    public IntakeDeafultCommand() {
-        super(intake);
-        addRequirements(intake);
+    public ArmDeafultCommand() {
+        super(arm);
+        addRequirements(arm);
     }
 
     @Override
@@ -31,7 +30,7 @@ public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
 
     @Override
     public void end(boolean interrupted) {
-        intake.setVoltage(0);
+        arm.setVoltage(0);
     }
 
     @Override
@@ -42,21 +41,21 @@ public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
     @Override
     public void AutomaticLoop() {
         super.AutomaticLoop();
-        switch (intake.getTargetState().getName()) {
+        switch (arm.getTargetState().getName()) {
             case "IDLE":
-                intake.setVoltage(0);
+                arm.setVoltage(arm.getFeedForwardVoltage());
                 break;
             case "HOLD":
-            intake.setVoltage(0);
+                arm.setAngle(0);
                 break;
             case "INTAKE":
-            intake.setVoltage(IntakeConstants.INTAKE_SPEED_BEFORE_FIRST_SENSOR);
+                arm.setAngle(0);
                 break;
             case "SCORING":
-            intake.setVoltage(RobotConstants.SUPER_STRUCTURE.getScoringPreset().angle);
+                arm.setAngle(RobotConstants.SUPER_STRUCTURE.getScoringPreset().angle);
                 break;
             case "SORTING":
-            intake.setVoltage(0);
+                arm.setAngle(0);
                 break;
         }
     }
@@ -69,13 +68,13 @@ public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
     @Override
     public void CANT_MOVE() {
         super.CANT_MOVE();
-        intake.setVoltage(0);
+        arm.setVoltage(arm.getFeedForwardVoltage());
     }
 
     @Override
     public void ManuelLoop() {
         super.ManuelLoop();
-        intake.setVoltage(0);
+        arm.setVoltage(arm.getFeedForwardVoltage());
     }
 
     @Override

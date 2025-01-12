@@ -5,8 +5,11 @@ import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.ForwardLimitValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.ReverseLimitValue;
+import com.ma5951.utils.Logger.LoggedBool;
 import com.ma5951.utils.Logger.LoggedDouble;
 import com.ma5951.utils.Utils.ConvUtil;
 
@@ -23,39 +26,36 @@ public class IntakeIOReal implements IntakeIO {
     protected TalonFX intakeMotor;
     protected TalonFXConfiguration motorConfig;
 
-    private DigitalInput leftFrontIR;
-    private DigitalInput rightFrontIR;
-    private DigitalInput leftRearIR;
-    private DigitalInput rightRearIR;
-
     private StatusSignal<Current> motorCurrent;
     private StatusSignal<Angle> motorPosition;
     private StatusSignal<AngularVelocity> motorVelocity;
     private StatusSignal<Voltage> apliedVolts;
+    private StatusSignal<ForwardLimitValue> forwardLimit;
+    private StatusSignal<ReverseLimitValue> reversLimit;
 
     private LoggedDouble currentLog;
     private LoggedDouble positionLog;
     private LoggedDouble velocityLog;
     private LoggedDouble apliedVoltsLog;
+    private LoggedBool forwardLimitLog;
+    private LoggedBool reversLimitLog;
 
     public IntakeIOReal() {
         intakeMotor = new TalonFX(PortMap.Intake.intakeMotor , PortMap.CanBus.RioBus);
         motorConfig = new TalonFXConfiguration();
 
-        leftFrontIR = new DigitalInput(PortMap.Intake.leftFrontIR);
-        rightFrontIR = new DigitalInput(PortMap.Intake.rightFrontIR);
-        leftRearIR = new DigitalInput(PortMap.Intake.leftRearIR);
-        rightRearIR = new DigitalInput(PortMap.Intake.rightRearIR);
-
         motorCurrent = intakeMotor.getStatorCurrent();
         motorPosition = intakeMotor.getPosition();
         motorVelocity = intakeMotor.getVelocity();
         apliedVolts = intakeMotor.getMotorVoltage();
+        forwardLimit = intakeMotor.getForwardLimit();
+        reversLimit = intakeMotor.getReverseLimit();
 
         currentLog = new LoggedDouble("/Subsystems/Intake/IO/Current");
         positionLog = new LoggedDouble("/Subsystems/Intake/IO/Position");
         velocityLog = new LoggedDouble("/Subsystems/Intake/IO/Velocity");
-        apliedVoltsLog = new LoggedDouble("/Subsystems/Intake/IO/aplied Volts");
+        forwardLimitLog = new LoggedBool("/Subsystems/Intake/IO/Forward Limit");
+        reversLimitLog = new LoggedBool("/Subsystems/Intake/IO/Revers Limit");
 
         config();   
     }
@@ -81,11 +81,11 @@ public class IntakeIOReal implements IntakeIO {
     }
 
     public boolean getFrontSensor() {
-        return leftFrontIR.get() || rightFrontIR.get();
+        return forwardLimit.getValueAsDouble() == 1;
     }
 
     public boolean getRearSensor() {
-        return leftRearIR.get() || rightRearIR.get();
+        return reversLimit.getValueAsDouble() == 1;
     }
 
     public double getCurrent() {
@@ -122,12 +122,16 @@ public class IntakeIOReal implements IntakeIO {
             motorCurrent,
             motorPosition,
             motorVelocity,
-            apliedVolts
+            apliedVolts,
+            forwardLimit,
+            reversLimit
         );
 
         currentLog.update(getCurrent());
         positionLog.update(getPosition());
         velocityLog.update(getVelocity());
         apliedVoltsLog.update(getAppliedVolts());
+        forwardLimitLog.update(getFrontSensor());
+        reversLimitLog.update(getRearSensor());
     }
 }

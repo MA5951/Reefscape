@@ -13,6 +13,10 @@ public class Arm extends StateControlledSubsystem {
         super(ArmConstants.SUBSYSTEM_STATES, "Arm");
     }
 
+    public double getFeedForwardVoltage() {
+        return 0.5;
+    }
+
     public double getAbsolutePosition() {
         return armIO.getAbsolutePosition();
     }
@@ -38,8 +42,8 @@ public class Arm extends StateControlledSubsystem {
         return armIO.getSetPoint();
     }
 
-    public void resetPose(double newPose) {
-        armIO.resetPosition(newPose);
+    public void resetPose() {
+        armIO.resetPosition(getAbsolutePosition() / 306);
     }
 
 

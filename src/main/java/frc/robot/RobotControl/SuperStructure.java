@@ -18,6 +18,7 @@ public class SuperStructure extends GenericSuperStracture {
     public static PoseEstimator poseEstimator =  RobotContainer.poseEstimator;
     public static Intake intake =  RobotContainer.intake;
     public static Arm arm =  RobotContainer.arm;
+    public static Field.ScoringLevel scoringLevel;
 
     private double lastIntakeHight = 0;
 
@@ -26,10 +27,18 @@ public class SuperStructure extends GenericSuperStracture {
                 () -> SwerveSubsystem.getInstance().getVelocityVector());
     }
 
+    public void setScoringPreset(Field.ScoringLevel ScoringLevel) {
+        scoringLevel = ScoringLevel;
+    }
+
+    public Field.ScoringLevel getScoringPreset() {
+        return scoringLevel;
+    }
+
     public Field.GamePiece getGamePiece() {
         if (intake.getFrontSensor() && lastIntakeHight == 0) { //TODO
             return Field.GamePiece.CORAL;
-        } else if (intake.getFrontSensor() && lastIntakeHight == 0) { //TODO
+        } else if (intake.getFrontSensor() && lastIntakeHight == 1) { //TODO
             return Field.GamePiece.BALL;
         }
 

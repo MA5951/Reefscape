@@ -72,7 +72,7 @@ public class ArmIOReal implements ArmIO {
         armConfig.Voltage.PeakForwardVoltage = 12;
         armConfig.Voltage.PeakReverseVoltage = -12;
 
-        armConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        armConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
         armConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
         armConfig.Slot0.kP = ArmConstants.kP;
