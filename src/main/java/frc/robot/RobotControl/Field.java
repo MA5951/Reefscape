@@ -1,16 +1,18 @@
 
 package frc.robot.RobotControl;
 
+import java.util.function.Supplier;
+
 public class Field {
 
     public enum GamePiece {
-        CORAL(0),
-        BALL(0),
-        NONE(0);
+        CORAL(() -> 0d),
+        BALL(() -> 0d),
+        NONE(() -> 0d);
 
-        public final double holdValue;
+        public final Supplier<Double> holdValue;
 
-        GamePiece(double HoldValue) {
+        GamePiece(Supplier<Double> HoldValue) {
             holdValue = HoldValue;
         }
 
