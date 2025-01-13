@@ -43,6 +43,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     maLog.stopLog();
     RobotContainer.currentRobotState = RobotConstants.IDLE;
+    RobotContainer.setIDLE();
   }
 
   @Override

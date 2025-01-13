@@ -44,13 +44,16 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
         super.AutomaticLoop();
         switch (arm.getTargetState().getName()) {
             case "IDLE":
-                arm.setAngle(75);
+                arm.setVoltage((RobotContainer.driverController.getRightY() * 0.3 ) * 12);
                 break;
             case "HOLD":
                 arm.setAngle(0);
                 break;
             case "INTAKE":
-                arm.setAngle(75);
+                arm.setAngle(90);
+                // if (arm.atPoint()) {
+                //     RobotContainer.intake.setNutralMode(true);
+                // }
                 break;
             case "SCORING":
                 arm.setAngle(RobotConstants.SUPER_STRUCTURE.getScoringPreset().angle);

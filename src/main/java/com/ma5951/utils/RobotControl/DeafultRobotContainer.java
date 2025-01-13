@@ -79,7 +79,7 @@ public class DeafultRobotContainer {
         matchTimeLog = new LoggedDouble("/Dash/Match Time");
     }
 
-    public void setCurrentState(State state) {
+    public static void setCurrentState(State state) {
         lastRobotState = currentRobotState;
         currentRobotState = state;
     }

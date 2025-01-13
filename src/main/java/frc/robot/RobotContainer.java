@@ -52,8 +52,8 @@ public class RobotContainer extends DeafultRobotContainer {
   public void configureTeleopCommands() {
     // CommandScheduler.getInstance().setDefaultCommand(swerve.getInstance(),
     // new TeleopSwerveController(driverController));
-    CommandScheduler.getInstance().setDefaultCommand(intake,
-        new IntakeDeafultCommand());
+    // CommandScheduler.getInstance().setDefaultCommand(intake,
+    //     new IntakeDeafultCommand());
     CommandScheduler.getInstance().setDefaultCommand(arm,
         new ArmDeafultCommand());
 
@@ -63,7 +63,7 @@ public class RobotContainer extends DeafultRobotContainer {
     // setAutoOptions(null);
   }
 
-  public void setIDLE() {
+  public static void setIDLE() {
     setCurrentState(RobotConstants.IDLE);
     intake.setTargetState(IntakeConstants.IDLE);
     arm.setTargetState(ArmConstants.IDLE);
@@ -83,7 +83,6 @@ public class RobotContainer extends DeafultRobotContainer {
   }
 
   private void configureBindings() {
-
     // Update Offset
     new Trigger(() -> driverController.getTriangleButton())
         .onTrue(new InstantCommand(() -> TeleopSwerveController.driveController.updateDriveHeading()));
@@ -98,16 +97,21 @@ public class RobotContainer extends DeafultRobotContainer {
     // RobotConstants.SUPER_STRUCTURE.setIntakeHight(0))
     // .andThen(new InstantCommand(() -> setINTAKE())));
 
-    new Trigger(() -> driverController.getR1Button()).onTrue(new InstantCommand(() -> setINTAKE()));
+    new Trigger(() -> driverController.getR1Button()).whileTrue(new InstantCommand(() -> intake.setVoltage(3)))
+    .whileFalse(new InstantCommand(() -> intake.setVoltage(0)));
+    new Trigger(() -> driverController.getL1Button()).whileTrue(new InstantCommand(() -> intake.setVoltage(-3)))
+    .whileFalse(new InstantCommand(() -> intake.setVoltage(0)));
 
-    new Trigger(() -> currentRobotState == RobotConstants.INTAKE
-        && RobotConstants.SUPER_STRUCTURE.getGamePiece() == Field.GamePiece.CORAL
-        && intake.getRearSensor())
-        .onTrue(new InstantCommand(() -> setIDLE()));
 
-    new Trigger(() -> currentRobotState == RobotConstants.INTAKE
-        && RobotConstants.SUPER_STRUCTURE.getGamePiece() == Field.GamePiece.BALL)
-        .onTrue(new InstantCommand(() -> setIDLE()));
+
+    // new Trigger(() -> currentRobotState == RobotConstants.INTAKE
+    //     && RobotConstants.SUPER_STRUCTURE.getGamePiece() == Field.GamePiece.CORAL
+    //     && intake.getRearSensor())
+    //     .onTrue(new InstantCommand(() -> setIDLE()));
+
+    // new Trigger(() -> currentRobotState == RobotConstants.INTAKE
+    //     && RobotConstants.SUPER_STRUCTURE.getGamePiece() == Field.GamePiece.BALL)
+    //     .onTrue(new InstantCommand(() -> setIDLE()));
   }
 
 }

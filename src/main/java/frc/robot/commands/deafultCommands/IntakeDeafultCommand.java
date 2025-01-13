@@ -50,7 +50,7 @@ public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
             intake.setVoltage(0);
                 break;
             case "INTAKE":
-            intake.setVoltage(IntakeConstants.INTAKE_SPEED_BEFORE_FIRST_SENSOR);
+            intake.setVoltage(IntakeConstants.EJECT_SPEED_L1);
                 break;
             case "SCORING":
             intake.setVoltage(RobotConstants.SUPER_STRUCTURE.getScoringPreset().ejectVolt);

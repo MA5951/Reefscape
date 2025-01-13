@@ -20,5 +20,6 @@ public interface IntakeIO {
     void setVoltage(double volt);
 
     void updatePeriodic();
+
     
 }
