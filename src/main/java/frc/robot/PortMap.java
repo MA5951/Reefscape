@@ -41,6 +41,14 @@ public class PortMap {
         public static final int Pigeon2ID = 12;
     }
 
+    public class Intake {
+        public static final int intakeMotor = 40;
+        public static final int leftFrontIR = 0;
+        public static final int rightFrontIR = 1;
+        public static final int leftRearIR = 2;
+        public static final int rightRearIR = 3;
+    }
+
     public class Vision {
         public final static String CAMERA_NAME = "limelight-camera";
     }
