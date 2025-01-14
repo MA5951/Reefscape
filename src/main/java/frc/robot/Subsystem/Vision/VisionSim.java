@@ -67,7 +67,7 @@ public class VisionSim implements VisionIO {
         visionSim.update(new Pose2d(2, 2, new Rotation2d()));
 
         poseEstimator = new PhotonPoseEstimator(tagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-                VisionConstants.ROBOT_TO_CAMERA);
+        VisionConstants.ROBOT_TO_CAMERA);
 
         cameraSim.enableRawStream(true);
         cameraSim.enableProcessedStream(true);
