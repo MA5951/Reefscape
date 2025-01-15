@@ -37,6 +37,11 @@ public class TalonFXMotorSim {
         motorSimState.setRotorVelocity(ConvUtil.RPMtoRPS(physicshSim.getAngularVelocityRPM()));
     }
 
+    public void updateMotorLimits(boolean forward ,boolean reverse) {
+        motorSimState.setForwardLimit(forward);
+        motorSimState.setReverseLimit(reverse);
+    }
+
 
 
 }
