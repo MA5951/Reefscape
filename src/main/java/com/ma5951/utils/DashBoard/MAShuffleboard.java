@@ -7,9 +7,12 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
+@SuppressWarnings("unused")
 public class MAShuffleboard {
     private ShuffleboardTab board;
     private HashMap<String, GenericEntry> values;
+
+    private static final String dashboardTitleColorEntry = "/MALog/Dash/TabColor";
     
 
     public MAShuffleboard(String tab) {
