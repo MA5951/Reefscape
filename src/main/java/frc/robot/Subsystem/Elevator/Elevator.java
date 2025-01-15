@@ -14,7 +14,7 @@ public class Elevator extends StateControlledSubsystem {
   private ElevatorIO elevatorIO = ElevatorConstants.getElevatorIO();
 
   public Elevator() {
-    super(null, "Elevator");
+    super(ElevatorConstants.SUBSYSTEM_STATES, "Elevator");
   }
 
   public void resetPose() {
