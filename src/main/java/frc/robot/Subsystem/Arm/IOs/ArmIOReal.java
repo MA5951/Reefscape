@@ -88,7 +88,7 @@ public class ArmIOReal implements ArmIO {
     }
 
     public double getAbsolutePosition() {
-        return encoderPosition.getValueAsDouble() + ArmConstants.ABS_ENCODER_OFFSET;
+        return ConvUtil.RotationsToDegrees(encoderPosition.getValueAsDouble() / 3) + ArmConstants.ABS_ENCODER_OFFSET;
     }
 
     public double getCurrent() {
@@ -108,15 +108,15 @@ public class ArmIOReal implements ArmIO {
     }
 
     public double getError() {
-            return error.getValueAsDouble();
+        return ConvUtil.RotationsToDegrees(error.getValueAsDouble());
     }
 
     public double getSetPoint() {
-        return setPoint.getValueAsDouble();
+        return ConvUtil.RotationsToDegrees(setPoint.getValueAsDouble());
     }
 
-    public void resetPosition(double newPose) {
-        armMotor.setPosition(newPose);
+    public void resetPosition(double newAngle) {
+        armMotor.setPosition(ConvUtil.DegreesToRotations(newAngle));
     }
 
     public void updatePID(double Kp, double Ki, double Kd) {
@@ -136,18 +136,18 @@ public class ArmIOReal implements ArmIO {
     }
 
     public void setAngle(double angle) {
-        armMotor.setControl(positionControl.withPosition(angle).withSlot(ArmConstants.CONTROL_SLOT));
+        armMotor.setControl(
+                positionControl.withPosition(ConvUtil.DegreesToRotations(angle)).withSlot(ArmConstants.CONTROL_SLOT));
     }
 
     public void updatePeriodic() {
         BaseStatusSignal.refreshAll(
-            motorPosition,
-            motorVelocity,
-            motorCurrent,
-            motorVoltage,
-            error,
-            setPoint
-        );
+                motorPosition,
+                motorVelocity,
+                motorCurrent,
+                motorVoltage,
+                error,
+                setPoint);
 
         motorPositionLog.update(getPosition());
         motorVelocityLog.update(getVelocity());

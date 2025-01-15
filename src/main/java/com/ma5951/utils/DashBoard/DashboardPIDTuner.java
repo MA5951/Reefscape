@@ -8,6 +8,7 @@ import java.util.function.Function;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 
+@SuppressWarnings("unused")
 public class DashboardPIDTuner implements Sendable {
 
     private String name;

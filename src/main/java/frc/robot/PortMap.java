@@ -45,25 +45,21 @@ public class PortMap {
         public static final int elevatorMasterMotor = 40;
         public static final int elevatorSlaveMotor = 41;
         public static final int elevatorLimitSwich = 42;
-
+    }
 
     public class Intake {
-        public static final int intakeMotor = 40;
-        public static final int leftFrontIR = 0;
-        public static final int rightFrontIR = 1;
-        public static final int leftRearIR = 2;
-        public static final int rightRearIR = 3;
+        public static final int intakeMotor = 45;
 
     }
 
     public class Vision {
-        public final static String CAMERA_NAME = "limelight-camera";
+        public final static String FRONT_CAMERA_NAME = "limelight-camera-FRONT";
+        public final static String BACK_CAMERA_NAME = "limelight-camera-BACK";
     }
 
     public class Arm {
-        public static final CANBus ArmBus = CanBus.CANivoreBus;
-
-        public static final int armMotor = 1;
-        public static final int armEncoder = 0;
+        public static final int armMotor = 43;
+        public static final int armEncoder = 44;
     }
 }
+

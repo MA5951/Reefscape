@@ -7,11 +7,10 @@ import frc.robot.Subsystem.Arm.IOs.ArmIO;
 public class Arm extends StateControlledSubsystem {
     private static Arm arm;
 
-    private ArmIO armIO;
+    private ArmIO armIO = ArmConstants.getArmIO();
 
     public Arm() {
         super(ArmConstants.SUBSYSTEM_STATES, "Arm");
-        armIO = ArmConstants.getArmIO();
     }
 
     public double getAbsolutePosition() {
@@ -39,8 +38,8 @@ public class Arm extends StateControlledSubsystem {
         return armIO.getSetPoint();
     }
 
-    public void resetPose(double newPose) {
-        armIO.resetPosition(newPose);
+    public void resetPose() {
+        armIO.resetPosition(getAbsolutePosition());
     }
 
 
@@ -62,7 +61,7 @@ public class Arm extends StateControlledSubsystem {
 
     @Override
     public boolean canMove() {
-        return true; // Add logic for specific movement constraints if needed.
+        return true;
     }
 
     public static Arm getInstance() {

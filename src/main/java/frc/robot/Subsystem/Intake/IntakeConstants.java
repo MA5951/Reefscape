@@ -18,12 +18,11 @@ public class IntakeConstants {
     public static final double EJECT_SPEED_L234 = 0; 
     public static final double INTAKE_WIDHT = 0; 
     public static final double CORAL_HOLDING_VALUE = 0; 
-    public static final double INTAKE_BALL_SPEED = 0; 
-    public static final double BALL_HOLDING_VALUE = 0;
+    public static final double BALLֹEJECTING_VALUE = 0;
     public static final double GEAR = 1;
 
     public static final double PEAK_CURRENT_LIMIT = 35;
-    public static final double CONTINUES_CURRENT_LIMIT = 20; 
+    public static final double CONTINUES_CURRENT_LIMIT = 15; 
     public static final double PEAK_CURRENT_TIME = 0.1; 
     public static final boolean IS_CURRENT_LIMIT_ENABLED = true;
 
@@ -32,8 +31,9 @@ public class IntakeConstants {
     public static final State INTAKE = new State("INTAKE");
     public static final State SCORING = new State("SCORING");
     public static final State SORTING = new State("SORTING");
+    public static final State BALLREMOVING  = new State("BALLREMOVING ");
 
-    public static final State[] SUBSYSTEM_STATES = new State[] {IDLE , HOLD , INTAKE , SCORING , SORTING};
+    public static final State[] SUBSYSTEM_STATES = new State[] {IDLE , HOLD , INTAKE , SCORING , SORTING , BALLREMOVING};
 
     public static final IntakeIO getIntakeIO() {
         if (Robot.isReal()) {

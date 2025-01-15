@@ -81,6 +81,7 @@ public class ElevatorIOReal implements ElevatorIO {
         masterConfig.Slot0.kP = ElevatorConstants.kP;
         masterConfig.Slot0.kI = ElevatorConstants.kI;
         masterConfig.Slot0.kD = ElevatorConstants.kD;
+        masterConfig.Slot0.kS = ElevatorConstants.kS;
         
         masterConfig.MotionMagic.MotionMagicAcceleration = ElevatorConstants.ACCELERATION;
         masterConfig.MotionMagic.MotionMagicCruiseVelocity = ElevatorConstants.CRUSIE_VELOCITY;
@@ -127,6 +128,10 @@ public class ElevatorIOReal implements ElevatorIO {
 
     public void resetPosition(double newHight) {
         masterMotor.setPosition(newHight / ElevatorConstants.SPROKET_CIRCUMFERENCE);
+    }
+
+    public void resetPosition() {
+        masterMotor.setPosition(0);
     }
 
     public void setVoltage(double volt) {

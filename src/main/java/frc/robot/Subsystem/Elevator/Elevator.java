@@ -18,7 +18,7 @@ public class Elevator extends StateControlledSubsystem {
   }
 
   public void resetPose() {
-
+    elevatorIO.resetPosition(0);
   }
 
   public double getHight() {
@@ -59,7 +59,6 @@ public class Elevator extends StateControlledSubsystem {
     }
     return elevator;
   }
-
 
   @Override
   public void periodic() {
