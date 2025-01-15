@@ -17,7 +17,7 @@ public class LoggedInt {
 
 
     public LoggedInt(String name) {
-        networkTable = NetworkTableInstance.getDefault().getTable("/");
+        networkTable = NetworkTableInstance.getDefault().getTable("/MALog");
         loggedNum = networkTable.getIntegerTopic(name).publish();
         loggedNum.set(0);
         lastNum = 0;

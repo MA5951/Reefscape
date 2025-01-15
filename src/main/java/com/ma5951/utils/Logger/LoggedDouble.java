@@ -16,7 +16,7 @@ public class LoggedDouble {
     private NetworkTable networkTable;
 
     public LoggedDouble(String name) {
-        networkTable = NetworkTableInstance.getDefault().getTable("/");
+        networkTable = NetworkTableInstance.getDefault().getTable("/MALog");
         loggedNum = networkTable.getDoubleTopic(name).publish();
         loggedNum.set(0);
         lastNum = 0;

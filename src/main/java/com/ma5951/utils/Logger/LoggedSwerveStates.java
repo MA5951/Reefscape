@@ -17,7 +17,7 @@ public class LoggedSwerveStates {
 
 
     public LoggedSwerveStates(String name) {
-        networkTable = NetworkTableInstance.getDefault().getTable("/");
+        networkTable = NetworkTableInstance.getDefault().getTable("/MALog");
         loggedStates = networkTable.getStructArrayTopic(name , SwerveModuleState.struct).publish();
         loggedStates.set(new SwerveModuleState[] {
             new SwerveModuleState(),

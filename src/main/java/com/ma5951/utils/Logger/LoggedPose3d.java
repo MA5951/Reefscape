@@ -18,7 +18,7 @@ public class LoggedPose3d {
 
 
     public LoggedPose3d(String name) {
-        networkTable = NetworkTableInstance.getDefault().getTable("/");
+        networkTable = NetworkTableInstance.getDefault().getTable("/MALog");
         loggedPose = networkTable.getStructTopic(name , Pose3d.struct).publish();
         loggedPose.set(null);
         lastPose = null;

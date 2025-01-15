@@ -17,7 +17,7 @@ public class LoggedBool {
 
 
     public LoggedBool(String name) {
-        networkTable = NetworkTableInstance.getDefault().getTable("/");
+        networkTable = NetworkTableInstance.getDefault().getTable("/MALog");
         loggedBool = networkTable.getBooleanTopic(name).publish();
         loggedBool.set(false);
         lastBool = false;

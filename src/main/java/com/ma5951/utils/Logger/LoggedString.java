@@ -17,7 +17,7 @@ public class LoggedString {
 
 
     public LoggedString(String name) {
-        networkTable = NetworkTableInstance.getDefault().getTable("/");
+        networkTable = NetworkTableInstance.getDefault().getTable("/MALog");
         loggedNum = networkTable.getStringTopic(name).publish();
         loggedNum.set("-");
         lastNum = "-";
