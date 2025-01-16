@@ -37,7 +37,6 @@ public class RobotContainer extends DeafultRobotContainer {
         PortMap.Controllers.operatorID,
         PortMap.Controllers.driveRumbleID,
         PortMap.Controllers.operatorRumbleID);
-
     swerve = SwerveSubsystem.getInstance();
     vision = Vision.getInstance();
     poseEstimator = PoseEstimator.getInstance();
@@ -46,10 +45,10 @@ public class RobotContainer extends DeafultRobotContainer {
     arm = Arm.getInstance();
     elevator = Elevator.getInstance();
 
+    SuperStructure superStructure = new SuperStructure();
+
     configureBindings();
     setUpAutoCommands();
-    CommandScheduler.getInstance().setDefaultCommand(SwerveSubsystem.getInstance(),
-        new TeleopSwerveController(driverController));
   }
 
   public void setUpAutoCommands() {
@@ -147,6 +146,9 @@ public class RobotContainer extends DeafultRobotContainer {
     // Climb
     new Trigger(() -> driverController.getSquareButton() && currentRobotState == RobotConstants.IDLE)
         .onTrue(Do(() -> setCLIMB()));
+
+    // IDLE
+    new Trigger(() -> driverController.getTouchpadButton()).onTrue(Do(() -> setIDLE()));
   }
 
   private Command Do(Runnable toRun) {

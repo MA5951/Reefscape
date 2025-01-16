@@ -4,6 +4,8 @@ package frc.robot.RobotControl;
 import java.util.HashMap;
 import java.util.function.Supplier;
 
+import frc.robot.Utils.ReefFace;
+
 
 public class Field {
 
@@ -52,11 +54,18 @@ public class Field {
     }
 
     public static enum BallHight {
-        HIGH,
-        LOW
+        HIGH(0),
+        LOW(0),
+        NONE(0);
+
+        public final double elevatorHight;
+
+        BallHight(double ElevatorHight) {
+            elevatorHight = ElevatorHight;
+        }
     }
 
-    private HashMap<Integer, String> reefFaces = new HashMap<Integer, String>();
+    private HashMap<Integer, ReefFace> ReefFaces = new HashMap<Integer, ReefFace>();
 
 
 }

@@ -1,9 +1,9 @@
 
 package frc.robot.RobotControl;
 
-
 import com.ma5951.utils.RobotControl.GenericSuperStracture;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
 import frc.robot.Subsystem.Arm.Arm;
@@ -15,15 +15,15 @@ import frc.robot.Subsystem.Vision.Vision;
 
 public class SuperStructure extends GenericSuperStracture {
 
-    private static SwerveSubsystem swerve =  RobotContainer.swerve;
-    private static Vision vision =  RobotContainer.vision;
-    private static PoseEstimator poseEstimator =  RobotContainer.poseEstimator;
-    private static Intake intake =  RobotContainer.intake;
-    private static Arm arm =  RobotContainer.arm;
+    private static SwerveSubsystem swerve = RobotContainer.swerve;
+    private static Vision vision = RobotContainer.vision;
+    private static PoseEstimator poseEstimator = RobotContainer.poseEstimator;
+    private static Intake intake = RobotContainer.intake;
+    private static Arm arm = RobotContainer.arm;
     private static Elevator elevator = RobotContainer.elevator;
     private static Field.ScoringLevel scoringLevel;
     private static Field.ScoringLocation scoringLocation;
-
+    private static Pose2d ejectPose;
 
     public SuperStructure() {
         super(() -> PoseEstimator.getInstance().getEstimatedRobotPose(),
@@ -45,7 +45,7 @@ public class SuperStructure extends GenericSuperStracture {
     public static Field.GamePiece getGamePiece() {
         if (intake.getFrontSensor()) {
             return Field.GamePiece.CORAL;
-        } 
+        }
         return Field.GamePiece.NONE;
     }
 
@@ -62,16 +62,17 @@ public class SuperStructure extends GenericSuperStracture {
     }
 
     public static boolean isDistanceToIntake() {
-        return poseEstimator.getEstimatedRobotPose().getTranslation().getDistance(RobotConstants.ReefCenter) >= RobotConstants.DistanceToBallRemove;
+        return poseEstimator.getEstimatedRobotPose().getTranslation()
+                .getDistance(RobotConstants.ReefCenter) >= RobotConstants.DistanceToBallRemove;
     }
 
     public static boolean isDistanceToCloseArm() {
-        return false;
+        return ejectPose.getTranslation().getDistance(
+                poseEstimator.getEstimatedRobotPose().getTranslation()) >= RobotConstants.DistanceToCloseArm;
     }
 
-
     public static void updateAngleAdjustController() {
-
+        
     }
 
     public static void updateXYAdjustController() {

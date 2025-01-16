@@ -24,6 +24,7 @@ public class RobotConstants {
     
     //Automation Constants
     public static final double DistanceToBallRemove = 2.2;
+    public static final double DistanceToCloseArm = 0.3;
 
 
     // FieldConstants
