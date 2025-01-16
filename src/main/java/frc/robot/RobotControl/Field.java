@@ -1,6 +1,7 @@
 
 package frc.robot.RobotControl;
 
+import java.util.HashMap;
 import java.util.function.Supplier;
 
 
@@ -49,5 +50,13 @@ public class Field {
             distanceFromTag = DistanceFromTag;
         }
     }
+
+    public static enum BallHight {
+        HIGH,
+        LOW
+    }
+
+    private HashMap<Integer, String> reefFaces = new HashMap<Integer, String>();
+
 
 }
