@@ -47,10 +47,9 @@ public class ArmConstants {
     public static final State HOLD = new State("HOLD");
     public static final State INTAKE = new State("INTAKE");
     public static final State SCORING = new State("SCORING");
-    public static final State SORTING = new State("SORTING");
     public static final State BALLREMOVING = new State("BALLREMOVING");
 
-    public static final State[] SUBSYSTEM_STATES = new State[] {IDLE, HOLD, INTAKE, SCORING, SORTING, BALLREMOVING};
+    public static final State[] SUBSYSTEM_STATES = new State[] {IDLE, HOLD, INTAKE, SCORING, BALLREMOVING};
 
     public static ArmIO getArmIO() {
         if (Robot.isReal()) {

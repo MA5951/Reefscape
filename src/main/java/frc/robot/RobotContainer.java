@@ -6,6 +6,7 @@ import com.ma5951.utils.RobotControl.DeafultRobotContainer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.RobotControl.Field;
 import frc.robot.RobotControl.SuperStructure;
 import frc.robot.Subsystem.Arm.Arm;
 import frc.robot.Subsystem.Arm.ArmConstants;
@@ -50,7 +51,6 @@ public class RobotContainer extends DeafultRobotContainer {
     CommandScheduler.getInstance().setDefaultCommand(SwerveSubsystem.getInstance(),
         new TeleopSwerveController(driverController));
   }
-
 
   public void setUpAutoCommands() {
     // setAutoOptions(null);
@@ -121,8 +121,32 @@ public class RobotContainer extends DeafultRobotContainer {
     // Intake
     new Trigger(() -> driverController.getL1Button()
         || driverController.getR1Button() && !SuperStructure.hasGamePiece() && SuperStructure.isDistanceToIntake())
-        .onTrue(Do(() -> setIDLE()));
+        .onTrue(Do(() -> setINTAKE()));
 
+    new Trigger(
+        () -> currentRobotState == RobotConstants.INTAKE && SuperStructure.hasGamePiece() && intake.getRearSensor())
+        .onTrue(Do(() -> setSORTING()));
+
+    // Scoring
+    new Trigger(() -> driverController.getL1Button() && SuperStructure.hasGamePiece()
+        && currentRobotState != RobotConstants.SORTING)
+        .onTrue(Do(() -> SuperStructure.setScoringLocation(Field.ScoringLocation.LEFT)));
+
+    new Trigger(() -> driverController.getR1Button() && SuperStructure.hasGamePiece()
+        && currentRobotState != RobotConstants.SORTING)
+        .onTrue(Do(() -> SuperStructure.setScoringLocation(Field.ScoringLocation.RIGHT)));
+
+    new Trigger(() -> currentRobotState == RobotConstants.SCORING && !SuperStructure.hasGamePiece()
+        && SuperStructure.isDistanceToCloseArm()).onFalse(Do(() -> setIDLE()));
+
+    // Ball Removing
+    new Trigger(() -> driverController.getL1Button()
+        || driverController.getR1Button() && !SuperStructure.hasGamePiece() && !SuperStructure.isDistanceToIntake())
+        .onTrue(Do(() -> setBALLREMOVING()));
+
+    // Climb
+    new Trigger(() -> driverController.getSquareButton() && currentRobotState == RobotConstants.IDLE)
+        .onTrue(Do(() -> setCLIMB()));
   }
 
   private Command Do(Runnable toRun) {

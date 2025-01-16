@@ -1,6 +1,9 @@
 
 package frc.robot.Subsystem.Elevator;
 
+import com.ma5951.utils.RobotControl.StatesTypes.State;
+import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
+
 import frc.robot.Robot;
 import frc.robot.Subsystem.Elevator.IOs.ElevatorIO;
 import frc.robot.Subsystem.Elevator.IOs.ElevatorIOReal;
@@ -46,6 +49,16 @@ public class ElevatorConstants {
     public static final double CONTINUOUS_LOWER_LIMIT = 40; 
     public static final double CONTINUOUS_CURRENT_DURATION = 20;
     public static final boolean ENABLE_CURRENT_LIMIT = false;
+
+    public static final State IDLE = StatesConstants.IDLE;
+    public static final State HOLD = new State("HOLD");
+    public static final State HOME = new State("HOME");
+    public static final State INTAKE = new State("INTAKE");
+    public static final State SCORING = new State("SCORING");
+    public static final State CLIMB = new State("SORTING");
+    public static final State BALLREMOVING  = new State("BALLREMOVING ");
+
+    public static final State[] SUBSYSTEM_STATES = new State[] {IDLE , HOLD , INTAKE , SCORING , CLIMB , BALLREMOVING , HOME};
 
     public static final ElevatorIO getElevatorIO() {
         if (Robot.isReal()) {

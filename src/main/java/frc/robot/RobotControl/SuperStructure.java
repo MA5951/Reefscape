@@ -42,10 +42,6 @@ public class SuperStructure extends GenericSuperStracture {
         scoringLocation = ScoringLocation;
     }
 
-    public static Field.ScoringLocation getScoringLocation() {
-        return scoringLocation;
-    }
-
     public static Field.GamePiece getGamePiece() {
         if (intake.getFrontSensor()) {
             return Field.GamePiece.CORAL;
@@ -68,6 +64,11 @@ public class SuperStructure extends GenericSuperStracture {
     public static boolean isDistanceToIntake() {
         return poseEstimator.getEstimatedRobotPose().getTranslation().getDistance(RobotConstants.ReefCenter) >= RobotConstants.DistanceToBallRemove;
     }
+
+    public static boolean isDistanceToCloseArm() {
+        return false;
+    }
+
 
     public static void updateAngleAdjustController() {
 
