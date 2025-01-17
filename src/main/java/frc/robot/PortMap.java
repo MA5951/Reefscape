@@ -44,11 +44,13 @@ public class PortMap {
     public class Elevator {
         public static final int elevatorMasterMotor = 40;
         public static final int elevatorSlaveMotor = 41;
-        public static final int elevatorLimitSwich = 42;
+        public static final int elevatorLimitSwich = 6;
     }
 
     public class Intake {
         public static final int intakeMotor = 45;
+        public static final int frontSensorSim = 4;
+        public static final int rearSensorSim = 5;
 
     }
 

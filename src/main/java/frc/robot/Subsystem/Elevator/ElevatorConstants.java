@@ -22,7 +22,7 @@ public class ElevatorConstants {
     public static final double HIGHT_PROSESOR = 0;
     public static final double HIGHT_ZERO = 0;
 
-    public static final double GEAR = 0 / 2;
+    public static final double GEAR = 4 / 2;
     public static final double SPROKET_PITCH_DIAMETER = 0;
     public static final double SPROKET_CIRCUMFERENCE = SPROKET_PITCH_DIAMETER * Math.PI;
 

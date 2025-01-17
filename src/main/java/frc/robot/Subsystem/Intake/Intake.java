@@ -8,7 +8,7 @@ import frc.robot.Subsystem.Intake.IOs.IntakeIO;
 public class Intake extends StateControlledSubsystem {
   private static Intake intake;
 
-  private IntakeIO intakeIO;
+  private IntakeIO intakeIO = IntakeConstants.getIntakeIO();
 
   public Intake() {
     super(IntakeConstants.SUBSYSTEM_STATES, "Intake");

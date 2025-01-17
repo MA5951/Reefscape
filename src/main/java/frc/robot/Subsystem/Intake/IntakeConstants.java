@@ -18,7 +18,7 @@ public class IntakeConstants {
     public static final double EJECT_SPEED_L234 = 0; 
     public static final double INTAKE_WIDHT = 0; 
     public static final double CORAL_HOLDING_VALUE = 0; 
-    public static final double BALLֹEJECTING_VALUE = 0;
+    //public static final double BALLֹ_EJECTING_VALUE = 0;
     public static final double GEAR = 1;
 
     public static final double PEAK_CURRENT_LIMIT = 35;

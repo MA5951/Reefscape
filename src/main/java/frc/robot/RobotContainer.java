@@ -56,8 +56,8 @@ public class RobotContainer extends DeafultRobotContainer {
   }
 
   public void configureTeleopCommands() {
-    // CommandScheduler.getInstance().setDefaultCommand(swerve.getInstance(),
-    // new TeleopSwerveController(driverController));
+    CommandScheduler.getInstance().setDefaultCommand(swerve.getInstance(),
+    new TeleopSwerveController(driverController));
     // CommandScheduler.getInstance().setDefaultCommand(intake,
     // new IntakeDeafultCommand());
     // CommandScheduler.getInstance().setDefaultCommand(arm,

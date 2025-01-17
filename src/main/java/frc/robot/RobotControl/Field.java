@@ -56,7 +56,7 @@ public class Field {
     public static enum BallHight {
         HIGH(0),
         LOW(0),
-        NONE(0);
+        NONE3(0);
 
         public final double elevatorHight;
 
@@ -67,5 +67,32 @@ public class Field {
 
     private HashMap<Integer, ReefFace> ReefFaces = new HashMap<Integer, ReefFace>();
 
+    public Field() {
+        
+
+        //Blue Side Reef
+        ReefFaces.put(17, new ReefFace(60, 17, Field.BallHight.LOW));
+        ReefFaces.put(22, new ReefFace(120, 22, Field.BallHight.HIGH));
+        ReefFaces.put(20, new ReefFace(-120, 20, Field.BallHight.HIGH));
+        ReefFaces.put(19, new ReefFace(-60, 19, Field.BallHight.LOW));
+        ReefFaces.put(18, new ReefFace(0, 18, Field.BallHight.HIGH));
+        ReefFaces.put(21, new ReefFace(180, 21, Field.BallHight.LOW));
+
+        //Red Side Reef
+        
+        
+        
+        
+        
+
+        ReefFaces.put(10, new ReefFace(0, 10, Field.BallHight.LOW));
+        ReefFaces.put(7, new ReefFace(180, 7, Field.BallHight.HIGH));
+        ReefFaces.put(11, new ReefFace(60, 11, Field.BallHight.HIGH));
+        ReefFaces.put(9, new ReefFace(-60, 9, Field.BallHight.HIGH));
+        ReefFaces.put(8, new ReefFace(-120, 8, Field.BallHight.LOW));
+        ReefFaces.put(6, new ReefFace(120, 6, Field.BallHight.LOW));
+        
+
+    }
 
 }

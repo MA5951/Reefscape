@@ -22,8 +22,10 @@ public class Vision extends SubsystemBase {
 
   private VisionIO visionIO = VisionConstants.getVisionIO();
 
-  private VisionFilters visionFilters = new VisionFilters(visionIO, VisionConstants.AUTO_FILTERS_CONFIG, () -> PoseEstimator.getInstance().getEstimatedRobotPose(), () -> SwerveSubsystem.getInstance().getRobotRelativeSpeeds()
-  , () -> SwerveSubsystem.getInstance().getVelocityVector());
+  private VisionFilters visionFilters = new VisionFilters(visionIO, VisionConstants.AUTO_FILTERS_CONFIG,
+      () -> PoseEstimator.getInstance().getEstimatedRobotPose(),
+      () -> SwerveSubsystem.getInstance().getRobotRelativeSpeeds(),
+      () -> SwerveSubsystem.getInstance().getVelocityVector());
 
   private LoggedPose2d visionPose2dLog;
   private LoggedDouble tXLog;
@@ -64,7 +66,8 @@ public class Vision extends SubsystemBase {
       return -1;
     }
     double deltaHight = VisionConstants.TAG_HIGHTS[6] - VisionConstants.ROBOT_TO_CAMERA_XYZ.getZ();
-    double deltaAngle = getTy() + VisionConstants.ROBOT_TO_CAMERA_ROTATION.getX(); // TODO: Cheack with rader what axis should it be
+    double deltaAngle = getTy() + VisionConstants.ROBOT_TO_CAMERA_ROTATION.getX(); // TODO: Cheack with rader what axis
+                                                                                   // should it be
     return deltaHight / Math.tan(Math.toRadians(deltaAngle));
   }
 
@@ -93,7 +96,7 @@ public class Vision extends SubsystemBase {
   }
 
   public void updateOdometry() {
-    PoseEstimator.getInstance().updateVision(visionPoseEstimate.pose , visionPoseEstimate.timestampSeconds);
+    PoseEstimator.getInstance().updateVision(visionPoseEstimate.pose, visionPoseEstimate.timestampSeconds);
   }
 
   public static Vision getInstance() {
@@ -109,15 +112,15 @@ public class Vision extends SubsystemBase {
 
     if (DriverStation.isAutonomous()) {
       visionFilters.updateFilterConfig(VisionConstants.AUTO_FILTERS_CONFIG);
-    } else{
+    } else {
       visionFilters.updateFilterConfig(VisionConstants.TELEOP_FILTERS_CONFIG);
     }
 
     visionPoseEstimate = visionIO.getEstimatedPose();
+
     isUpdateForOdometry = visionFilters.isValidForUpdate(visionPoseEstimate.pose);
     isUpdateGyro = visionFilters.isValidForGyroReset();
-    
-    
+
     visionPose2dLog.update(visionPoseEstimate.pose);
     tXLog.update(visionIO.getTx());
     tYLog.update(visionIO.getTy());
@@ -136,6 +139,6 @@ public class Vision extends SubsystemBase {
         SwerveSubsystem.getInstance().getGyro().updateOffset();
       }
     }
-    
+
   }
 }
