@@ -8,17 +8,17 @@ import com.ma5951.utils.Logger.LoggedDouble;
 import com.ma5951.utils.Logger.LoggedPose2d;
 import com.ma5951.utils.Swerve.SwerveController;
 
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.Subsystem.Swerve.SwerveConstants;
+import frc.robot.Utils.MAProfieldPIDController;
 
 public class AutoAdjustXYController implements SwerveController {
 
     private Supplier<Pose2d> currentPoseSupplier;
-    private ProfiledPIDController xController = new ProfiledPIDController(
+    private MAProfieldPIDController xController = new MAProfieldPIDController(
         SwerveConstants.X_KP, SwerveConstants.X_KI, SwerveConstants.X_KD, SwerveConstants.XY_CONSTRAINTS);
-    private ProfiledPIDController yController  = new ProfiledPIDController(
+    private MAProfieldPIDController yController  = new MAProfieldPIDController(
         SwerveConstants.Y_KP, SwerveConstants.Y_KI, SwerveConstants.Y_KD, SwerveConstants.XY_CONSTRAINTS);
     private ChassisSpeeds chassisSpeeds = new ChassisSpeeds();
     private LoggedDouble xSpeedLog;
@@ -38,6 +38,8 @@ public class AutoAdjustXYController implements SwerveController {
         xController.setTolerance(SwerveConstants.XY_TOLORANCE);
         yController.setTolerance(SwerveConstants.XY_TOLORANCE);
 
+        
+
     }
 
     public ChassisSpeeds update() {
@@ -53,8 +55,8 @@ public class AutoAdjustXYController implements SwerveController {
     }
 
     public void updateSetPoint(Pose2d setPoint) {
-        xController.setGoal(setPoint.getX());
-        yController.setGoal(setPoint.getY());
+        xController.setGoal(setPoint.getX() , 2);
+        yController.setGoal(setPoint.getY() , 2);
 
         targetPose = setPoint;
     }

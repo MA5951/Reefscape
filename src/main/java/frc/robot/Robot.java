@@ -3,12 +3,9 @@ package frc.robot;
 
 import org.ironmaple.simulation.SimulatedArena;
 
-import com.ma5951.utils.Logger.LoggedBool;
-import com.ma5951.utils.Logger.LoggedDouble;
 import com.ma5951.utils.Logger.LoggedInt;
 import com.ma5951.utils.Logger.LoggedPose2d;
 import com.ma5951.utils.Logger.MALog;
-import com.pathplanner.lib.commands.PathfindingCommand;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;

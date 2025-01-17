@@ -50,7 +50,7 @@ public class TeleopSwerveController extends Command {
       );
 
     //autoAdjustXYController.updateSetPoint(new Pose2d(7, 0, Rotation2d.kZero));
-    autoAdjustXYController.updateSetPoint(new Pose2d(3.832, 2.928, Rotation2d.kZero));
+    autoAdjustXYController.updateSetPoint(new Pose2d(3.59, 2.56, Rotation2d.kZero));
 
     xyControllerLog = new LoggedString("/Subsystems/Swerve/Controllers/XY Controller");
     theathControllerLog = new LoggedString("/Subsystems/Swerve/Controllers/Theath Controller");

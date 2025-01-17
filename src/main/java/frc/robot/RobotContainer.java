@@ -45,6 +45,7 @@ public class RobotContainer extends DeafultRobotContainer {
     arm = Arm.getInstance();
     elevator = Elevator.getInstance();
 
+    @SuppressWarnings("unused")
     SuperStructure superStructure = new SuperStructure();
 
     configureBindings();
@@ -56,7 +57,7 @@ public class RobotContainer extends DeafultRobotContainer {
   }
 
   public void configureTeleopCommands() {
-    CommandScheduler.getInstance().setDefaultCommand(swerve.getInstance(),
+    CommandScheduler.getInstance().setDefaultCommand(swerve,
     new TeleopSwerveController(driverController));
     // CommandScheduler.getInstance().setDefaultCommand(intake,
     // new IntakeDeafultCommand());
