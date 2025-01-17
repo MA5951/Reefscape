@@ -14,6 +14,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import frc.robot.PortMap;
+import frc.robot.PortMap.Swerve;
 import frc.robot.Robot;
 import frc.robot.Utils.ModuleLimits;
 import frc.robot.Utils.PPHolonomicDriveController;
@@ -260,17 +261,20 @@ public class SwerveConstants {
         // Swerve controllers
 
         // Swerve AngleAdjust
-        public final static double THATA_KP = 0.45;
+        public final static double THATA_KP = 0.08;
         public final static double THATA_KI = 0;
         public final static double THATA_KD = 0.0;
         public final static double ANGLE_PID_TOLORANCE = Math.toRadians(3);
 
         // Swerve AutoAdjustXY
-        public final static double XY_KP = 0.45;
-        public final static double XY_KI = 0;
-        public final static double XY_KD = 0.0;
-        public final static Constraints XY_CONSTRAINTS = new Constraints(3.5, 3);
-        public final static double XY_TOLORANCE = 0.05;
+        public final static double X_KP = 0.5;//0.25
+        public final static double X_KI = 0;
+        public final static double X_KD = 0.0;//0.14
+        public final static double Y_KP = 0.5;//0.15
+        public final static double Y_KI = 0;
+        public final static double Y_KD = 0.0;//0.0017
+        public final static Constraints XY_CONSTRAINTS = new Constraints(3, 4);
+        public final static double XY_TOLORANCE = 0.2;
 
         // Swerve RelativAngleAdjust
         public final static double RELATIV_THATA_KP = 0.00615;

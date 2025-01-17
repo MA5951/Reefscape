@@ -15,7 +15,7 @@ import frc.robot.Subsystem.Swerve.SwerveConstants;
 public class AngleAdjustController  implements SwerveController {
 
   private static PIDController pid;
-  private ChassisSpeeds chassisSpeeds;
+  private ChassisSpeeds chassisSpeeds =  new ChassisSpeeds();
   private Supplier<Double> measurment;
   private double omega;
   private LoggedDouble omegaLog;
@@ -44,24 +44,28 @@ public class AngleAdjustController  implements SwerveController {
     measurment = getMeasurment;
     pid.setSetpoint(setPointDrgrees);
     pid.setTolerance(SwerveConstants.ANGLE_PID_TOLORANCE);
-    pid.enableContinuousInput(-Math.PI, Math.PI);
+    //pid.enableContinuousInput(-180, 0);
   }
 
   public ChassisSpeeds update() {
 
-    omega = pid.calculate(ConvUtil.DegreesToRadians(measurment.get()));
+    omega = pid.calculate(measurment.get());
     chassisSpeeds.omegaRadiansPerSecond = omega;
 
     atPointLog.update(getAtPoint());
     omegaLog.update(omega);
     setPointLog.update(pid.getSetpoint());
-    angleLog.update(ConvUtil.DegreesToRadians(measurment.get()));
+    angleLog.update(measurment.get());
 
     return chassisSpeeds;
   }
 
   public boolean getAtPoint() {
     return pid.atSetpoint();
+  }
+
+  public double getSetPoint() {
+    return pid.getSetpoint();
   }
 
   public void setSetPoint(double setPointDrgrees) {

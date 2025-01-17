@@ -1,5 +1,6 @@
-package frc.robot.Subsystem.Vision;
+package frc.robot.Subsystem.Vision.IOs;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Subsystem.Swerve.SwerveConstants;
+import frc.robot.Subsystem.Vision.VisionConstants;
 
 public class VisionSim implements VisionIO {
 
@@ -42,8 +44,8 @@ public class VisionSim implements VisionIO {
     public VisionSim() {
         visionSim = new VisionSystemSim("main");
         try {
-            tagLayout = AprilTagFieldLayout
-                    .loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
+            tagLayout = new AprilTagFieldLayout(
+                    Path.of("src\\main\\java\\com\\ma5951\\utils\\Vision\\AprilTags\\2025-reefscape.json"));
 
         } catch (Exception e) {
         }
@@ -67,7 +69,7 @@ public class VisionSim implements VisionIO {
         visionSim.update(new Pose2d(2, 2, new Rotation2d()));
 
         poseEstimator = new PhotonPoseEstimator(tagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-        VisionConstants.ROBOT_TO_CAMERA);
+                VisionConstants.ROBOT_TO_CAMERA);
 
         cameraSim.enableRawStream(true);
         cameraSim.enableProcessedStream(true);
@@ -83,7 +85,7 @@ public class VisionSim implements VisionIO {
         toReturn = new PoseEstimate();
         poseEstimator.update(result).ifPresent((estimator) -> {
             toReturn = new PoseEstimate(estimator.estimatedPose.toPose2d(), Timer.getFPGATimestamp(), 0d, 0, 0d, 0d, 0d,
-                    new RawFiducial[] {},true);
+                    new RawFiducial[] {}, true);
         });
         return toReturn;
     }
@@ -177,13 +179,13 @@ public class VisionSim implements VisionIO {
 
     // private PhotonPipelineResult filterTagsID() {
 
-    //     for (PhotonTrackedTarget tag : result.targets) {
-    //         if (lastFilterArry.contains(Integer.valueOf(tag.fiducialId))) {
-    //             result.targets.remove(tag);
-    //         }
-    //     }
+    // for (PhotonTrackedTarget tag : result.targets) {
+    // if (lastFilterArry.contains(Integer.valueOf(tag.fiducialId))) {
+    // result.targets.remove(tag);
+    // }
+    // }
 
-    //     return result;
+    // return result;
     // }
 
     public void update() {

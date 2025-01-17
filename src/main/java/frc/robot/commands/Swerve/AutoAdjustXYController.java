@@ -17,10 +17,10 @@ public class AutoAdjustXYController implements SwerveController {
 
     private Supplier<Pose2d> currentPoseSupplier;
     private ProfiledPIDController xController = new ProfiledPIDController(
-        SwerveConstants.XY_KP, SwerveConstants.XY_KI, SwerveConstants.XY_KD, SwerveConstants.XY_CONSTRAINTS);
+        SwerveConstants.X_KP, SwerveConstants.X_KI, SwerveConstants.X_KD, SwerveConstants.XY_CONSTRAINTS);
     private ProfiledPIDController yController  = new ProfiledPIDController(
-        SwerveConstants.XY_KP, SwerveConstants.XY_KI, SwerveConstants.XY_KD, SwerveConstants.XY_CONSTRAINTS);
-    private ChassisSpeeds chassisSpeeds;
+        SwerveConstants.Y_KP, SwerveConstants.Y_KI, SwerveConstants.Y_KD, SwerveConstants.XY_CONSTRAINTS);
+    private ChassisSpeeds chassisSpeeds = new ChassisSpeeds();
     private LoggedDouble xSpeedLog;
     private LoggedDouble ySpeedLog;
     private LoggedBool atPointLog;

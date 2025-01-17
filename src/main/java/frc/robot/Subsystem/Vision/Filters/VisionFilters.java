@@ -16,7 +16,7 @@ import edu.wpi.first.math.geometry.Rectangle2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
-import frc.robot.Subsystem.Vision.VisionIO;
+import frc.robot.Subsystem.Vision.IOs.VisionIO;
 
 @SuppressWarnings("static-access")
 public class VisionFilters {
@@ -52,7 +52,8 @@ public class VisionFilters {
     }
 
     public boolean isValidForUpdate(Pose2d visionPose2d) {
-        return inVelocityFilter() && inField(visionPose2d) && notInFieldObstacles(visionPose2d) && inOdometryRange(visionPose2d)
+        return inVelocityFilter() && inField(visionPose2d) && notInFieldObstacles(visionPose2d)
+                && inOdometryRange(visionPose2d)
                 && shouldUpdateByRobotState() && notDeafultPose() && isVisionMatchingVelocity(visionPose2d);
     }
 

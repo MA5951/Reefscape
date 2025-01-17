@@ -1,5 +1,5 @@
 
-package frc.robot.Subsystem.Vision;
+package frc.robot.Subsystem.Vision.IOs;
 
 import com.ma5951.utils.Vision.Limelights.LimelightHelpers;
 

@@ -6,10 +6,16 @@ package frc.robot.commands.Swerve;
 
 import com.ma5951.utils.Logger.LoggedString;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotConstants;
+import frc.robot.RobotContainer;
+import frc.robot.RobotControl.Field;
+import frc.robot.Subsystem.PoseEstimation.PoseEstimator;
 import frc.robot.Subsystem.Swerve.SwerveSubsystem;
 import frc.robot.Subsystem.Vision.Vision;
 
@@ -19,9 +25,11 @@ public class TeleopSwerveController extends Command {
   public static FieldCentricDriveController driveController;
   public static AngleAdjustController angleAdjustController;
   public static RelativAngleAdjustController relativAngleAdjustController;
+  public static AutoAdjustXYController autoAdjustXYController;
   private ChassisSpeeds driveControllerSpeeds;
   private ChassisSpeeds angleAdjustControllerSpeeds;
   private ChassisSpeeds relativAngleAdjustControllerSpeeds;
+  private ChassisSpeeds autoAdjustControllerChassisSpeeds;
 
   private SwerveSubsystem swerve;
   private ChassisSpeeds robotSpeeds;
@@ -33,8 +41,16 @@ public class TeleopSwerveController extends Command {
 
     driveController = new FieldCentricDriveController(controller, () -> controller.getR2Button(),
         0.4, () -> SwerveSubsystem.getInstance().getFusedHeading());
-    angleAdjustController = new AngleAdjustController(() -> SwerveSubsystem.getInstance().getFusedHeading(), 0);
+    angleAdjustController = new AngleAdjustController(() -> SwerveSubsystem.getInstance().getFusedHeading(), 60);
     relativAngleAdjustController = new RelativAngleAdjustController(0, () -> Vision.getInstance().getTx());
+
+    autoAdjustXYController = new AutoAdjustXYController(
+      //() -> Vision.getInstance().getPoseForRelativReefAlign()
+      () -> PoseEstimator.getInstance().getEstimatedRobotPose()
+      );
+
+    //autoAdjustXYController.updateSetPoint(new Pose2d(7, 0, Rotation2d.kZero));
+    autoAdjustXYController.updateSetPoint(new Pose2d(3.832, 2.928, Rotation2d.kZero));
 
     xyControllerLog = new LoggedString("/Subsystems/Swerve/Controllers/XY Controller");
     theathControllerLog = new LoggedString("/Subsystems/Swerve/Controllers/Theath Controller");
@@ -49,12 +65,36 @@ public class TeleopSwerveController extends Command {
   @Override
   public void execute() {
 
-    driveControllerSpeeds = driveController.update();
-    xyControllerLog.update("Drive Controller");
-    theathControllerLog.update("Drive Controller");
-    robotSpeeds = driveControllerSpeeds;
+    angleAdjustController.setSetPoint(Field.getClosestFace(PoseEstimator.getInstance().getEstimatedRobotPose()).AbsAngle());
 
+    driveControllerSpeeds = driveController.update();
+    autoAdjustControllerChassisSpeeds = autoAdjustXYController.update();
+
+
+    // if (RobotContainer.driverController.getCircleButton()) {
+    //   xyControllerLog.update("XY Controller");
+    //   theathControllerLog.update("0 Controller");
+      
+    //   robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
+
+    //   if (Vision.getInstance().getTagID() == 17) {
+    //     robotSpeeds.vxMetersPerSecond = autoAdjustControllerChassisSpeeds.vxMetersPerSecond;
+    //   robotSpeeds.vyMetersPerSecond = autoAdjustControllerChassisSpeeds.vyMetersPerSecond;
+    //   }
+    // } 
+
+    if (RobotContainer.driverController.getCircleButton()) {
+      //robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
+      robotSpeeds.vxMetersPerSecond = autoAdjustControllerChassisSpeeds.vxMetersPerSecond;
+      robotSpeeds.vyMetersPerSecond = autoAdjustControllerChassisSpeeds.vyMetersPerSecond;
+    }
+    else {
+      xyControllerLog.update("Drive Controller");
+      theathControllerLog.update("Drive Controller");
+      robotSpeeds = driveControllerSpeeds;
+    }
     swerve.drive(robotSpeeds);
+
   }
 
   @Override
