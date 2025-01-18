@@ -3,8 +3,10 @@ package frc.robot.commands.Intake;
 
 import com.ma5951.utils.RobotControl.Commands.RobotFunctionStatesCommand;
 
+import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
 import frc.robot.RobotControl.SuperStructure;
+import frc.robot.Subsystem.Arm.ArmConstants;
 import frc.robot.Subsystem.Intake.Intake;
 import frc.robot.Subsystem.Intake.IntakeConstants;
 
@@ -47,6 +49,12 @@ public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
                 break;
             case "HOLD":
                 intake.setVoltage(0);
+
+                if (RobotContainer.arm.atPoint() && RobotContainer.currentRobotState == RobotConstants.SCORING) {
+                    intake.setTargetState(IntakeConstants.SCORING);
+                }
+
+                
                 break;
             case "INTAKE":
                 intake.setVoltage(IntakeConstants.INTAKE_SPEED_BEFORE_FIRST_SENSOR);
@@ -55,23 +63,26 @@ public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
                 intake.setVoltage(SuperStructure.getScoringPreset().ejectVolt);
                 break;
             case "SORTING":
-                if (sortingNum == 5) {
-                    sortingNum = 0;
-                }
-
-                if (sortingNum > 4) {
+                
+                if (sortingNum > IntakeConstants.SORTIN_NUM) {
                     RobotContainer.setIDLE();
-                } else {
-                    
-                    if (intake.getRearSensor()) {
-                        updatedSortin = false;
-                    }
-
-                    if (!updatedSortin && !intake.getRearSensor()) {
-                        updatedSortin = true;
-                        sortingNum++;
-                    }
+                    RobotContainer.arm.setTargetState(ArmConstants.HOLD);
+                    intake.setTargetState(IntakeConstants.HOLD);
+                    sortingNum = 0;
+                    updatedSortin = false;
                 }
+
+                if (intake.getRearSensor()) {
+                    intake.setVoltage(0);
+                    if (!updatedSortin) {
+                        sortingNum++;
+                        updatedSortin = true;
+                    }
+                } else if (!intake.getRearSensor()) {
+                    updatedSortin = false;
+                    intake.setVoltage(0);
+                }
+                
 
                 break;
         }
