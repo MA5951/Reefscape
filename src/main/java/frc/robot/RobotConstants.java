@@ -2,6 +2,7 @@
 package frc.robot;
 
 import com.ma5951.utils.RobotControl.StatesTypes.State;
+import com.ma5951.utils.Utils.ConvUtil;
 import com.ma5951.utils.Utils.DriverStationUtil;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -26,6 +27,7 @@ public class RobotConstants {
     // Automation Constants
     public static final double DistanceToBallRemove = 2.2;
     public static final double DistanceToCloseArm = 0.3;
+    public static final double DistanceToAlign = 1;
 
     // FieldConstants
     public static final Translation2d FieldZeroCorner = new Translation2d(0, 0);
@@ -43,11 +45,11 @@ public class RobotConstants {
     public static final Pose2d Tag10Pose = new Pose2d(12.227305999999999, 4.0259, new Rotation2d());
     public static final Pose2d Tag11Pose = new Pose2d(12.643358, 3.3063179999999996, new Rotation2d());
 
-    public static final Pose2d Tag17Pose = new Pose2d(4.073905999999999, 3.3063179999999996, new Rotation2d());
-    public static final Pose2d Tag18Pose = new Pose2d(3.6576, 4.0259, new Rotation2d());
-    public static final Pose2d Tag19Pose = new Pose2d(4.073905999999999, 4.745482, new Rotation2d());
-    public static final Pose2d Tag20Pose = new Pose2d(4.904739999999999, 4.745482, new Rotation2d());
-    public static final Pose2d Tag21Pose = new Pose2d(5.321046, 4.0259, new Rotation2d());
-    public static final Pose2d Tag22Pose = new Pose2d(4.904739999999999, 3.3063179999999996, new Rotation2d());
+    public static final Pose2d Tag17Pose = new Pose2d(4.073905999999999, 3.3063179999999996, Rotation2d.fromDegrees(60));
+    public static final Pose2d Tag18Pose = new Pose2d(3.6576, 4.0259, new Rotation2d(0));
+    public static final Pose2d Tag19Pose = new Pose2d(4.073905999999999, 4.745482, Rotation2d.fromDegrees(-60));
+    public static final Pose2d Tag20Pose = new Pose2d(4.904739999999999, 4.745482, Rotation2d.fromDegrees(-120));
+    public static final Pose2d Tag21Pose = new Pose2d(5.321046, 4.0259, Rotation2d.fromDegrees(180));
+    public static final Pose2d Tag22Pose = new Pose2d(4.904739999999999, 3.3063179999999996, Rotation2d.fromDegrees(120));
 
 }

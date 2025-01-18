@@ -43,7 +43,7 @@ public class AngleAdjustController  implements SwerveController {
     measurment = getMeasurment;
     pid.setSetpoint(setPointDrgrees);
     pid.setTolerance(SwerveConstants.ANGLE_PID_TOLORANCE);
-    //pid.enableContinuousInput(-180, 0);
+    pid.enableContinuousInput(-180, 180);
   }
 
   public ChassisSpeeds update() {

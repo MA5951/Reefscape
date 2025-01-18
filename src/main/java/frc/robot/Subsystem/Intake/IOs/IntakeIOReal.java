@@ -40,7 +40,7 @@ public class IntakeIOReal implements IntakeIO {
     private LoggedBool rearSensorLog;
 
     public IntakeIOReal() {
-        intakeMotor = new TalonFX(PortMap.Intake.intakeMotor , PortMap.CanBus.RioBus);
+        intakeMotor = new TalonFX(PortMap.Intake.intakeMotor, PortMap.CanBus.RioBus);
         motorConfig = new TalonFXConfiguration();
 
         motorCurrent = intakeMotor.getStatorCurrent();
@@ -57,7 +57,7 @@ public class IntakeIOReal implements IntakeIO {
         frontSensorLog = new LoggedBool("/Subsystems/Intake/IO/Front Sensor");
         rearSensorLog = new LoggedBool("/Subsystems/Intake/IO/Rear Sensor");
 
-        config();   
+        config();
     }
 
     private void config() {
@@ -104,6 +104,10 @@ public class IntakeIOReal implements IntakeIO {
         return apliedVolts.getValueAsDouble();
     }
 
+    public double getIntendedVoltage() {
+        return intakeMotor.get();
+    }
+
     public void setNutralMode(boolean isbrake) {
         if (isbrake) {
             motorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
@@ -119,13 +123,12 @@ public class IntakeIOReal implements IntakeIO {
 
     public void updatePeriodic() {
         BaseStatusSignal.refreshAll(
-            motorCurrent,
-            motorPosition,
-            motorVelocity,
-            apliedVolts,
-            forwardLimit,
-            reverseLimit
-        );
+                motorCurrent,
+                motorPosition,
+                motorVelocity,
+                apliedVolts,
+                forwardLimit,
+                reverseLimit);
 
         currentLog.update(getCurrent());
         positionLog.update(getPosition());

@@ -13,6 +13,7 @@ public class ArmConstants {
     public static final double MAX_ANGLE = 0; 
     public static final double MIN_ANGLE = 0;  
     public static final double PARALLEL_ANGLE = 0;
+    public static final double MAX_ANGLE_BALL = 0; 
 
     public static final double ANGLE_L1 = 0;
     public static final double ANGLE_L2 = 0;
@@ -22,6 +23,7 @@ public class ArmConstants {
     public static final double INTAKE_CORALS_ANGLE = 20.0;
     public static final double EJECT_BALL_START_ANGLE = 0;
     public static final double EJECT_BALL_STOP_ANGLE = 0;
+    
 
     public static final double ABS_ENCODER_OFFSET = 0;
 
@@ -31,6 +33,7 @@ public class ArmConstants {
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kS = 0;
+    public static final double FEED_FORWARD_VOLTAGE = 0.2;
 
     public static final int CONTROL_SLOT = 0;
     public static final double TOLERANCE = 2;

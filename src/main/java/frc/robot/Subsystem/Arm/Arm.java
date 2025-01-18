@@ -1,8 +1,11 @@
 package frc.robot.Subsystem.Arm;
 
+import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
 import com.ma5951.utils.Utils.ConvUtil;
 
+import frc.robot.RobotConstants;
+import frc.robot.RobotContainer;
 import frc.robot.Subsystem.Arm.IOs.ArmIO;
 
 public class Arm extends StateControlledSubsystem {
@@ -38,7 +41,6 @@ public class Arm extends StateControlledSubsystem {
         return armIO.getAppliedVolts();
     }
 
-
     public double getSetPoint() {
         return armIO.getSetPoint();
     }
@@ -46,7 +48,6 @@ public class Arm extends StateControlledSubsystem {
     public void resetPose() {
         armIO.resetPosition(getAbsolutePosition());
     }
-
 
     public void setNeutralMode(boolean isBrake) {
         armIO.setNeutralMode(isBrake);
@@ -64,9 +65,16 @@ public class Arm extends StateControlledSubsystem {
         return armIO.getError() <= ArmConstants.TOLERANCE;
     }
 
+    public boolean BallRemovingCanMove() {
+        return RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && RobotContainer.elevator.atPoint()
+                && getPosition() < ArmConstants.MAX_ANGLE_BALL;
+    }
+
     @Override
     public boolean canMove() {
-        return true;
+        return BallRemovingCanMove() || getSystemFunctionState() == StatesConstants.MANUEL
+                || RobotContainer.currentRobotState != RobotConstants.CLIMB
+                || getCurrent() < ArmConstants.kCAN_MOVE_CURRENT_LIMIT;
     }
 
     public static Arm getInstance() {

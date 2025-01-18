@@ -4,6 +4,7 @@
 
 package frc.robot.Subsystem.Elevator;
 
+import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
 
 import frc.robot.Subsystem.Elevator.IOs.ElevatorIO;
@@ -17,8 +18,16 @@ public class Elevator extends StateControlledSubsystem {
     super(ElevatorConstants.SUBSYSTEM_STATES, "Elevator");
   }
 
-  public void resetPose() {
-    elevatorIO.resetPosition(0);
+  public double getFeedForwardVoltage() {
+    return ElevatorConstants.FEED_FORWARD;
+  }
+
+  public boolean getLimitSwitch() {
+    return elevatorIO.getLimitSwitch();
+  }
+
+  public void resetPose(double hight) {
+    elevatorIO.resetPosition(hight);
   }
 
   public double getHight() {
@@ -30,11 +39,15 @@ public class Elevator extends StateControlledSubsystem {
   }
 
   public double getAppliedVolts() {
-    return elevatorIO.getAppliedVolts(); 
+    return elevatorIO.getAppliedVolts();
+  }
+
+  public double getCurrent() {
+    return elevatorIO.getCurrent();
   }
 
   public boolean atPoint() {
-    return elevatorIO.getError() <= ElevatorConstants.TOLORANCE; 
+    return elevatorIO.getError() <= ElevatorConstants.TOLORANCE;
   }
 
   public double getSetPoint() {
@@ -51,6 +64,13 @@ public class Elevator extends StateControlledSubsystem {
 
   public void setHight(double hight) {
     elevatorIO.setHight(hight);
+  }
+
+  @Override
+  public boolean canMove() {
+    return getSystemFunctionState() == StatesConstants.MANUEL
+        || getSetPoint() < ElevatorConstants.MAX_HIGHT && getSetPoint() > ElevatorConstants.MIN_HIGHT &&
+            getCurrent() < ElevatorConstants.CAN_MOVE_CURRENT_LIMIT;
   }
 
   public static Elevator getInstance() {

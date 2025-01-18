@@ -1,9 +1,14 @@
 
 package frc.robot.Subsystem.Intake;
 
+import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
 
+import frc.robot.RobotConstants;
+import frc.robot.RobotContainer;
+import frc.robot.Subsystem.Arm.ArmConstants;
 import frc.robot.Subsystem.Intake.IOs.IntakeIO;
+import frc.robot.commands.Swerve.TeleopSwerveController;
 
 public class Intake extends StateControlledSubsystem {
   private static Intake intake;
@@ -46,9 +51,31 @@ public class Intake extends StateControlledSubsystem {
     intakeIO.setVoltage(volt);
   }
 
+  public boolean IntakeCanMove() {
+    return RobotContainer.currentRobotState == RobotConstants.INTAKE && RobotContainer.elevator.atPoint()
+        && !getRearSensor() && RobotContainer.arm.atPoint();
+  }
+
+  public boolean ScoringCanMove() {
+    return RobotContainer.currentRobotState == RobotConstants.SCORING && RobotContainer.elevator.atPoint()
+        && TeleopSwerveController.atPointForScoring() && RobotContainer.arm.atPoint();
+  }
+
+  public boolean BallRemovingCanMove() {
+    return RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && RobotContainer.elevator.atPoint();
+  }
+
+  public boolean SortingCanMove() {
+    return RobotContainer.currentRobotState == RobotConstants.SORTING
+        && ((getRearSensor() && intakeIO.getIntendedVoltage() > 0) || !getRearSensor());
+  }
+
   @Override
   public boolean canMove() {
-    return true;
+    return IntakeCanMove() || ScoringCanMove() || BallRemovingCanMove() || SortingCanMove()
+        || getSystemFunctionState() == StatesConstants.MANUEL
+        || RobotContainer.arm.getTargetState() == ArmConstants.HOLD
+            && RobotContainer.currentRobotState != RobotConstants.CLIMB;
   }
 
   public static Intake getInstance() {

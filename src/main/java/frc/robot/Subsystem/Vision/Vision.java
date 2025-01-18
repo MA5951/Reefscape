@@ -128,6 +128,7 @@ public class Vision extends SubsystemBase {
     isUpdateForOdometry = visionFilters.isValidForUpdate(visionPoseEstimate.pose);
     isUpdateGyro = visionFilters.isValidForGyroReset();
 
+    System.out.println(getTa());
     visionPose2dLog.update(visionPoseEstimate.pose);
     tXLog.update(visionIO.getTx());
     tYLog.update(visionIO.getTy());

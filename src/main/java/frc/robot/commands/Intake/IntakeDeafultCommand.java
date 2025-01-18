@@ -73,14 +73,14 @@ public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
                 }
 
                 if (intake.getRearSensor()) {
-                    intake.setVoltage(0);
+                    intake.setVoltage(IntakeConstants.SORTING_SPEED);
                     if (!updatedSortin) {
                         sortingNum++;
                         updatedSortin = true;
                     }
                 } else if (!intake.getRearSensor()) {
                     updatedSortin = false;
-                    intake.setVoltage(0);
+                    intake.setVoltage(-IntakeConstants.SORTING_SPEED);
                 }
                 
 

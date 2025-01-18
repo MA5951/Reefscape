@@ -45,6 +45,12 @@ public class MAProfieldPIDController implements Sendable {
     this(Kp, Ki, Kd, constraints, 0.02);
   }
 
+  public MAProfieldPIDController(
+      double Kp, double Ki, double Kd, TrapezoidProfile.Constraints constraints, double tolerance, double a) {
+    this(Kp, Ki, Kd, constraints, 0.02);
+    setTolerance(tolerance);
+  }
+
   /**
    * Allocates a ProfiledPIDController with the given constants for Kp, Ki, and Kd.
    *

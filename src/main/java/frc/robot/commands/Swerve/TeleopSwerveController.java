@@ -8,8 +8,10 @@ import com.ma5951.utils.Logger.LoggedString;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotConstants;
@@ -18,6 +20,7 @@ import frc.robot.RobotControl.Field;
 import frc.robot.Subsystem.PoseEstimation.PoseEstimator;
 import frc.robot.Subsystem.Swerve.SwerveSubsystem;
 import frc.robot.Subsystem.Vision.Vision;
+import frc.robot.Utils.MAProfieldPIDController;
 
 @SuppressWarnings("unused")
 public class TeleopSwerveController extends Command {
@@ -35,6 +38,7 @@ public class TeleopSwerveController extends Command {
   private ChassisSpeeds robotSpeeds;
   private LoggedString xyControllerLog;
   private LoggedString theathControllerLog;
+  private boolean isField;
 
   public TeleopSwerveController(PS5Controller controller) {
     swerve = SwerveSubsystem.getInstance();
@@ -45,15 +49,14 @@ public class TeleopSwerveController extends Command {
     relativAngleAdjustController = new RelativAngleAdjustController(0, () -> Vision.getInstance().getTx());
 
     autoAdjustXYController = new AutoAdjustXYController(
-      //() -> Vision.getInstance().getPoseForRelativReefAlign()
-      () -> PoseEstimator.getInstance().getEstimatedRobotPose()
-      );
+        () -> PoseEstimator.getInstance().getEstimatedRobotPose());
 
-    //autoAdjustXYController.updateSetPoint(new Pose2d(7, 0, Rotation2d.kZero));
     autoAdjustXYController.updateSetPoint(new Pose2d(3.59, 2.56, Rotation2d.kZero));
 
     xyControllerLog = new LoggedString("/Subsystems/Swerve/Controllers/XY Controller");
     theathControllerLog = new LoggedString("/Subsystems/Swerve/Controllers/Theath Controller");
+
+    isField = true;
 
     addRequirements(swerve);
   }
@@ -65,30 +68,36 @@ public class TeleopSwerveController extends Command {
   @Override
   public void execute() {
 
-    angleAdjustController.setSetPoint(Field.getClosestFace(PoseEstimator.getInstance().getEstimatedRobotPose()).AbsAngle());
+    angleAdjustController
+        .setSetPoint(Field.getClosestFace(PoseEstimator.getInstance().getEstimatedRobotPose()).AbsAngle());
 
     driveControllerSpeeds = driveController.update();
-    autoAdjustControllerChassisSpeeds = autoAdjustXYController.update();
-
-
-    // if (RobotContainer.driverController.getCircleButton()) {
-    //   xyControllerLog.update("XY Controller");
-    //   theathControllerLog.update("0 Controller");
-      
-    //   robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
-
-    //   if (Vision.getInstance().getTagID() == 17) {
-    //     robotSpeeds.vxMetersPerSecond = autoAdjustControllerChassisSpeeds.vxMetersPerSecond;
-    //   robotSpeeds.vyMetersPerSecond = autoAdjustControllerChassisSpeeds.vyMetersPerSecond;
-    //   }
-    // } 
+    autoAdjustControllerChassisSpeeds = autoAdjustXYController.update(isField);
 
     if (RobotContainer.driverController.getCircleButton()) {
-      //robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
+
+      if (Vision.getInstance().getTagID() == Field.getClosestFace(PoseEstimator.getInstance().getEstimatedRobotPose())
+          .TagID()
+          && PoseEstimator.getInstance().getEstimatedRobotPose().getTranslation().getDistance(
+              Field.getClosestFace(PoseEstimator.getInstance().getEstimatedRobotPose()).getAlignPose()
+                  .getTranslation()) < 0.8) {
+
+        autoAdjustXYController.setPID(
+            new MAProfieldPIDController(0.4, 0, 0.014, new Constraints(4.9, 6), 0.2, 0),
+            new MAProfieldPIDController(0.15, 0, 0.0017, new Constraints(4.9, 6), 0.2, 0));
+        autoAdjustXYController.updateSetPoint(new Pose2d(7, 0, Rotation2d.kZero));
+        autoAdjustXYController.updateMeaurment(() -> Vision.getInstance().getPoseForRelativReefAlign());
+        isField = false;
+      } else {
+        autoAdjustXYController
+            .updateSetPoint(Field.getClosestFace(PoseEstimator.getInstance().getEstimatedRobotPose()).getAlignPose());
+      }
+
+      robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
       robotSpeeds.vxMetersPerSecond = autoAdjustControllerChassisSpeeds.vxMetersPerSecond;
       robotSpeeds.vyMetersPerSecond = autoAdjustControllerChassisSpeeds.vyMetersPerSecond;
-    }
-    else {
+
+    } else {
       xyControllerLog.update("Drive Controller");
       theathControllerLog.update("Drive Controller");
       robotSpeeds = driveControllerSpeeds;
@@ -110,5 +119,9 @@ public class TeleopSwerveController extends Command {
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  public static boolean atPointForScoring() {
+    return false;// TODO atPoint and under speed
   }
 }

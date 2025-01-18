@@ -28,6 +28,7 @@ public class SuperStructure extends GenericSuperStracture {
     public SuperStructure() {
         super(() -> PoseEstimator.getInstance().getEstimatedRobotPose(),
                 () -> SwerveSubsystem.getInstance().getVelocityVector());
+        setScoringPreset(Field.ScoringLevel.L1);
     }
 
     public static void setScoringPreset(Field.ScoringLevel ScoringLevel) {

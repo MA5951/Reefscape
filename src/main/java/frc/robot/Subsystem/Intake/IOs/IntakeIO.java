@@ -7,6 +7,8 @@ public interface IntakeIO {
 
     boolean getRearSensor();
 
+    double getIntendedVoltage();
+
     double getCurrent();
 
     double getPosition();

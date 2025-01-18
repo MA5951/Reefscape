@@ -123,7 +123,7 @@ public class Field {
             for (ReefFace face : ReefFaces.values()) {
 
                 spatialDistance = euclideanDistance(robotPose, face.tagPose());
-                angleDiff = angularDistance(robotPose, face.tagPose());
+                //angleDiff = angularDistance(robotPose, face.tagPose());
                 totalDistance = spatialDistance  + angleDiff ;
 
                 if (totalDistance < closestDistance) {

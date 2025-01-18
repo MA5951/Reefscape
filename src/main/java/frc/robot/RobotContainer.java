@@ -66,42 +66,42 @@ public class RobotContainer extends DeafultRobotContainer {
 
   }
 
-  public void setIDLE() {
+  public static void setIDLE() {
     setCurrentState(RobotConstants.IDLE);
     intake.setTargetState(IntakeConstants.IDLE);
     arm.setTargetState(ArmConstants.IDLE);
     elevator.setTargetState(ElevatorConstants.IDLE);
   }
 
-  public void setINTAKE() {
+  public static void setINTAKE() {
     setCurrentState(RobotConstants.INTAKE);
     intake.setTargetState(IntakeConstants.INTAKE);
     arm.setTargetState(ArmConstants.INTAKE);
     elevator.setTargetState(ElevatorConstants.INTAKE);
   }
 
-  public void setSCORING() {
+  public static void setSCORING() {
     setCurrentState(RobotConstants.SCORING);
-    intake.setTargetState(IntakeConstants.SCORING);
+    intake.setTargetState(IntakeConstants.HOLD);
     arm.setTargetState(ArmConstants.SCORING);
     elevator.setTargetState(ElevatorConstants.SCORING);
   }
 
-  public void setBALLREMOVING() {
+  public static void setBALLREMOVING() {
     setCurrentState(RobotConstants.BALLREMOVING);
     intake.setTargetState(IntakeConstants.BALLREMOVING);
     arm.setTargetState(ArmConstants.BALLREMOVING);
     elevator.setTargetState(ElevatorConstants.BALLREMOVING);
   }
 
-  public void setCLIMB() {
+  public static void setCLIMB() {
     setCurrentState(RobotConstants.CLIMB);
     intake.setTargetState(IntakeConstants.IDLE);
     arm.setTargetState(ArmConstants.IDLE);
     elevator.setTargetState(ElevatorConstants.CLIMB);
   }
 
-  public void setSORTING() {
+  public static void setSORTING() {
     setCurrentState(RobotConstants.SORTING);
     intake.setTargetState(IntakeConstants.SORTING);
     arm.setTargetState(ArmConstants.IDLE);
