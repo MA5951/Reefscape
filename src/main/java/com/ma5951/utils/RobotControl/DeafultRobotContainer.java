@@ -28,7 +28,7 @@ import frc.robot.Subsystem.Swerve.SwerveConstants;
 
 public class DeafultRobotContainer {
 
-    private double IsAtStartingPoseDistance = 0.15;
+    private static double IsAtStartingPoseDistance = 0.15;
 
     public static PS5Controller driverController;
     public static PS5Controller operatorController;
@@ -37,18 +37,18 @@ public class DeafultRobotContainer {
 
     protected static AutoSelector autoSelector;
     protected static Supplier<Pose2d> robotPoseSupplier;
-    private Supplier<Double> batteryVoltagSupplier;
+    private static Supplier<Double> batteryVoltagSupplier;
 
     public static State currentRobotState = RobotConstants.IDLE;
     public static State lastRobotState = currentRobotState;
 
-    private LoggedString currentRobotStateLog;
-    private LoggedString lastRobotStateLog;
-    private LoggedBool isStartingPoseLog;
-    private LoggedString currentSelectedAuto;
-    private LoggedPose2d startingPoseLog;
-    private LoggedDouble batteryVoltageLog;
-    private LoggedDouble matchTimeLog;
+    private static LoggedString currentRobotStateLog;
+    private static LoggedString lastRobotStateLog;
+    private static LoggedBool isStartingPoseLog;
+    private static LoggedString currentSelectedAuto;
+    private static LoggedPose2d startingPoseLog;
+    private static LoggedDouble batteryVoltageLog;
+    private static LoggedDouble matchTimeLog;
 
     public DeafultRobotContainer(int DriverControllerID, int OperatorControllerID, int DriverControllerRumbleID,
             int OperatorControllerRumbleID) {
@@ -84,35 +84,35 @@ public class DeafultRobotContainer {
 
     // Autonomuse  ------------------------------------------------
 
-    protected void setAutoOptions(AutoOption[] autoOptions) {
+    protected static void setAutoOptions(AutoOption[] autoOptions) {
         autoSelector.setAutoOptions(autoOptions, true);
     }
 
-    public AutoOption getSelectedAuto() {
+    public static AutoOption getSelectedAuto() {
         return autoSelector.getSelectedAuto();
     }
 
-    public String getAutonomousName() {
+    public static String getAutonomousName() {
         return getSelectedAuto().getName();
     }
 
-    public boolean getIsPathPLannerAuto() {
+    public static boolean getIsPathPLannerAuto() {
         return getSelectedAuto().isPathPlannerAuto();
     }
 
-    public AutoOption getCurrentSelectedAutoOption() {
+    public static AutoOption getCurrentSelectedAutoOption() {
         return getSelectedAuto();
     }
 
-    public Command getSelectedAutoCommand() {
+    public static Command getSelectedAutoCommand() {
         return getSelectedAuto().getCommand();
     }
 
-    public Command getAutonomousCommand() {
+    public static Command getAutonomousCommand() {
         return getSelectedAuto().getCommand();
     }
 
-    public boolean isAtStartingPose() {
+    public static boolean isAtStartingPose() {
         if (DriverStationUtil.getAlliance() == Alliance.Red) {
             
             return getSelectedAuto().getStartPose().getTranslation().getDistance(robotPoseSupplier.get().getTranslation()) < IsAtStartingPoseDistance;
@@ -132,14 +132,14 @@ public class DeafultRobotContainer {
 
     // Updates  ------------------------------------------------
 
-    public void updateAutoInit() {
+    public static void updateAutoInit() {
         if(!Robot.isReal()) {
             SwerveConstants.SWERVE_DRIVE_SIMULATION.setSimulationWorldPose(getSelectedAuto().getStartPose());
             PoseEstimator.getInstance().resetPose(getSelectedAuto().getStartPose());
         }
     }
 
-    public void updatePeriodic() {
+    public static void updatePeriodic() {
         currentRobotStateLog.update(currentRobotState.getName());
         lastRobotStateLog.update(lastRobotState.getName());
 
@@ -147,7 +147,7 @@ public class DeafultRobotContainer {
         matchTimeLog.update(DriverStation.getMatchTime());
     }
 
-    public void updateDisablePeriodic() {
+    public static void updateDisablePeriodic() {
         autoSelector.updateViz();
         currentSelectedAuto.update(getAutonomousName());
         startingPoseLog.update(getSelectedAuto().getStartPose());

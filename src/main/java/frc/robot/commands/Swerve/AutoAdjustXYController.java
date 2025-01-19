@@ -12,17 +12,19 @@ import com.ma5951.utils.Utils.ChassisSpeedsUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import frc.robot.Subsystem.Swerve.SwerveConstants;
-import frc.robot.Subsystem.Swerve.SwerveSubsystem;
 import frc.robot.Utils.MAProfieldPIDController;
 
-public class AutoAdjustXYController  {
+public class AutoAdjustXYController implements SwerveController {
 
     private Supplier<Pose2d> currentPoseSupplier;
     private MAProfieldPIDController xController = new MAProfieldPIDController(
-        SwerveConstants.X_KP, SwerveConstants.X_KI, SwerveConstants.X_KD, SwerveConstants.XY_CONSTRAINTS);
-    private MAProfieldPIDController yController  = new MAProfieldPIDController(
-        SwerveConstants.Y_KP, SwerveConstants.Y_KI, SwerveConstants.Y_KD, SwerveConstants.XY_CONSTRAINTS);
+            SwerveConstants.ABS_X_KP, SwerveConstants.ABS_X_KI, SwerveConstants.ABS_X_KD,
+            SwerveConstants.ABS_XY_CONSTRAINTS);
+    private MAProfieldPIDController yController = new MAProfieldPIDController(
+            SwerveConstants.ABS_Y_KP, SwerveConstants.ABS_X_KI, SwerveConstants.ABS_X_KD,
+            SwerveConstants.ABS_XY_CONSTRAINTS);
     private ChassisSpeeds chassisSpeeds = new ChassisSpeeds();
     private LoggedDouble xSpeedLog;
     private LoggedDouble ySpeedLog;
@@ -30,29 +32,48 @@ public class AutoAdjustXYController  {
     private LoggedPose2d targetPoseLog;
     private LoggedPose2d setPointPoseLog;
     private Pose2d targetPose;
+    private boolean isField = true;
+    private Supplier<Double> measurment;
 
-    public AutoAdjustXYController(Supplier<Pose2d> robotPoseSupplier) {
+    public AutoAdjustXYController(Supplier<Pose2d> robotPoseSupplier, Supplier<Double> robotAngle, Pose2d setPoint) {
         currentPoseSupplier = robotPoseSupplier;
-        
+        measurment = robotAngle;
+
         xSpeedLog = new LoggedDouble("/Subsystems/Swerve/Controllers/XY Adjust Controller/X Speed");
         ySpeedLog = new LoggedDouble("/Subsystems/Swerve/Controllers/XY Adjust Controller/Y Speed");
         atPointLog = new LoggedBool("/Subsystems/Swerve/Controllers/XY Adjust Controller/At Point");
         targetPoseLog = new LoggedPose2d("/Subsystems/Swerve/Controllers/XY Adjust Controller/Goal Point");
         setPointPoseLog = new LoggedPose2d("/Subsystems/Swerve/Controllers/XY Adjust Controller/Set Point");
 
-        xController.setTolerance(SwerveConstants.XY_TOLORANCE);
-        yController.setTolerance(SwerveConstants.XY_TOLORANCE);
-        
-        
+        xController.setTolerance(SwerveConstants.ABS_XY_TOLORANCE);
+        yController.setTolerance(SwerveConstants.ABS_XY_TOLORANCE);
+
+        updateSetPoint(setPoint);
 
     }
 
-    public void setPID(MAProfieldPIDController xController , MAProfieldPIDController yController) {
-        this.xController = xController;
-        this.yController = yController;
+    public AutoAdjustXYController(Supplier<Pose2d> robotPoseSupplier, Supplier<Double> robotAngle) {
+        this(robotPoseSupplier, robotAngle, new Pose2d());
     }
 
-    public ChassisSpeeds update(boolean isFieldRelativ) {
+    public void setConstrains(Constraints constraints) {
+        xController.setConstraints(constraints);
+        yController.setConstraints(constraints);
+    }
+
+    public void setField(boolean field) {
+        isField = field;
+    }
+
+    public void setPID(double xKp, double xKi, double xKd, double xTolernace,
+            double yKp, double yKi, double yKd, double yTolernace) {
+        yController.setPID(yKp, yKi, yKd);
+        yController.setTolerance(yTolernace);
+        xController.setPID(xKp, xKi, xKd);
+        xController.setTolerance(xTolernace);
+    }
+
+    public ChassisSpeeds update() {
         chassisSpeeds.vxMetersPerSecond = xController.calculate(currentPoseSupplier.get().getX());
         chassisSpeeds.vyMetersPerSecond = yController.calculate(currentPoseSupplier.get().getY());
 
@@ -60,19 +81,20 @@ public class AutoAdjustXYController  {
         ySpeedLog.update(chassisSpeeds.vyMetersPerSecond);
         atPointLog.update(atPoint());
         targetPoseLog.update(targetPose);
-        setPointPoseLog.update(new Pose2d(xController.getSetpoint().position, yController.getSetpoint().position, targetPose.getRotation()));
+        setPointPoseLog.update(new Pose2d(xController.getSetpoint().position, yController.getSetpoint().position,
+                targetPose.getRotation()));
 
-        if (isFieldRelativ) {
-        return ChassisSpeedsUtil.FromFieldToRobot(chassisSpeeds, new Rotation2d(
-                Math.toRadians((SwerveSubsystem.getInstance().getFusedHeading() - 0))));
+        if (isField) {
+            return ChassisSpeedsUtil.FromFieldToRobot(chassisSpeeds, new Rotation2d(
+                    Math.toRadians((measurment.get()))));
         }
 
         return chassisSpeeds;
     }
 
     public void updateSetPoint(Pose2d setPoint) {
-        xController.setGoal(setPoint.getX() , 0);
-        yController.setGoal(setPoint.getY() , 0);
+        xController.setGoal(setPoint.getX(), 0);
+        yController.setGoal(setPoint.getY(), 0);
 
         targetPose = setPoint;
     }
@@ -88,8 +110,5 @@ public class AutoAdjustXYController  {
     public void updateMeaurment(Supplier<Pose2d> newPose2d) {
         currentPoseSupplier = newPose2d;
     }
-
-    
-
 
 }

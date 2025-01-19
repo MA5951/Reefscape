@@ -3,14 +3,12 @@ package frc.robot;
 
 import org.ironmaple.simulation.SimulatedArena;
 
-import com.ma5951.utils.Logger.LoggedInt;
 import com.ma5951.utils.Logger.LoggedPose2d;
 import com.ma5951.utils.Logger.MALog;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.RobotControl.Field;
 import frc.robot.Subsystem.PoseEstimation.PoseEstimator;
 import frc.robot.Subsystem.Swerve.SwerveConstants;
 
@@ -18,18 +16,14 @@ import frc.robot.Subsystem.Swerve.SwerveConstants;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  private RobotContainer m_robotContainer;
   public static boolean isStartingPose = false;
   private LoggedPose2d simulationPose2d;
   private MALog maLog;
-  private LoggedInt Log;
 
   @Override
   public void robotInit() {
-    m_robotContainer = new RobotContainer();
     simulationPose2d = new LoggedPose2d("/Simulation/Pose");
     maLog = MALog.getInstance(RobotConstants.COMP_LOG);
-    Log = new LoggedInt("/SuperStructure/Closest Tag");
 
   }
 
@@ -37,11 +31,10 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
     PoseEstimator.getInstance().update();
-    m_robotContainer.updatePeriodic();
 
-    Field.setAllianceReefFaces();
+    RobotContainer.setAllianceData();
+    RobotContainer.updatePeriodic();
 
-    Log.update(Field.getClosestFace(PoseEstimator.getInstance().getEstimatedRobotPose()).TagID());
   }
 
   @Override
@@ -52,14 +45,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    m_robotContainer.updateDisablePeriodic();
+    RobotContainer.updateDisablePeriodic();
   }
 
   @Override
   public void autonomousInit() {
     maLog.startAutoLog();
-    m_robotContainer.updateAutoInit();
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    RobotContainer.updateAutoInit();
+    m_autonomousCommand = RobotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -77,7 +70,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     
-    m_robotContainer.configureTeleopCommands();
+    RobotContainer.configureTeleopCommands();
   }
 
   @Override

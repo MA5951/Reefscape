@@ -46,6 +46,10 @@ public class AngleAdjustController  implements SwerveController {
     pid.enableContinuousInput(-180, 180);
   }
 
+  public AngleAdjustController(Supplier<Double> getMeasurment ) {
+    this(getMeasurment, 0);
+  }
+
   public ChassisSpeeds update() {
 
     omega = pid.calculate(measurment.get());

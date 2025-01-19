@@ -3,6 +3,8 @@ package frc.robot;
 
 import com.ma5951.utils.RobotControl.DeafultRobotContainer;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -19,6 +21,9 @@ import frc.robot.Subsystem.Swerve.SwerveAutoFollower;
 import frc.robot.Subsystem.Swerve.SwerveSubsystem;
 import frc.robot.Subsystem.Vision.Vision;
 import frc.robot.Utils.CommandUtil;
+import frc.robot.commands.Arm.ArmDeafultCommand;
+import frc.robot.commands.Elevator.ElevatorDeafultCommand;
+import frc.robot.commands.Intake.IntakeDeafultCommand;
 import frc.robot.commands.Swerve.TeleopSwerveController;
 
 public class RobotContainer extends DeafultRobotContainer {
@@ -30,6 +35,8 @@ public class RobotContainer extends DeafultRobotContainer {
   public static Intake intake;
   public static Arm arm;
   public static Elevator elevator;
+  public static Alliance alliance;
+  private static boolean setAllianceData = true;
 
   public RobotContainer() {
     super(
@@ -52,18 +59,27 @@ public class RobotContainer extends DeafultRobotContainer {
     setUpAutoCommands();
   }
 
-  public void setUpAutoCommands() {
+  public static void setUpAutoCommands() {
     // setAutoOptions(null);
   }
 
-  public void configureTeleopCommands() {
+  public static void configureTeleopCommands() {
     CommandScheduler.getInstance().setDefaultCommand(swerve,
-    new TeleopSwerveController(driverController));
-    // CommandScheduler.getInstance().setDefaultCommand(intake,
-    // new IntakeDeafultCommand());
-    // CommandScheduler.getInstance().setDefaultCommand(arm,
-    // new ArmDeafultCommand());
+        new TeleopSwerveController(driverController));
+    CommandScheduler.getInstance().setDefaultCommand(intake,
+        new IntakeDeafultCommand());
+    CommandScheduler.getInstance().setDefaultCommand(arm,
+        new ArmDeafultCommand());
+    CommandScheduler.getInstance().setDefaultCommand(elevator,
+        new ElevatorDeafultCommand());
 
+  }
+
+  public static void setAllianceData() {
+    if (setAllianceData && DriverStation.getAlliance().isPresent()) {
+      alliance = DriverStation.getAlliance().get();
+      Field.setAllianceReefFaces(alliance);
+    }
   }
 
   public static void setIDLE() {
@@ -75,6 +91,7 @@ public class RobotContainer extends DeafultRobotContainer {
 
   public static void setINTAKE() {
     setCurrentState(RobotConstants.INTAKE);
+    SuperStructure.updateAngleAdjustController(currentRobotState);
     intake.setTargetState(IntakeConstants.INTAKE);
     arm.setTargetState(ArmConstants.INTAKE);
     elevator.setTargetState(ElevatorConstants.INTAKE);
@@ -82,6 +99,8 @@ public class RobotContainer extends DeafultRobotContainer {
 
   public static void setSCORING() {
     setCurrentState(RobotConstants.SCORING);
+    SuperStructure.updateScoringFace();
+    SuperStructure.updateAngleAdjustController(currentRobotState);
     intake.setTargetState(IntakeConstants.HOLD);
     arm.setTargetState(ArmConstants.SCORING);
     elevator.setTargetState(ElevatorConstants.SCORING);
@@ -108,7 +127,7 @@ public class RobotContainer extends DeafultRobotContainer {
     elevator.setTargetState(ElevatorConstants.IDLE);
   }
 
-  private void configureBindings() {
+  private static void configureBindings() {
 
     // Update Offset
     new Trigger(() -> driverController.getTriangleButton())
@@ -152,7 +171,7 @@ public class RobotContainer extends DeafultRobotContainer {
     new Trigger(() -> driverController.getTouchpadButton()).onTrue(Do(() -> setIDLE()));
   }
 
-  private Command Do(Runnable toRun) {
+  private static Command Do(Runnable toRun) {
     return CommandUtil.instantOf(toRun);
   }
 
