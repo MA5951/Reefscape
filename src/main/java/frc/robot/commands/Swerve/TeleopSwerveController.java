@@ -38,11 +38,11 @@ public class TeleopSwerveController extends Command {
   private static LoggedString xyControllerLog;
   private static LoggedString theathControllerLog;
 
-  public TeleopSwerveController(PS5Controller controller) {
+  public TeleopSwerveController(PS5Controller controller) { //TODO add left of right ajust 
     swerve = SwerveSubsystem.getInstance();
 
     driveController = new FieldCentricDriveController(controller, () -> controller.getR2Button(),
-        0.4, () -> SwerveSubsystem.getInstance().getFusedHeading());
+        0.4, () -> SwerveSubsystem.getInstance().getFusedHeading()); //TODO add the 0.4 to constance
 
     angleAdjustController = new AngleAdjustController(() -> SwerveSubsystem.getInstance().getFusedHeading());
 
@@ -62,27 +62,31 @@ public class TeleopSwerveController extends Command {
   @Override
   public void execute() {
 
-    if (RobotContainer.currentRobotState == RobotConstants.INTAKE) {
+    if (RobotContainer.currentRobotState == RobotConstants.INTAKE) { //TODO add the drive input as 20%? 
       driveControllerSpeeds = driveController.update();
       angleAdjustControllerSpeeds = angleAdjustController.update();
       robotSpeeds.vxMetersPerSecond = driveControllerSpeeds.vxMetersPerSecond;
       robotSpeeds.vyMetersPerSecond = driveControllerSpeeds.vyMetersPerSecond;
       robotSpeeds.omegaRadiansPerSecond = angleAdjustControllerSpeeds.omegaRadiansPerSecond;
-      xyControllerLog.update("Drive Controller");
-      theathControllerLog.update("Angle Controller");
-    } else if (RobotContainer.currentRobotState == RobotConstants.SCORING) {
+      xyControllerLog.update("Drive Controller");//TODO move outside from the if and wtire it only once
+      theathControllerLog.update("Angle Controller");//TODO move outside from the if and wtire it only once
+
+    } else if (RobotContainer.currentRobotState == RobotConstants.SCORING) { //TODO add the drive input as 20%? 
       SuperStructure.updateXYAdjustController(RobotContainer.currentRobotState);
       autoAdjustControllerChassisSpeeds = autoAdjustXYController.update();
       angleAdjustControllerSpeeds = angleAdjustController.update();
       robotSpeeds.vxMetersPerSecond = autoAdjustControllerChassisSpeeds.vxMetersPerSecond;
       robotSpeeds.vyMetersPerSecond = autoAdjustControllerChassisSpeeds.vyMetersPerSecond;
-      robotSpeeds.omegaRadiansPerSecond = angleAdjustControllerSpeeds.omegaRadiansPerSecond;
-      xyControllerLog.update("XY Controller");
-      theathControllerLog.update("Angle Controller");
+      robotSpeeds.omegaRadiansPerSecond = angleAdjustControllerSpeeds.omegaRadiansPerSecond; 
+      //TODO you can write it as  robotSpeeds = autoAdjustXYController.update();
+      //  robotSpeeds.omegaRadiansPerSecond = angleAdjustControllerSpeeds.omegaRadiansPerSecond; let you delet one line the same TODO to the intake state
+      xyControllerLog.update("XY Controller"); //TODO move outside from the if and wtire it only once
+      theathControllerLog.update("Angle Controller"); //TODO move outside from the if and wtire it only once
     } else {
-      xyControllerLog.update("Drive Controller");
-      theathControllerLog.update("Drive Controller");
-      robotSpeeds = driveControllerSpeeds;
+      driveControllerSpeeds = driveController.update();
+      xyControllerLog.update("Drive Controller");//TODO move outside from the if and wtire it only once
+      theathControllerLog.update("Drive Controller");//TODO move outside from the if and wtire it only once
+      robotSpeeds = driveControllerSpeeds; //TODO just write it as robotSpeeds = driveController.update();
     }
 
     swerve.drive(robotSpeeds);

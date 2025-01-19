@@ -48,13 +48,11 @@ public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
                 intake.setVoltage(0);
                 break;
             case "HOLD":
-                intake.setVoltage(0);
+                intake.setVoltage(0); //TODO change to the superstracur func
 
                 if (RobotContainer.arm.atPoint() && RobotContainer.currentRobotState == RobotConstants.SCORING) {
                     intake.setTargetState(IntakeConstants.SCORING);
                 }
-
-                
                 break;
             case "INTAKE":
                 intake.setVoltage(IntakeConstants.INTAKE_SPEED_BEFORE_FIRST_SENSOR);
@@ -63,10 +61,9 @@ public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
                 intake.setVoltage(SuperStructure.getScoringPreset().ejectVolt);
                 break;
             case "SORTING":
-                
                 if (sortingNum > IntakeConstants.SORTIN_NUM) {
                     RobotContainer.setIDLE();
-                    RobotContainer.arm.setTargetState(ArmConstants.HOLD);
+                    RobotContainer.arm.setTargetState(ArmConstants.HOLD); //TODO cheak if need
                     intake.setTargetState(IntakeConstants.HOLD);
                     sortingNum = 0;
                     updatedSortin = false;
@@ -103,11 +100,13 @@ public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
     public void ManuelLoop() {
         super.ManuelLoop();
         intake.setVoltage(0);
+        //TODO add the manuel code??
     }
 
     @Override
     public void AutoLoop() {
         super.AutoLoop();
+        //TODO run the AutomaticLoop
     }
 
     @Override

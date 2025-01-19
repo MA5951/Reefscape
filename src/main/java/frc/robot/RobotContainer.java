@@ -55,12 +55,12 @@ public class RobotContainer extends DeafultRobotContainer {
     @SuppressWarnings("unused")
     SuperStructure superStructure = new SuperStructure();
 
-    configureBindings();
-    setUpAutoCommands();
+    configureBindings(); 
+    setUpAutoCommands(); 
   }
 
   public static void setUpAutoCommands() {
-    // setAutoOptions(null);
+    // setAutoOptions(null); //TODO add the code 
   }
 
   public static void configureTeleopCommands() {
@@ -99,7 +99,7 @@ public class RobotContainer extends DeafultRobotContainer {
 
   public static void setSCORING() {
     setCurrentState(RobotConstants.SCORING);
-    SuperStructure.updateScoringFace();
+    SuperStructure.updateScoringFace(); //TODO call it in the triger not in the func
     SuperStructure.updateAngleAdjustController(currentRobotState);
     intake.setTargetState(IntakeConstants.HOLD);
     arm.setTargetState(ArmConstants.SCORING);
@@ -161,7 +161,7 @@ public class RobotContainer extends DeafultRobotContainer {
     // Ball Removing
     new Trigger(() -> driverController.getL1Button()
         || driverController.getR1Button() && !SuperStructure.hasGamePiece() && !SuperStructure.isDistanceToIntake())
-        .onTrue(Do(() -> setBALLREMOVING()));
+        .onTrue(Do(() -> setBALLREMOVING())); //TODO add a condistion SuperStructure.isDistanceToCloseArm() mayby move it to the canmove of the arm ... 
 
     // Climb
     new Trigger(() -> driverController.getSquareButton() && currentRobotState == RobotConstants.IDLE)
@@ -172,7 +172,7 @@ public class RobotContainer extends DeafultRobotContainer {
   }
 
   private static Command Do(Runnable toRun) {
-    return CommandUtil.instantOf(toRun);
+    return CommandUtil.instantOf(toRun); 
   }
 
 }

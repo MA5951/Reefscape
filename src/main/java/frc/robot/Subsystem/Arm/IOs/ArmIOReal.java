@@ -44,9 +44,9 @@ public class ArmIOReal implements ArmIO {
     public ArmIOReal() {
         armMotor = new TalonFX(PortMap.Arm.armMotor, PortMap.CanBus.CANivoreBus);
         armConfig = new TalonFXConfiguration();
-        positionControl = new PositionVoltage(0);
+        positionControl = new PositionVoltage(0); //TODO change to the abs encoder value
 
-        encoder = new CANcoder(PortMap.Arm.armEncoder, PortMap.CanBus.CANivoreBus);
+        encoder = new CANcoder(PortMap.Arm.armEncoder, PortMap.CanBus.CANivoreBus); //TODO why the canivorebus and not the roborio?
 
         motorPosition = armMotor.getPosition();
         motorVelocity = armMotor.getVelocity();
@@ -69,11 +69,12 @@ public class ArmIOReal implements ArmIO {
     private void configMotor() {
         armConfig.Feedback.SensorToMechanismRatio = ArmConstants.GEAR_RATIO;
 
-        armConfig.Voltage.PeakForwardVoltage = 12;
+        armConfig.Voltage.PeakForwardVoltage = 12; //TODO use the global constance
         armConfig.Voltage.PeakReverseVoltage = -12;
 
         armConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         armConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+
 
         armConfig.Slot0.kP = ArmConstants.kP;
         armConfig.Slot0.kI = ArmConstants.kI;
@@ -88,7 +89,7 @@ public class ArmIOReal implements ArmIO {
     }
 
     public double getAbsolutePosition() {
-        return ConvUtil.RotationsToDegrees(encoderPosition.getValueAsDouble() / 3) + ArmConstants.ABS_ENCODER_OFFSET;
+        return ConvUtil.RotationsToDegrees(encoderPosition.getValueAsDouble() / 3) + ArmConstants.ABS_ENCODER_OFFSET; //TODO why divid by 3?
     }
 
     public double getCurrent() {

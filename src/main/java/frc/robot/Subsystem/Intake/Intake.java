@@ -15,7 +15,7 @@ public class Intake extends StateControlledSubsystem {
 
   private IntakeIO intakeIO = IntakeConstants.getIntakeIO();
 
-  public Intake() {
+  public Intake() { //TODO change to priveate
     super(IntakeConstants.SUBSYSTEM_STATES, "Intake");
   }
 
@@ -53,28 +53,28 @@ public class Intake extends StateControlledSubsystem {
 
   public boolean IntakeCanMove() {
     return RobotContainer.currentRobotState == RobotConstants.INTAKE && RobotContainer.elevator.atPoint()
-        && !getRearSensor() && RobotContainer.arm.atPoint();
+        && !getRearSensor() && RobotContainer.arm.atPoint(); 
   }
 
   public boolean ScoringCanMove() {
     return RobotContainer.currentRobotState == RobotConstants.SCORING && RobotContainer.elevator.atPoint()
-        && TeleopSwerveController.atPointForScoring() && RobotContainer.arm.atPoint();
+        && TeleopSwerveController.atPointForScoring() && RobotContainer.arm.atPoint(); //TODO have a game piece 
   }
 
   public boolean BallRemovingCanMove() {
-    return RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && RobotContainer.elevator.atPoint();
+    return RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && RobotContainer.elevator.atPoint(); // TODO why? 
   }
 
   public boolean SortingCanMove() {
     return RobotContainer.currentRobotState == RobotConstants.SORTING
-        && ((getRearSensor() && intakeIO.getIntendedVoltage() > 0) || !getRearSensor());
+        && ((getRearSensor() && intakeIO.getIntendedVoltage() > 0) || !getRearSensor()); //TODO need to be checkt in sim
   }
 
   @Override
   public boolean canMove() {
     return IntakeCanMove() || ScoringCanMove() || BallRemovingCanMove() || SortingCanMove()
         || getSystemFunctionState() == StatesConstants.MANUEL
-        || RobotContainer.arm.getTargetState() == ArmConstants.HOLD
+        || RobotContainer.arm.getTargetState() == ArmConstants.HOLD //TODO change to inake state 
             && RobotContainer.currentRobotState != RobotConstants.CLIMB;
   }
 
@@ -87,6 +87,7 @@ public class Intake extends StateControlledSubsystem {
 
   @Override
   public void periodic() {
+    //TODO call super()
     intakeIO.updatePeriodic();
   }
 }

@@ -26,7 +26,7 @@ public class ElevatorIOReal implements ElevatorIO {
 
     private DigitalInput limitSwitch;
 
-    private MotionMagicVoltage MotionMagic = new MotionMagicVoltage(0);
+    private MotionMagicVoltage MotionMagic = new MotionMagicVoltage(0); //TODO change to the home positiosn value and move to the constractor
     protected TalonFXConfiguration masterConfig;
     private StrictFollower masterFollower;
 
@@ -48,7 +48,7 @@ public class ElevatorIOReal implements ElevatorIO {
         masterMotor = new TalonFX(PortMap.Elevator.elevatorMasterMotor, PortMap.CanBus.CANivoreBus);
         slaveMotor = new TalonFX(PortMap.Elevator.elevatorSlaveMotor, PortMap.CanBus.CANivoreBus);
         masterConfig = new TalonFXConfiguration();
-        masterFollower = new StrictFollower(PortMap.Elevator.elevatorSlaveMotor);
+        masterFollower = new StrictFollower(PortMap.Elevator.elevatorSlaveMotor); //TODO change to the master id
 
         limitSwitch = new DigitalInput(PortMap.Elevator.elevatorLimitSwich);
 
@@ -72,7 +72,7 @@ public class ElevatorIOReal implements ElevatorIO {
     public void configMotors() {
         masterConfig.Feedback.SensorToMechanismRatio = ElevatorConstants.GEAR;
 
-        masterConfig.Voltage.PeakForwardVoltage = 12;
+        masterConfig.Voltage.PeakForwardVoltage = 12; //TODO use the global constance
         masterConfig.Voltage.PeakReverseVoltage = -12;
         
         masterConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
@@ -93,7 +93,7 @@ public class ElevatorIOReal implements ElevatorIO {
         masterConfig.CurrentLimits.SupplyCurrentLowerTime = ElevatorConstants.CONTINUOUS_CURRENT_DURATION;
 
         masterMotor.getConfigurator().apply(masterConfig);
-        slaveMotor.getConfigurator().apply(masterConfig);
+        slaveMotor.getConfigurator().apply(masterConfig); //TODO chek if the need to rotat in the same diraction?
     }
 
 
@@ -106,7 +106,7 @@ public class ElevatorIOReal implements ElevatorIO {
     }
 
     public double getPosition() {
-        return masterMotorPosition.getValueAsDouble() * ElevatorConstants.SPROKET_CIRCUMFERENCE;
+        return masterMotorPosition.getValueAsDouble() * ElevatorConstants.SPROKET_CIRCUMFERENCE; //TODO why not to includ in the GEAR
     }
 
     public double getVelocity() {
@@ -131,12 +131,12 @@ public class ElevatorIOReal implements ElevatorIO {
     }
 
     public void resetPosition() {
-        masterMotor.setPosition(0);
+        masterMotor.setPosition(0); //TODO change to the home positiosn value and use the resetPosition(double newHight) func
     }
 
     public void setVoltage(double volt) {
         masterMotor.setVoltage(volt);
-        slaveMotor.setControl(masterFollower);
+        slaveMotor.setControl(masterFollower); 
     }
 
     public void updatePID(double Kp , double Ki , double Kd) {

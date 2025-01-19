@@ -58,7 +58,7 @@ public class ElevatorDeafultCommand extends RobotFunctionStatesCommand {
                 elevator.setHight(SuperStructure.getScoringPreset().hight);
                 break;
             case "BALLREMOVING":
-                elevator.setHight(ElevatorConstants.HIGHT_INTAKE_BALL);
+                elevator.setHight(ElevatorConstants.HIGHT_INTAKE_BALL); //TODO change to the SuperStructure func
                 break;
             case "CLIMB":
                 elevator.setVoltage(elevator.getFeedForwardVoltage());
@@ -81,11 +81,13 @@ public class ElevatorDeafultCommand extends RobotFunctionStatesCommand {
     public void ManuelLoop() {
         super.ManuelLoop();
         elevator.setVoltage(elevator.getFeedForwardVoltage());
+        //TODO add the manuel code??
     }
 
     @Override
     public void AutoLoop() {
         super.AutoLoop();
+        //TODO run the AutomaticLoop
     }
 
     @Override

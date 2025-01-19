@@ -13,7 +13,7 @@ public class Arm extends StateControlledSubsystem {
 
     private ArmIO armIO = ArmConstants.getArmIO();
 
-    public Arm() {
+    public Arm() { //TODO change to priveate
         super(ArmConstants.SUBSYSTEM_STATES, "Arm");
     }
 
@@ -45,7 +45,7 @@ public class Arm extends StateControlledSubsystem {
         return armIO.getSetPoint();
     }
 
-    public void resetPose() {
+    public void resetPose() { 
         armIO.resetPosition(getAbsolutePosition());
     }
 
@@ -56,14 +56,16 @@ public class Arm extends StateControlledSubsystem {
     public void setVoltage(double volt) {
         armIO.setVoltage(volt);
     }
+// TODO remove the line 
 
     public void setAngle(double angle) {
         armIO.setAngle(angle);
     }
 
     public boolean atPoint() {
-        return armIO.getError() <= ArmConstants.TOLERANCE;
+        return armIO.getError() <= ArmConstants.TOLERANCE; //TODO need to be abs value
     }
+
 
     public boolean BallRemovingCanMove() {
         return RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && RobotContainer.elevator.atPoint()
@@ -74,7 +76,9 @@ public class Arm extends StateControlledSubsystem {
     public boolean canMove() {
         return BallRemovingCanMove() || getSystemFunctionState() == StatesConstants.MANUEL
                 || RobotContainer.currentRobotState != RobotConstants.CLIMB
-                || getCurrent() < ArmConstants.kCAN_MOVE_CURRENT_LIMIT;
+                || getCurrent() < ArmConstants.kCAN_MOVE_CURRENT_LIMIT; //TODO change to abs the current value
+                //TODO add system limits not the same as curren 
+                //TODO if in sorting mod dont move 
     }
 
     public static Arm getInstance() {
@@ -86,6 +90,7 @@ public class Arm extends StateControlledSubsystem {
 
     @Override
     public void periodic() {
+        //TODO add super
         armIO.updatePeriodic();
     }
 }

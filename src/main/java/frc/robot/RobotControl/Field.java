@@ -13,9 +13,9 @@ import frc.robot.Utils.ReefFace;
 public class Field {
 
     public static enum GamePiece {
-        CORAL(() -> 0d),
-        BALL(() -> 0d),
-        NONE(() -> 0d);
+        CORAL(() -> 0d),//TODO add a real value
+        BALL(() -> 0d), //TODO add a real value
+        NONE(() -> 0d); //TODO add a real value
 
         public final Supplier<Double> holdValue;
 
@@ -26,10 +26,14 @@ public class Field {
     }
 
     public static enum ScoringLevel {
-        L1(0, 10, 4),
-        L2(0, 10, 5),
-        L3(0, 10, 1),
-        L4(0, 10, 1);
+        L1(0, 10, 4), //TODO add a real value
+
+        L2(0, 10, 5),//TODO add a real value
+
+        L3(0, 10, 1),//TODO add a real value
+
+        L4(0, 10, 1);//TODO add a real value
+
 
         public final double hight;
         public final double angle;
@@ -43,8 +47,8 @@ public class Field {
     }
 
     public static enum ScoringLocation {
-        LEFT(0, 0),
-        RIGHT(0, 0),
+        LEFT(0, 0),  //TODO add a real value
+        RIGHT(0, 0), //TODO add a real value
         NONE(0, 0);
 
         public final double tX;
@@ -57,9 +61,9 @@ public class Field {
     }
 
     public static enum BallHight {
-        HIGH(0),
-        LOW(0),
-        NONE(0);
+        HIGH(0), //TODO add a real value
+        LOW(0), //TODO add a real value
+        NONE(0); //TODO add a real value
 
         public final double elevatorHight;
 
@@ -70,7 +74,7 @@ public class Field {
 
     private static HashMap<Integer, ReefFace> ReefFaces = new HashMap<Integer, ReefFace>();
     private static ReefFace blankFace = new ReefFace(0, 0, BallHight.NONE, new Pose2d());
-    private static HashMap<Double, Pose2d> SourceFaces = new HashMap<Double, Pose2d>();//Abs Angle , Tag Pose
+    private static HashMap<Double, Pose2d> SourceFaces = new HashMap<Double, Pose2d>();//Abs Angle , Tag Pose //TODO ctrl x
     private static ReefFace closestFace;
     private static double closestDistanceReef;
     private static double spatialDistanceReef;
@@ -140,5 +144,4 @@ public class Field {
     public static double euclideanDistance(Pose2d pose1, Pose2d pose2) {
         return Math.sqrt(Math.pow(pose1.getX() - pose2.getX(), 2) + Math.pow(pose1.getY() - pose2.getY(), 2));
     }
-
 }

@@ -69,18 +69,19 @@ public class SuperStructure extends GenericSuperStracture {
     }
 
     public static double getCoralHoldValue() {
-        return 0d;
+        return 0d; //TODO write the code...
     }
 
     public static boolean isDistanceToIntake() {
         return poseEstimator.getEstimatedRobotPose().getTranslation()
-                .getDistance(RobotConstants.ReefCenter) >= RobotConstants.DistanceToBallRemove;
+                .getDistance(RobotConstants.ReefCenter) >= RobotConstants.DistanceToBallRemove; //TODO chack if need abs in the red/blue side why ball remove?
+                //TODO i will chek if you in the src zone
     }
 
     public static boolean isDistanceToCloseArm() {
         return ejectPose.getTranslation().getDistance(
-                poseEstimator.getEstimatedRobotPose().getTranslation()) >= RobotConstants.DistanceToCloseArm;
-    }
+                poseEstimator.getEstimatedRobotPose().getTranslation()) >= RobotConstants.DistanceToCloseArm; //TODO chack if need abs in the red/blue side 
+    } 
 
     public static double getAngleForIntakeAlign() {
         if (RobotContainer.alliance == Alliance.Red) {
@@ -96,15 +97,16 @@ public class SuperStructure extends GenericSuperStracture {
     }
 
     public static void updateScoringFace() {
-        scoringFace = Field.getClosestReefFace(currentPoseSupplier.get());
+        scoringFace = Field.getClosestReefFace(currentPoseSupplier.get()); 
     }
 
-    public static void updateAngleAdjustController(State robotState) {
+    public static void updateAngleAdjustController(State robotState) { //TODO use the currentRobotState static vairable 
         if (robotState == RobotConstants.INTAKE) {
             TeleopSwerveController.angleAdjustController.setSetPoint(getAngleForIntakeAlign());
         } else if (robotState == RobotConstants.SCORING) {
             TeleopSwerveController.angleAdjustController.setSetPoint(scoringFace.AbsAngle());
         }
+        //TODO add a case for climbe?
     }
 
     public static void updateXYAdjustController(State robotState) {
@@ -124,7 +126,7 @@ public class SuperStructure extends GenericSuperStracture {
                 SwerveConstants.REL_XY_TOLORANCE);
             TeleopSwerveController.autoAdjustXYController.setConstrains(SwerveConstants.REL_XY_CONSTRAINTS);
             TeleopSwerveController.autoAdjustXYController.setField(false);
-        }else if (robotState == RobotConstants.SCORING) {
+        }else if (robotState == RobotConstants.SCORING) { //TODO move the scoring state up and write if else 
             TeleopSwerveController.autoAdjustXYController.updateSetPoint(scoringFace.getAlignPose());
             TeleopSwerveController.autoAdjustXYController.updateMeaurment(currentPoseSupplier);
             TeleopSwerveController.autoAdjustXYController.setPID(
@@ -146,6 +148,7 @@ public class SuperStructure extends GenericSuperStracture {
     }
 
     public static void update() {
+        //log the func??
 
     }
 

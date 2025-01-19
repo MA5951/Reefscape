@@ -44,7 +44,7 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
                 arm.setVoltage(arm.getFeedForwardVoltage());
                 break;
             case "HOLD":
-                arm.setAngle(arm.getPosition());
+                arm.setAngle(arm.getPosition()); //TODO what the difrents with the idle state ? 
                 break;
             case "INTAKE":
                 arm.setAngle(ArmConstants.INTAKE_CORALS_ANGLE);
@@ -53,7 +53,7 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
                 arm.setAngle(SuperStructure.getScoringPreset().angle);
                 break;
             case "BALLREMOVING":
-
+                 //TODO write the code??
                 break;
         }
     }
@@ -73,11 +73,13 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
     public void ManuelLoop() {
         super.ManuelLoop();
         arm.setVoltage(arm.getFeedForwardVoltage());
+        //TODO add the manuel code??
     }
 
     @Override
     public void AutoLoop() {
         super.AutoLoop();
+        //TODO run the AutomaticLoop
     }
 
     @Override

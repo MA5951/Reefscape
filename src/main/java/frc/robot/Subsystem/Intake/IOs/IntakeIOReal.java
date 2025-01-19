@@ -63,7 +63,7 @@ public class IntakeIOReal implements IntakeIO {
     private void config() {
         motorConfig.Feedback.SensorToMechanismRatio = IntakeConstants.GEAR;
 
-        motorConfig.Voltage.PeakForwardVoltage = 12;
+        motorConfig.Voltage.PeakForwardVoltage = 12; //TODO use the global constance
         motorConfig.Voltage.PeakReverseVoltage = -12;
 
         motorConfig.CurrentLimits.SupplyCurrentLimitEnable = IntakeConstants.IS_CURRENT_LIMIT_ENABLED;
@@ -81,7 +81,7 @@ public class IntakeIOReal implements IntakeIO {
     }
 
     public boolean getFrontSensor() {
-        return forwardLimit.getValueAsDouble() == 1d;
+        return forwardLimit.getValueAsDouble() == 1d; 
     }
 
     public boolean getRearSensor() {
@@ -93,7 +93,7 @@ public class IntakeIOReal implements IntakeIO {
     }
 
     public double getPosition() {
-        return ConvUtil.RotationsToDegrees(motorPosition.getValueAsDouble());
+        return ConvUtil.RotationsToDegrees(motorPosition.getValueAsDouble()); //TODO why????
     }
 
     public double getVelocity() {
@@ -105,7 +105,7 @@ public class IntakeIOReal implements IntakeIO {
     }
 
     public double getIntendedVoltage() {
-        return intakeMotor.get();
+        return intakeMotor.get(); //TODO get return -1 to 1 no -12 to 12
     }
 
     public void setNutralMode(boolean isbrake) {

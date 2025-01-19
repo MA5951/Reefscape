@@ -11,7 +11,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.Subsystem.Swerve.SwerveConstants;
 
-public class AngleAdjustController  implements SwerveController {
+public class AngleAdjustController implements SwerveController {
 
   private static PIDController pid;
   private ChassisSpeeds chassisSpeeds =  new ChassisSpeeds();
@@ -43,7 +43,7 @@ public class AngleAdjustController  implements SwerveController {
     measurment = getMeasurment;
     pid.setSetpoint(setPointDrgrees);
     pid.setTolerance(SwerveConstants.ANGLE_PID_TOLORANCE);
-    pid.enableContinuousInput(-180, 180);
+    pid.enableContinuousInput(-180, 180); //TODO add to constance
   }
 
   public AngleAdjustController(Supplier<Double> getMeasurment ) {

@@ -24,23 +24,23 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     simulationPose2d = new LoggedPose2d("/Simulation/Pose");
     maLog = MALog.getInstance(RobotConstants.COMP_LOG);
-
+    //TODO must do new to RobotContainer!!!! 
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
     PoseEstimator.getInstance().update();
-
     RobotContainer.setAllianceData();
     RobotContainer.updatePeriodic();
+    //TODO call the robot container init func
 
   }
 
   @Override
   public void disabledInit() {
+    //TODO change the robot state to idel 
     maLog.stopLog();
-    ;
   }
 
   @Override
@@ -66,11 +66,12 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     maLog.startTeleopLog();
+    //TODO change the robot state to idel 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
     
-    RobotContainer.configureTeleopCommands();
+    RobotContainer.configureTeleopCommands(); //move up to auto init we use tha smae commands their
   }
 
   @Override

@@ -17,9 +17,8 @@ import edu.wpi.first.util.sendable.SendableRegistry;
  * Implements a PID control loop whose setpoint is constrained by a trapezoid profile. Users should
  * call reset() when they first start running the controller to avoid unwanted behavior.
  */
-public class MAProfieldPIDController implements Sendable {
+public class MAProfieldPIDController implements Sendable { //TODO change to extend ProfieldPIDController
   private static int instances;
-
   private PIDController m_controller;
   private double m_minimumInput;
   private double m_maximumInput;
