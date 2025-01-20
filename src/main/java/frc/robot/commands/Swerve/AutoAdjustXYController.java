@@ -32,7 +32,7 @@ public class AutoAdjustXYController implements SwerveController {
     private LoggedPose2d targetPoseLog;
     private LoggedPose2d setPointPoseLog;
     private Pose2d targetPose;
-    private boolean isField = true; //TODO change the name
+    private boolean isFieldRelativ = true; //TODO change the name
     private Supplier<Double> measurment;
 
     public AutoAdjustXYController(Supplier<Pose2d> robotPoseSupplier, Supplier<Double> robotAngle, Pose2d setPoint) { 
@@ -62,7 +62,7 @@ public class AutoAdjustXYController implements SwerveController {
     }
 
     public void setField(boolean field) {
-        isField = field;
+        isFieldRelativ = field;
     }
 
     public void setPID(double xKp, double xKi, double xKd, double xTolernace,
@@ -84,7 +84,7 @@ public class AutoAdjustXYController implements SwerveController {
         setPointPoseLog.update(new Pose2d(xController.getSetpoint().position, yController.getSetpoint().position,
                 targetPose.getRotation()));
 
-        if (isField) {
+        if (isFieldRelativ) {
             return ChassisSpeedsUtil.FromFieldToRobot(chassisSpeeds, new Rotation2d(
                     Math.toRadians((measurment.get()))));
         }

@@ -19,6 +19,7 @@ import frc.robot.RobotContainer;
 import frc.robot.RobotControl.Field;
 import frc.robot.RobotControl.SuperStructure;
 import frc.robot.Subsystem.PoseEstimation.PoseEstimator;
+import frc.robot.Subsystem.Swerve.SwerveConstants;
 import frc.robot.Subsystem.Swerve.SwerveSubsystem;
 import frc.robot.Subsystem.Vision.Vision;
 import frc.robot.Utils.MAProfieldPIDController;
@@ -29,9 +30,6 @@ public class TeleopSwerveController extends Command {
   public static FieldCentricDriveController driveController;
   public static AngleAdjustController angleAdjustController;
   public static AutoAdjustXYController autoAdjustXYController;
-  private static ChassisSpeeds driveControllerSpeeds;
-  private static ChassisSpeeds angleAdjustControllerSpeeds;
-  private static ChassisSpeeds autoAdjustControllerChassisSpeeds;
 
   private static SwerveSubsystem swerve;
   private static ChassisSpeeds robotSpeeds;
@@ -42,7 +40,7 @@ public class TeleopSwerveController extends Command {
     swerve = SwerveSubsystem.getInstance();
 
     driveController = new FieldCentricDriveController(controller, () -> controller.getR2Button(),
-        0.4, () -> SwerveSubsystem.getInstance().getFusedHeading()); //TODO add the 0.4 to constance
+        SwerveConstants.DRIVER_SLOW_FACTOR, () -> SwerveSubsystem.getInstance().getFusedHeading());
 
     angleAdjustController = new AngleAdjustController(() -> SwerveSubsystem.getInstance().getFusedHeading());
 
@@ -63,30 +61,20 @@ public class TeleopSwerveController extends Command {
   public void execute() {
 
     if (RobotContainer.currentRobotState == RobotConstants.INTAKE) { //TODO add the drive input as 20%? 
-      driveControllerSpeeds = driveController.update();
-      angleAdjustControllerSpeeds = angleAdjustController.update();
-      robotSpeeds.vxMetersPerSecond = driveControllerSpeeds.vxMetersPerSecond;
-      robotSpeeds.vyMetersPerSecond = driveControllerSpeeds.vyMetersPerSecond;
-      robotSpeeds.omegaRadiansPerSecond = angleAdjustControllerSpeeds.omegaRadiansPerSecond;
+      robotSpeeds = driveController.update();
+      robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
       xyControllerLog.update("Drive Controller");//TODO move outside from the if and wtire it only once
       theathControllerLog.update("Angle Controller");//TODO move outside from the if and wtire it only once
-
     } else if (RobotContainer.currentRobotState == RobotConstants.SCORING) { //TODO add the drive input as 20%? 
       SuperStructure.updateXYAdjustController(RobotContainer.currentRobotState);
-      autoAdjustControllerChassisSpeeds = autoAdjustXYController.update();
-      angleAdjustControllerSpeeds = angleAdjustController.update();
-      robotSpeeds.vxMetersPerSecond = autoAdjustControllerChassisSpeeds.vxMetersPerSecond;
-      robotSpeeds.vyMetersPerSecond = autoAdjustControllerChassisSpeeds.vyMetersPerSecond;
-      robotSpeeds.omegaRadiansPerSecond = angleAdjustControllerSpeeds.omegaRadiansPerSecond; 
-      //TODO you can write it as  robotSpeeds = autoAdjustXYController.update();
-      //  robotSpeeds.omegaRadiansPerSecond = angleAdjustControllerSpeeds.omegaRadiansPerSecond; let you delet one line the same TODO to the intake state
+      robotSpeeds = autoAdjustXYController.update();
+      robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond; 
       xyControllerLog.update("XY Controller"); //TODO move outside from the if and wtire it only once
       theathControllerLog.update("Angle Controller"); //TODO move outside from the if and wtire it only once
     } else {
-      driveControllerSpeeds = driveController.update();
       xyControllerLog.update("Drive Controller");//TODO move outside from the if and wtire it only once
       theathControllerLog.update("Drive Controller");//TODO move outside from the if and wtire it only once
-      robotSpeeds = driveControllerSpeeds; //TODO just write it as robotSpeeds = driveController.update();
+      robotSpeeds = driveController.update(); 
     }
 
     swerve.drive(robotSpeeds);

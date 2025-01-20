@@ -24,6 +24,7 @@ public class ArmConstants {
     public static final double EJECT_BALL_START_ANGLE = 0;
     public static final double EJECT_BALL_STOP_ANGLE = 0;
     
+    public static final double HOLD_ANGLE = 0;
 
     public static final double ABS_ENCODER_OFFSET = 0;
 

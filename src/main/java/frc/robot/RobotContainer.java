@@ -99,7 +99,6 @@ public class RobotContainer extends DeafultRobotContainer {
 
   public static void setSCORING() {
     setCurrentState(RobotConstants.SCORING);
-    SuperStructure.updateScoringFace(); //TODO call it in the triger not in the func
     SuperStructure.updateAngleAdjustController(currentRobotState);
     intake.setTargetState(IntakeConstants.HOLD);
     arm.setTargetState(ArmConstants.SCORING);
@@ -149,6 +148,7 @@ public class RobotContainer extends DeafultRobotContainer {
     // Scoring
     new Trigger(() -> driverController.getL1Button() && SuperStructure.hasGamePiece()
         && currentRobotState != RobotConstants.SORTING)
+        .onTrue(Do(() -> SuperStructure.updateScoringFace()))
         .onTrue(Do(() -> SuperStructure.setScoringLocation(Field.ScoringLocation.LEFT)));
 
     new Trigger(() -> driverController.getR1Button() && SuperStructure.hasGamePiece()
@@ -160,8 +160,8 @@ public class RobotContainer extends DeafultRobotContainer {
 
     // Ball Removing
     new Trigger(() -> driverController.getL1Button()
-        || driverController.getR1Button() && !SuperStructure.hasGamePiece() && !SuperStructure.isDistanceToIntake())
-        .onTrue(Do(() -> setBALLREMOVING())); //TODO add a condistion SuperStructure.isDistanceToCloseArm() mayby move it to the canmove of the arm ... 
+        || driverController.getR1Button() && !SuperStructure.hasGamePiece() && !SuperStructure.isDistanceToIntake() && SuperStructure.isDistanceToCloseArm())
+        .onTrue(Do(() -> setBALLREMOVING()));
 
     // Climb
     new Trigger(() -> driverController.getSquareButton() && currentRobotState == RobotConstants.IDLE)

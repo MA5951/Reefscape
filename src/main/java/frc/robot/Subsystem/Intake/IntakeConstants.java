@@ -22,6 +22,7 @@ public class IntakeConstants {
     //public static final double BALLֹ_EJECTING_VALUE = 0;
     public static final double GEAR = 1;
     public static final int SORTIN_NUM = 3;
+    public static final double MANUEL_VOLTAGE_LIMIT = 3;
 
     public static final double PEAK_CURRENT_LIMIT = 35;
     public static final double CONTINUES_CURRENT_LIMIT = 15; 

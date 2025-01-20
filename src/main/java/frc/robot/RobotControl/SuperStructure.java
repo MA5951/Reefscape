@@ -11,6 +11,7 @@ import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
 import frc.robot.Subsystem.Arm.Arm;
 import frc.robot.Subsystem.Elevator.Elevator;
+import frc.robot.Subsystem.Elevator.ElevatorConstants;
 import frc.robot.Subsystem.Intake.Intake;
 import frc.robot.Subsystem.PoseEstimation.PoseEstimator;
 import frc.robot.Subsystem.Swerve.SwerveConstants;
@@ -51,6 +52,16 @@ public class SuperStructure extends GenericSuperStracture {
 
     public static void setScoringLocation(Field.ScoringLocation ScoringLocation) {
         scoringLocation = ScoringLocation;
+    }
+
+    public static double getBallRemoveHight() {
+        if (Field.isReefTag(RobotContainer.vision.getTagID())) {
+            return Field.getFaceByID(RobotContainer.vision.getTagID()).BallHight() == Field.BallHight.HIGH ? ElevatorConstants.HIGHT_EJECT_BALL_HIGH :
+            ElevatorConstants.HIGHT_EJECT_BALL_LOW;
+        } else {
+            return Field.getClosestReefFace(currentPoseSupplier.get()).BallHight() == Field.BallHight.HIGH ? ElevatorConstants.HIGHT_EJECT_BALL_HIGH :
+            ElevatorConstants.HIGHT_EJECT_BALL_LOW;
+        }
     }
 
     public static Field.GamePiece getGamePiece() {
@@ -148,8 +159,7 @@ public class SuperStructure extends GenericSuperStracture {
     }
 
     public static void update() {
-        //log the func??
-
+        //log the func?
     }
 
 }
