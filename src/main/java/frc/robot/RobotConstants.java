@@ -5,7 +5,9 @@ import com.ma5951.utils.RobotControl.StatesTypes.State;
 import com.ma5951.utils.Utils.DriverStationUtil;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
@@ -14,6 +16,8 @@ public class RobotConstants {
     // Robot Constants
     public static final boolean COMP_LOG = false;
     public static final double kDELTA_TIME = 0.02;
+    public static final double NOMINAL_VOLTAGE = 12d;
+    public static final Pose3d SIM_ARM_OFFSET = new Pose3d(0.035, -0.002 ,  0.613, new Rotation3d(0, 0, 0));
 
     // States
     public static final State IDLE = new State("IDLE");
@@ -28,6 +32,7 @@ public class RobotConstants {
     public static final double DistanceToCloseArm = 0.3;
     public static final double DistanceToAlign = 1;
     public static final double DistanceToRelativAlign = 2;
+    public static final double SpeedToScore = 0.5;
 
     // FieldConstants
     public static final Translation2d FieldZeroCorner = new Translation2d(0, 0);

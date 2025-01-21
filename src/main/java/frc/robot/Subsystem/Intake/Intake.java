@@ -6,6 +6,7 @@ import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
 
 import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
+import frc.robot.RobotControl.SuperStructure;
 import frc.robot.Subsystem.Arm.ArmConstants;
 import frc.robot.Subsystem.Intake.IOs.IntakeIO;
 import frc.robot.commands.Swerve.TeleopSwerveController;
@@ -15,7 +16,7 @@ public class Intake extends StateControlledSubsystem {
 
   private IntakeIO intakeIO = IntakeConstants.getIntakeIO();
 
-  public Intake() { //TODO change to priveate
+  private Intake() {
     super(IntakeConstants.SUBSYSTEM_STATES, "Intake");
   }
 
@@ -58,11 +59,11 @@ public class Intake extends StateControlledSubsystem {
 
   public boolean ScoringCanMove() {
     return RobotContainer.currentRobotState == RobotConstants.SCORING && RobotContainer.elevator.atPoint()
-        && TeleopSwerveController.atPointForScoring() && RobotContainer.arm.atPoint(); //TODO have a game piece 
+        && TeleopSwerveController.atPointForScoring() && RobotContainer.arm.atPoint() && SuperStructure.hasGamePiece();
   }
 
   public boolean BallRemovingCanMove() {
-    return RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && RobotContainer.elevator.atPoint(); // TODO why? 
+    return RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && RobotContainer.elevator.atPoint();
   }
 
   public boolean SortingCanMove() {
@@ -74,7 +75,7 @@ public class Intake extends StateControlledSubsystem {
   public boolean canMove() {
     return IntakeCanMove() || ScoringCanMove() || BallRemovingCanMove() || SortingCanMove()
         || getSystemFunctionState() == StatesConstants.MANUEL
-        || RobotContainer.arm.getTargetState() == ArmConstants.HOLD //TODO change to inake state 
+        || RobotContainer.intake.getTargetState() == IntakeConstants.HOLD
             && RobotContainer.currentRobotState != RobotConstants.CLIMB;
   }
 
@@ -87,7 +88,7 @@ public class Intake extends StateControlledSubsystem {
 
   @Override
   public void periodic() {
-    //TODO call super()
+    super.periodic();
     intakeIO.updatePeriodic();
   }
 }

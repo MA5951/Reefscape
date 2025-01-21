@@ -20,7 +20,7 @@ public class TalonFXMotorSim {
 
     public TalonFXMotorSim(TalonFX motor , TalonFXConfiguration motorConfig ,DCMotor motorType , double Inertia , boolean isRevers) {
         motorSimState = motor.getSimState();
-        physicshSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(motorType, Inertia, motorConfig.Feedback.SensorToMechanismRatio), motorType ,  0.5 , 0.5);
+        physicshSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(motorType, Inertia, motorConfig.Feedback.SensorToMechanismRatio), motorType ,  0.0005 , 0.0005);
         SimulatedBattery.addElectricalAppliances(() -> motor.getSupplyCurrent().refresh().getValue());
         if (isRevers) {
             motorSimState.Orientation = ChassisReference.Clockwise_Positive;

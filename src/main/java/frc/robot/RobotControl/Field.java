@@ -4,37 +4,37 @@ package frc.robot.RobotControl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Supplier;
 
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.RobotConstants;
+import frc.robot.Subsystem.Arm.ArmConstants;
+import frc.robot.Subsystem.Elevator.ElevatorConstants;
+import frc.robot.Subsystem.Intake.IntakeConstants;
 import frc.robot.Utils.ReefFace;
 
 public class Field {
 
     public static enum GamePiece {
-        CORAL(() -> 0d),//TODO add a real value
-        BALL(() -> 0d), //TODO add a real value
-        NONE(() -> 0d); //TODO add a real value
+        CORAL(),
+        BALL(), 
+        NONE(); 
 
-        public final Supplier<Double> holdValue;
 
-        GamePiece(Supplier<Double> HoldValue) {
-            holdValue = HoldValue;
+        GamePiece() {
         }
 
     }
 
     public static enum ScoringLevel {
-        L1(0, 10, 4), //TODO add a real value
+        L1(ElevatorConstants.HIGHT_L1, ArmConstants.ANGLE_L1, IntakeConstants.EJECT_SPEED_L1),
 
-        L2(0, 10, 5),//TODO add a real value
+        L2(ElevatorConstants.HIGHT_L2, ArmConstants.ANGLE_L2, IntakeConstants.EJECT_SPEED_L234),
 
-        L3(0, 10, 1),//TODO add a real value
+        L3(ElevatorConstants.HIGHT_L3, ArmConstants.ANGLE_L3, IntakeConstants.EJECT_SPEED_L234),
 
-        L4(0, 10, 1);//TODO add a real value
+        L4(ElevatorConstants.HIGHT_L4, ArmConstants.ANGLE_L4, IntakeConstants.EJECT_SPEED_L234);
 
 
         public final double hight;
@@ -49,8 +49,8 @@ public class Field {
     }
 
     public static enum ScoringLocation {
-        LEFT(0, 0),  //TODO add a real value
-        RIGHT(0, 0), //TODO add a real value
+        LEFT(0, 0),  //TODO add a real value //tEST
+        RIGHT(0, 0), //TODO add a real value//tEST
         NONE(0, 0);
 
         public final double tX;
@@ -63,10 +63,9 @@ public class Field {
     }
 
     public static enum BallHight {
-        HIGH(0), //TODO add a real value
-        LOW(0), //TODO add a real value
-        NONE(0); //TODO add a real value
-
+        HIGH(ElevatorConstants.HIGHT_EJECT_BALL_HIGH),
+        LOW(ElevatorConstants.HIGHT_EJECT_BALL_LOW),
+        NONE(0);
         public final double elevatorHight;
 
         BallHight(double ElevatorHight) {

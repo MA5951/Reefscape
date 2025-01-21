@@ -14,7 +14,7 @@ public class Elevator extends StateControlledSubsystem {
 
   private ElevatorIO elevatorIO = ElevatorConstants.getElevatorIO();
 
-  public Elevator() {  //TODO change to priveate
+  private Elevator() { 
     super(ElevatorConstants.SUBSYSTEM_STATES, "Elevator");
   }
 
@@ -47,7 +47,7 @@ public class Elevator extends StateControlledSubsystem {
   }
 
   public boolean atPoint() {
-    return elevatorIO.getError() <= ElevatorConstants.TOLORANCE;//TODO need to be abs value
+    return Math.abs(elevatorIO.getError()) <= ElevatorConstants.TOLORANCE;
   }
 
   public double getSetPoint() {
@@ -69,8 +69,8 @@ public class Elevator extends StateControlledSubsystem {
   @Override
   public boolean canMove() {
     return getSystemFunctionState() == StatesConstants.MANUEL
-        || getSetPoint() < ElevatorConstants.MAX_HIGHT && getSetPoint() > ElevatorConstants.MIN_HIGHT && //TODO add the postion of the system too 
-            getCurrent() < ElevatorConstants.CAN_MOVE_CURRENT_LIMIT; //TODO change to abs the current value
+        || getSetPoint() < ElevatorConstants.MAX_HIGHT && getSetPoint() > ElevatorConstants.MIN_HIGHT &&
+            Math.abs(getCurrent()) < ElevatorConstants.CAN_MOVE_CURRENT_LIMIT;
   }
 
   public static Elevator getInstance() {
@@ -82,7 +82,7 @@ public class Elevator extends StateControlledSubsystem {
 
   @Override
   public void periodic() {
-    //TODO add super
+    super.periodic();
     elevatorIO.updatePeriodic();
   }
 }

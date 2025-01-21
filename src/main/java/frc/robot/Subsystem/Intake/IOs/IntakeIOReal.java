@@ -18,6 +18,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import frc.robot.PortMap;
+import frc.robot.RobotConstants;
 import frc.robot.Subsystem.Intake.IntakeConstants;
 
 public class IntakeIOReal implements IntakeIO {
@@ -63,8 +64,8 @@ public class IntakeIOReal implements IntakeIO {
     private void config() {
         motorConfig.Feedback.SensorToMechanismRatio = IntakeConstants.GEAR;
 
-        motorConfig.Voltage.PeakForwardVoltage = 12; //TODO use the global constance
-        motorConfig.Voltage.PeakReverseVoltage = -12;
+        motorConfig.Voltage.PeakForwardVoltage = RobotConstants.NOMINAL_VOLTAGE;
+        motorConfig.Voltage.PeakReverseVoltage = -RobotConstants.NOMINAL_VOLTAGE;
 
         motorConfig.CurrentLimits.SupplyCurrentLimitEnable = IntakeConstants.IS_CURRENT_LIMIT_ENABLED;
         motorConfig.CurrentLimits.SupplyCurrentLimit = IntakeConstants.PEAK_CURRENT_LIMIT;
@@ -93,7 +94,7 @@ public class IntakeIOReal implements IntakeIO {
     }
 
     public double getPosition() {
-        return ConvUtil.RotationsToDegrees(motorPosition.getValueAsDouble()); //TODO why????
+        return motorPosition.getValueAsDouble(); 
     }
 
     public double getVelocity() {
@@ -105,7 +106,7 @@ public class IntakeIOReal implements IntakeIO {
     }
 
     public double getIntendedVoltage() {
-        return intakeMotor.get(); //TODO get return -1 to 1 no -12 to 12
+        return intakeMotor.get() * 12;
     }
 
     public void setNutralMode(boolean isbrake) {

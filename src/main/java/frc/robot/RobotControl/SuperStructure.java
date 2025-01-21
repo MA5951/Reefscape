@@ -56,16 +56,14 @@ public class SuperStructure extends GenericSuperStracture {
 
     public static double getBallRemoveHight() {
         if (Field.isReefTag(RobotContainer.vision.getTagID())) {
-            return Field.getFaceByID(RobotContainer.vision.getTagID()).BallHight() == Field.BallHight.HIGH ? ElevatorConstants.HIGHT_EJECT_BALL_HIGH :
-            ElevatorConstants.HIGHT_EJECT_BALL_LOW;
+            return Field.getFaceByID(RobotContainer.vision.getTagID()).BallHight().elevatorHight;
         } else {
-            return Field.getClosestReefFace(currentPoseSupplier.get()).BallHight() == Field.BallHight.HIGH ? ElevatorConstants.HIGHT_EJECT_BALL_HIGH :
-            ElevatorConstants.HIGHT_EJECT_BALL_LOW;
+            return Field.getClosestReefFace(currentPoseSupplier.get()).BallHight().elevatorHight;
         }
     }
 
     public static Field.GamePiece getGamePiece() {
-        if (intake.getFrontSensor()) {
+        if (intake.getFrontSensor() || intake.getRearSensor()) {
             return Field.GamePiece.CORAL;
         }
         return Field.GamePiece.NONE;
@@ -80,19 +78,17 @@ public class SuperStructure extends GenericSuperStracture {
     }
 
     public static double getCoralHoldValue() {
-        return 0d; //TODO write the code...
+        return RobotContainer.arm.getVelocity() * 0.3;// TODO CALC
     }
 
-    public static boolean isDistanceToIntake() {
-        return poseEstimator.getEstimatedRobotPose().getTranslation()
-                .getDistance(RobotConstants.ReefCenter) >= RobotConstants.DistanceToBallRemove; //TODO chack if need abs in the red/blue side why ball remove?
-                //TODO i will chek if you in the src zone
+    public void updateEejctPose() {
+        ejectPose = currentPoseSupplier.get();
     }
 
     public static boolean isDistanceToCloseArm() {
         return ejectPose.getTranslation().getDistance(
-                poseEstimator.getEstimatedRobotPose().getTranslation()) >= RobotConstants.DistanceToCloseArm; //TODO chack if need abs in the red/blue side 
-    } 
+                currentPoseSupplier.get().getTranslation()) >= RobotConstants.DistanceToCloseArm;
+    }
 
     public static double getAngleForIntakeAlign() {
         if (RobotContainer.alliance == Alliance.Red) {
@@ -108,49 +104,53 @@ public class SuperStructure extends GenericSuperStracture {
     }
 
     public static void updateScoringFace() {
-        scoringFace = Field.getClosestReefFace(currentPoseSupplier.get()); 
+        scoringFace = Field.getClosestReefFace(currentPoseSupplier.get());
     }
 
-    public static void updateAngleAdjustController(State robotState) { //TODO use the currentRobotState static vairable 
-        if (robotState == RobotConstants.INTAKE) {
+    public static void updateAngleAdjustController() {
+        if (RobotContainer.currentRobotState == RobotConstants.INTAKE) {
             TeleopSwerveController.angleAdjustController.setSetPoint(getAngleForIntakeAlign());
-        } else if (robotState == RobotConstants.SCORING) {
+        } else if (RobotContainer.currentRobotState == RobotConstants.SCORING) {
             TeleopSwerveController.angleAdjustController.setSetPoint(scoringFace.AbsAngle());
         }
-        //TODO add a case for climbe?
     }
 
-    public static void updateXYAdjustController(State robotState) {
-        if (robotState == RobotConstants.SCORING && RobotContainer.vision.getTagID() == scoringFace.TagID() &&
-                currentPoseSupplier.get().getTranslation()
-                        .getDistance(scoringFace.tagPose().getTranslation()) < RobotConstants.DistanceToRelativAlign) {
-            TeleopSwerveController.autoAdjustXYController.updateSetPoint(VisionConstants.RELATIV_REEF_SET_POINT);
-            TeleopSwerveController.autoAdjustXYController.updateMeaurment(() -> RobotContainer.vision.getPoseForRelativReefAlign());
-            TeleopSwerveController.autoAdjustXYController.setPID(
-                SwerveConstants.REL_X_KP, 
-                SwerveConstants.REL_X_KI, 
-                SwerveConstants.REL_X_KD, 
-                SwerveConstants.REL_XY_TOLORANCE, 
-                SwerveConstants.REL_Y_KP, 
-                SwerveConstants.REL_Y_KI, 
-                SwerveConstants.REL_Y_KD, 
-                SwerveConstants.REL_XY_TOLORANCE);
-            TeleopSwerveController.autoAdjustXYController.setConstrains(SwerveConstants.REL_XY_CONSTRAINTS);
-            TeleopSwerveController.autoAdjustXYController.setField(false);
-        }else if (robotState == RobotConstants.SCORING) { //TODO move the scoring state up and write if else 
-            TeleopSwerveController.autoAdjustXYController.updateSetPoint(scoringFace.getAlignPose());
-            TeleopSwerveController.autoAdjustXYController.updateMeaurment(currentPoseSupplier);
-            TeleopSwerveController.autoAdjustXYController.setPID(
-                SwerveConstants.ABS_X_KP, 
-                SwerveConstants.ABS_X_KI, 
-                SwerveConstants.ABS_X_KD, 
-                SwerveConstants.ABS_XY_TOLORANCE, 
-                SwerveConstants.ABS_Y_KP, 
-                SwerveConstants.ABS_Y_KI, 
-                SwerveConstants.ABS_Y_KD, 
-                SwerveConstants.ABS_XY_TOLORANCE);
-            TeleopSwerveController.autoAdjustXYController.setConstrains(SwerveConstants.ABS_XY_CONSTRAINTS);
-            TeleopSwerveController.autoAdjustXYController.setField(true);
+    public static void updateXYAdjustController() {
+        if (RobotContainer.currentRobotState == RobotConstants.SCORING) {
+            if (RobotContainer.currentRobotState == RobotConstants.SCORING
+                    && RobotContainer.vision.getTagID() == scoringFace.TagID() &&
+                    currentPoseSupplier.get().getTranslation()
+                            .getDistance(
+                                    scoringFace.tagPose().getTranslation()) < RobotConstants.DistanceToRelativAlign) {
+                TeleopSwerveController.autoAdjustXYController.updateSetPoint(VisionConstants.RELATIV_REEF_SET_POINT);
+                TeleopSwerveController.autoAdjustXYController
+                        .updateMeaurment(() -> RobotContainer.vision.getPoseForRelativReefAlign());
+                TeleopSwerveController.autoAdjustXYController.setPID(
+                        SwerveConstants.REL_X_KP,
+                        SwerveConstants.REL_X_KI,
+                        SwerveConstants.REL_X_KD,
+                        SwerveConstants.REL_XY_TOLORANCE,
+                        SwerveConstants.REL_Y_KP,
+                        SwerveConstants.REL_Y_KI,
+                        SwerveConstants.REL_Y_KD,
+                        SwerveConstants.REL_XY_TOLORANCE);
+                TeleopSwerveController.autoAdjustXYController.setConstrains(SwerveConstants.REL_XY_CONSTRAINTS);
+                TeleopSwerveController.autoAdjustXYController.setField(false);
+            } else {
+                TeleopSwerveController.autoAdjustXYController.updateSetPoint(scoringFace.getAlignPose());
+                TeleopSwerveController.autoAdjustXYController.updateMeaurment(currentPoseSupplier);
+                TeleopSwerveController.autoAdjustXYController.setPID(
+                        SwerveConstants.ABS_X_KP,
+                        SwerveConstants.ABS_X_KI,
+                        SwerveConstants.ABS_X_KD,
+                        SwerveConstants.ABS_XY_TOLORANCE,
+                        SwerveConstants.ABS_Y_KP,
+                        SwerveConstants.ABS_Y_KI,
+                        SwerveConstants.ABS_Y_KD,
+                        SwerveConstants.ABS_XY_TOLORANCE);
+                TeleopSwerveController.autoAdjustXYController.setConstrains(SwerveConstants.ABS_XY_CONSTRAINTS);
+                TeleopSwerveController.autoAdjustXYController.setField(true);
+            }
         }
     }
 
@@ -159,7 +159,7 @@ public class SuperStructure extends GenericSuperStracture {
     }
 
     public static void update() {
-        //log the func?
+        // log the func?
     }
 
 }

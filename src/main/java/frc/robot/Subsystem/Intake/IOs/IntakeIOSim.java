@@ -15,7 +15,7 @@ public class IntakeIOSim extends IntakeIOReal {
 
     public IntakeIOSim() {
         super();
-        intakeMotorSim = new TalonFXMotorSim(intakeMotor, motorConfig, DCMotor.getFalcon500(1), 0.05, false);
+        intakeMotorSim = new TalonFXMotorSim(intakeMotor, motorConfig, DCMotor.getFalcon500(1), 0.0025, false);
         frontSensorSim = new DigitalInput(PortMap.Intake.frontSensorSim);
         rearSensorSim = new DigitalInput(PortMap.Intake.rearSensorSim);
     }

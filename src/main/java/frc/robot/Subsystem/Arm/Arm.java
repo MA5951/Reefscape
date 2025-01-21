@@ -7,13 +7,14 @@ import com.ma5951.utils.Utils.ConvUtil;
 import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
 import frc.robot.Subsystem.Arm.IOs.ArmIO;
+import frc.robot.Subsystem.Intake.IntakeConstants;
 
 public class Arm extends StateControlledSubsystem {
     private static Arm arm;
 
     private ArmIO armIO = ArmConstants.getArmIO();
 
-    public Arm() { //TODO change to priveate
+    private Arm() {
         super(ArmConstants.SUBSYSTEM_STATES, "Arm");
     }
 
@@ -45,7 +46,7 @@ public class Arm extends StateControlledSubsystem {
         return armIO.getSetPoint();
     }
 
-    public void resetPose() { 
+    public void resetPose() {
         armIO.resetPosition(getAbsolutePosition());
     }
 
@@ -56,16 +57,14 @@ public class Arm extends StateControlledSubsystem {
     public void setVoltage(double volt) {
         armIO.setVoltage(volt);
     }
-// TODO remove the line 
 
     public void setAngle(double angle) {
         armIO.setAngle(angle);
     }
 
     public boolean atPoint() {
-        return armIO.getError() <= ArmConstants.TOLERANCE; //TODO need to be abs value
+        return Math.abs(armIO.getError()) <= ArmConstants.TOLERANCE;
     }
-
 
     public boolean BallRemovingCanMove() {
         return RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && RobotContainer.elevator.atPoint()
@@ -74,11 +73,13 @@ public class Arm extends StateControlledSubsystem {
 
     @Override
     public boolean canMove() {
-        return BallRemovingCanMove() || getSystemFunctionState() == StatesConstants.MANUEL
-                || RobotContainer.currentRobotState != RobotConstants.CLIMB
-                || getCurrent() < ArmConstants.kCAN_MOVE_CURRENT_LIMIT; //TODO change to abs the current value
-                //TODO add system limits not the same as curren 
-                //TODO if in sorting mod dont move 
+        return (BallRemovingCanMove() && RobotContainer.intake.getTargetState() != IntakeConstants.SORTING
+                && RobotContainer.currentRobotState != RobotConstants.CLIMB
+                && Math.abs(getCurrent()) < ArmConstants.kCAN_MOVE_CURRENT_LIMIT
+
+                && getSetPoint() > ArmConstants.MIN_ANGLE && getSetPoint() < ArmConstants.MAX_ANGLE)
+                || getSystemFunctionState() == StatesConstants.MANUEL;
+
     }
 
     public static Arm getInstance() {
@@ -90,7 +91,7 @@ public class Arm extends StateControlledSubsystem {
 
     @Override
     public void periodic() {
-        //TODO add super
+        super.periodic();
         armIO.updatePeriodic();
     }
 }

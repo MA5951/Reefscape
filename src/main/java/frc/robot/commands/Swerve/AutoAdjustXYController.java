@@ -32,7 +32,7 @@ public class AutoAdjustXYController implements SwerveController {
     private LoggedPose2d targetPoseLog;
     private LoggedPose2d setPointPoseLog;
     private Pose2d targetPose;
-    private boolean isFieldRelativ = true; //TODO change the name
+    private boolean isFieldRelativ = true;
     private Supplier<Double> measurment;
 
     public AutoAdjustXYController(Supplier<Pose2d> robotPoseSupplier, Supplier<Double> robotAngle, Pose2d setPoint) { 

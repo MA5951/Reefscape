@@ -91,7 +91,7 @@ public class RobotContainer extends DeafultRobotContainer {
 
   public static void setINTAKE() {
     setCurrentState(RobotConstants.INTAKE);
-    SuperStructure.updateAngleAdjustController(currentRobotState);
+    SuperStructure.updateAngleAdjustController();
     intake.setTargetState(IntakeConstants.INTAKE);
     arm.setTargetState(ArmConstants.INTAKE);
     elevator.setTargetState(ElevatorConstants.INTAKE);
@@ -99,7 +99,7 @@ public class RobotContainer extends DeafultRobotContainer {
 
   public static void setSCORING() {
     setCurrentState(RobotConstants.SCORING);
-    SuperStructure.updateAngleAdjustController(currentRobotState);
+    SuperStructure.updateAngleAdjustController();
     intake.setTargetState(IntakeConstants.HOLD);
     arm.setTargetState(ArmConstants.SCORING);
     elevator.setTargetState(ElevatorConstants.SCORING);
@@ -137,8 +137,7 @@ public class RobotContainer extends DeafultRobotContainer {
         .onTrue(Do(() -> Vision.getInstance().updateOdometry()));
 
     // Intake
-    new Trigger(() -> driverController.getL1Button()
-        || driverController.getR1Button() && !SuperStructure.hasGamePiece() && SuperStructure.isDistanceToIntake())
+    new Trigger(() -> driverController.getR1Button() && !SuperStructure.hasGamePiece())
         .onTrue(Do(() -> setINTAKE()));
 
     new Trigger(
@@ -159,8 +158,7 @@ public class RobotContainer extends DeafultRobotContainer {
         && SuperStructure.isDistanceToCloseArm()).onFalse(Do(() -> setIDLE()));
 
     // Ball Removing
-    new Trigger(() -> driverController.getL1Button()
-        || driverController.getR1Button() && !SuperStructure.hasGamePiece() && !SuperStructure.isDistanceToIntake() && SuperStructure.isDistanceToCloseArm())
+    new Trigger(() -> driverController.getL2Button() && !SuperStructure.hasGamePiece() && SuperStructure.isDistanceToCloseArm())
         .onTrue(Do(() -> setBALLREMOVING()));
 
     // Climb

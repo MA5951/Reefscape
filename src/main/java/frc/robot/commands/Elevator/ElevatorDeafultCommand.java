@@ -80,6 +80,7 @@ public class ElevatorDeafultCommand extends RobotFunctionStatesCommand {
     @Override
     public void ManuelLoop() {
         super.ManuelLoop();
+        System.out.println(RobotContainer.operatorController.getLeftY() * ElevatorConstants.MANUEL_VOLTAGE_LIMIT);
         elevator.setVoltage(RobotContainer.operatorController.getLeftY() * ElevatorConstants.MANUEL_VOLTAGE_LIMIT);
     }
 

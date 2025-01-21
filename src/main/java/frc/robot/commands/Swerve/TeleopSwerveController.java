@@ -36,7 +36,7 @@ public class TeleopSwerveController extends Command {
   private static LoggedString xyControllerLog;
   private static LoggedString theathControllerLog;
 
-  public TeleopSwerveController(PS5Controller controller) { //TODO add left of right ajust 
+  public TeleopSwerveController(PS5Controller controller) { // TODO add left of right ajust
     swerve = SwerveSubsystem.getInstance();
 
     driveController = new FieldCentricDriveController(controller, () -> controller.getR2Button(),
@@ -60,21 +60,21 @@ public class TeleopSwerveController extends Command {
   @Override
   public void execute() {
 
-    if (RobotContainer.currentRobotState == RobotConstants.INTAKE) { //TODO add the drive input as 20%? 
+    if (RobotContainer.currentRobotState == RobotConstants.INTAKE) {
       robotSpeeds = driveController.update();
       robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
-      xyControllerLog.update("Drive Controller");//TODO move outside from the if and wtire it only once
-      theathControllerLog.update("Angle Controller");//TODO move outside from the if and wtire it only once
-    } else if (RobotContainer.currentRobotState == RobotConstants.SCORING) { //TODO add the drive input as 20%? 
-      SuperStructure.updateXYAdjustController(RobotContainer.currentRobotState);
+      xyControllerLog.update("Drive Controller");
+      theathControllerLog.update("Angle Controller");
+    } else if (RobotContainer.currentRobotState == RobotConstants.SCORING) {
+      SuperStructure.updateXYAdjustController();
       robotSpeeds = autoAdjustXYController.update();
-      robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond; 
-      xyControllerLog.update("XY Controller"); //TODO move outside from the if and wtire it only once
-      theathControllerLog.update("Angle Controller"); //TODO move outside from the if and wtire it only once
+      robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
+      xyControllerLog.update("XY Controller");
+      theathControllerLog.update("Angle Controller");
     } else {
-      xyControllerLog.update("Drive Controller");//TODO move outside from the if and wtire it only once
-      theathControllerLog.update("Drive Controller");//TODO move outside from the if and wtire it only once
-      robotSpeeds = driveController.update(); 
+      xyControllerLog.update("Drive Controller");
+      theathControllerLog.update("Drive Controller");
+      robotSpeeds = driveController.update();
     }
 
     swerve.drive(robotSpeeds);
@@ -96,6 +96,7 @@ public class TeleopSwerveController extends Command {
   }
 
   public static boolean atPointForScoring() {
-    return false;// TODO atPoint and under speed
+    return RobotContainer.swerve.getVelocityVector() < RobotConstants.SpeedToScore && autoAdjustXYController.atPoint()
+        && angleAdjustController.getAtPoint();
   }
 }

@@ -264,6 +264,7 @@ public class SwerveConstants {
         public final static double THATA_KI = 0;
         public final static double THATA_KD = 0.0;
         public final static double ANGLE_PID_TOLORANCE = Math.toRadians(3);
+        public final static double ANGLE_RANGE = 180;
 
         // Swerve AutoAdjustXY
         public final static double ABS_X_KP = 0.4;
@@ -295,5 +296,6 @@ public class SwerveConstants {
         // Swerve DRIVE CONTROLLER
         public final static double DRIVER_XY_SCALER = 1;
         public final static double DRIVER_THATA_SCALER = 0.7;
+        public final static double DRIVER_SLOW_FACTOR = 0.4;
 
 }
