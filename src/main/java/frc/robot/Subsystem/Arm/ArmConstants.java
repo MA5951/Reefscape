@@ -24,13 +24,13 @@ public class ArmConstants {
     public static final double EJECT_BALL_START_ANGLE = 0;
     public static final double EJECT_BALL_STOP_ANGLE = 0;
     
-    public static final double HOLD_ANGLE = 0;
+    public static final double HOLD_ANGLE = 90;
 
     public static final double ABS_ENCODER_OFFSET = 0;
 
     public static final double GEAR_RATIO = 18;
 
-    public static final double kP = 0;
+    public static final double kP = 10000;
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kS = 0;
@@ -42,9 +42,9 @@ public class ArmConstants {
     public static final double PEAK_CURRENT_LIMIT = 30;
     public static final double CONTINUOUS_CURRENT_LIMIT = 25;
     public static final double CONTINUOUS_CURRENT_DURATION = 0.1;
-    public static final boolean ENABLE_CURRENT_LIMIT = true;
+    public static final boolean ENABLE_CURRENT_LIMIT = false;
 
-    public static final double kCAN_MOVE_CURRENT_LIMIT = 30;
+    public static final double kCAN_MOVE_CURRENT_LIMIT = 140;
     public static final double kMANUEL_VOLTAGE_LIMIT = 7;
 
     public static final State IDLE = StatesConstants.IDLE;

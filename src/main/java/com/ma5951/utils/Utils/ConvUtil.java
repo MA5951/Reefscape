@@ -17,6 +17,16 @@ public class ConvUtil {
         return RPS * 60;
     }
 
+     /**
+   * Convert Round Per Secound to Round Per Minute.
+   *
+   * @param RPS to conver
+   * @return RPM after convertion
+   */
+  public static double RadiansPStoRPS(double RadiansPS) {
+    return RadiansPS * 0.1591549430919;
+}
+
     /**
      * Convert Round Per Minute to Round Per Secound.
      * 

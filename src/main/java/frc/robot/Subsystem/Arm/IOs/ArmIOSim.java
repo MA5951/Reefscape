@@ -5,15 +5,17 @@ import com.ctre.phoenix6.sim.CANcoderSimState;
 import com.ma5951.utils.ControlledMotors.Sim.TalonFXMotorSim;
 
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 
 public class ArmIOSim extends ArmIOReal {
     private TalonFXMotorSim armMotorSim;
     private CANcoderSimState canCoderSimstate;
+    private SingleJointedArmSim armSim;
 
     public  ArmIOSim() {
         super();
         canCoderSimstate = new CANcoderSimState(encoder);
-        armMotorSim = new TalonFXMotorSim(armMotor, armConfig, DCMotor.getFalcon500(1), 0.005, false);
+        armMotorSim = new TalonFXMotorSim(armMotor, armConfig, DCMotor.getKrakenX60(1), 0.004, false);
     }
 
     @Override

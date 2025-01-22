@@ -1,5 +1,6 @@
 package frc.robot.Subsystem.Arm;
 
+import com.ma5951.utils.Logger.LoggedBool;
 import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
 import com.ma5951.utils.Utils.ConvUtil;
@@ -12,10 +13,13 @@ import frc.robot.Subsystem.Intake.IntakeConstants;
 public class Arm extends StateControlledSubsystem {
     private static Arm arm;
 
+    private LoggedBool atPointLog;
+
     private ArmIO armIO = ArmConstants.getArmIO();
 
     private Arm() {
         super(ArmConstants.SUBSYSTEM_STATES, "Arm");
+        atPointLog = new LoggedBool("/Subsystems/Arm/AtPoint");
     }
 
     public double getFeedForwardVoltage() {
@@ -73,13 +77,12 @@ public class Arm extends StateControlledSubsystem {
 
     @Override
     public boolean canMove() {
-        return (BallRemovingCanMove() && RobotContainer.intake.getTargetState() != IntakeConstants.SORTING
+        return (BallRemovingCanMove() ) || (RobotContainer.intake.getTargetState() != IntakeConstants.SORTING
                 && RobotContainer.currentRobotState != RobotConstants.CLIMB
                 && Math.abs(getCurrent()) < ArmConstants.kCAN_MOVE_CURRENT_LIMIT
 
-                && getSetPoint() > ArmConstants.MIN_ANGLE && getSetPoint() < ArmConstants.MAX_ANGLE)
+                && getSetPoint() >= ArmConstants.MIN_ANGLE && getSetPoint() <= ArmConstants.MAX_ANGLE)
                 || getSystemFunctionState() == StatesConstants.MANUEL;
-
     }
 
     public static Arm getInstance() {
@@ -93,5 +96,6 @@ public class Arm extends StateControlledSubsystem {
     public void periodic() {
         super.periodic();
         armIO.updatePeriodic();
+        atPointLog.update(atPoint());
     }
 }

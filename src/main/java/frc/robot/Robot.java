@@ -107,7 +107,7 @@ public class Robot extends TimedRobot {
     SimulatedArena.getInstance().simulationPeriodic();
     simulationPose2d.update(SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose());
 
-    ScoringPose = new Pose3d(ScoringPose.getX(), ScoringPose.getY(), RobotContainer.elevator.getHight(),
+    ScoringPose = new Pose3d(ScoringPose.getX(), ScoringPose.getY(), RobotContainer.elevator.getHight() + RobotConstants.SIM_ARM_OFFSET.getZ(),
         new Rotation3d(0, ConvUtil.DegreesToRadians(-RobotContainer.arm.getPosition()), 0));
     scoringPose3d.update(ScoringPose);
 

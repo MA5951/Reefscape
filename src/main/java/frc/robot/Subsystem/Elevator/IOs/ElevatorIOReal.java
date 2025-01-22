@@ -72,7 +72,7 @@ public class ElevatorIOReal implements ElevatorIO {
     }
 
     public void configMotors() {
-        masterConfig.Feedback.SensorToMechanismRatio = ElevatorConstants.GEAR * ElevatorConstants.SPROKET_CIRCUMFERENCE;
+        masterConfig.Feedback.SensorToMechanismRatio = ElevatorConstants.GEAR* ElevatorConstants.SPROKET_CIRCUMFERENCE;
 
         masterConfig.Voltage.PeakForwardVoltage = RobotConstants.NOMINAL_VOLTAGE;
         masterConfig.Voltage.PeakReverseVoltage = -RobotConstants.NOMINAL_VOLTAGE;
@@ -108,7 +108,7 @@ public class ElevatorIOReal implements ElevatorIO {
     }
 
     public double getPosition() {
-        return masterMotorPosition.getValueAsDouble();
+        return masterMotorPosition.getValueAsDouble(); //* ElevatorConstants.SPROKET_CIRCUMFERENCE;
     }
 
     public double getVelocity() {
@@ -120,12 +120,12 @@ public class ElevatorIOReal implements ElevatorIO {
     }
 
     public double getError() {
-        return masterError.getValueAsDouble() * ElevatorConstants.SPROKET_CIRCUMFERENCE;
+        return masterError.getValueAsDouble(); //* ElevatorConstants.SPROKET_CIRCUMFERENCE;
     }
 
     
     public double getSetPoint() {
-        return masterSetPoint.getValueAsDouble() * ElevatorConstants.SPROKET_CIRCUMFERENCE;
+        return masterSetPoint.getValueAsDouble(); //* ElevatorConstants.SPROKET_CIRCUMFERENCE;
     }
 
     public void resetPosition(double newHight) {
@@ -157,7 +157,7 @@ public class ElevatorIOReal implements ElevatorIO {
     }
 
     public void setHight(double hight) {
-        masterMotor.setControl(MotionMagic.withPosition(hight / ElevatorConstants.SPROKET_CIRCUMFERENCE).withSlot(ElevatorConstants.CONTROL_SLOT)); //Check if gear has iisues  
+        masterMotor.setControl(MotionMagic.withPosition(hight ).withSlot(ElevatorConstants.CONTROL_SLOT)); //Check if gear has iisues  
         slaveMotor.setControl(masterFollower);
     }
 

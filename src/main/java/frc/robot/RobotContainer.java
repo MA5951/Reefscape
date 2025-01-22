@@ -57,6 +57,7 @@ public class RobotContainer extends DeafultRobotContainer {
 
     configureBindings(); 
     setUpAutoCommands(); 
+
   }
 
   public static void setUpAutoCommands() {

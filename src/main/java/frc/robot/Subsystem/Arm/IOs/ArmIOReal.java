@@ -60,7 +60,7 @@ public class ArmIOReal implements ArmIO {
 
         motorPositionLog = new LoggedDouble("/Subsystems/Arm/IO/Motor Position");
         motorVelocityLog = new LoggedDouble("/Subsystems/Arm/IO/Motor Velocity");
-        motorCurrentLog = new LoggedDouble("/Subsystems/Arm/Motor Current");
+        motorCurrentLog = new LoggedDouble("/Subsystems/Arm/IO/Motor Current");
         motorVoltageLog = new LoggedDouble("Subsystems/Arm/IO/Motor Voltage");
         errorLog = new LoggedDouble("/Subsystems/Arm/IO/Error");
         setPointLog = new LoggedDouble("/Subsystems/Arm/IO/Set Point");

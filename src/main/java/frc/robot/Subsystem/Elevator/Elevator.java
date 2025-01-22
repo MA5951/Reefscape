@@ -4,6 +4,7 @@
 
 package frc.robot.Subsystem.Elevator;
 
+import com.ma5951.utils.Logger.LoggedBool;
 import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
 
@@ -13,9 +14,11 @@ public class Elevator extends StateControlledSubsystem {
   private static Elevator elevator;
 
   private ElevatorIO elevatorIO = ElevatorConstants.getElevatorIO();
+  private LoggedBool atPointLog;
 
   private Elevator() { 
     super(ElevatorConstants.SUBSYSTEM_STATES, "Elevator");
+    atPointLog = new LoggedBool("/Subsystems/Elevator/AtPoint");
   }
 
   public double getFeedForwardVoltage() {
@@ -69,8 +72,8 @@ public class Elevator extends StateControlledSubsystem {
   @Override
   public boolean canMove() {
     return getSystemFunctionState() == StatesConstants.MANUEL
-        || getSetPoint() < ElevatorConstants.MAX_HIGHT && getSetPoint() > ElevatorConstants.MIN_HIGHT &&
-            Math.abs(getCurrent()) < ElevatorConstants.CAN_MOVE_CURRENT_LIMIT;
+        || getSetPoint() <= ElevatorConstants.MAX_HIGHT && getSetPoint() >= ElevatorConstants.MIN_HIGHT &&
+            Math.abs(getCurrent()) <= ElevatorConstants.CAN_MOVE_CURRENT_LIMIT;
   }
 
   public static Elevator getInstance() {
@@ -84,5 +87,6 @@ public class Elevator extends StateControlledSubsystem {
   public void periodic() {
     super.periodic();
     elevatorIO.updatePeriodic();
+    atPointLog.update(atPoint());
   }
 }
