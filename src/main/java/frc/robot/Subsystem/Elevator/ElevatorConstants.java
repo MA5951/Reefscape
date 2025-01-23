@@ -28,11 +28,11 @@ public class ElevatorConstants {
     public static final double SPROKET_CIRCUMFERENCE = SPROKET_PITCH_DIAMETER * Math.PI;
 
     public static final int CONTROL_SLOT = 0;
-    public static final double kP = 0.2;
+    public static final double kP = 0.42;
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kS = 0;
-    public static final double TOLORANCE = 0.02;
+    public static final double TOLORANCE = 0.03;
     public static final double FEED_FORWARD = 0;
     
     public static final double HOME_VOLTAGE = -3;

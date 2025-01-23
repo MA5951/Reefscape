@@ -8,6 +8,7 @@ import com.ma5951.utils.Logger.LoggedBool;
 import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
 
+import frc.robot.Subsystem.Arm.ArmConstants;
 import frc.robot.Subsystem.Elevator.IOs.ElevatorIO;
 
 public class Elevator extends StateControlledSubsystem {
@@ -52,6 +53,10 @@ public class Elevator extends StateControlledSubsystem {
   public boolean atPoint() {
     return Math.abs(elevatorIO.getError()) <= ElevatorConstants.TOLORANCE;
   }
+
+  public boolean atMinPose() {
+        return Math.abs(elevatorIO.getError()) <= ArmConstants.TOLERANCE && getHight() < 0.1;
+    }
 
   public double getSetPoint() {
     return elevatorIO.getSetPoint();

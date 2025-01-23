@@ -70,6 +70,10 @@ public class Arm extends StateControlledSubsystem {
         return Math.abs(armIO.getError()) <= ArmConstants.TOLERANCE;
     }
 
+    public boolean atMinPose() {
+        return Math.abs(armIO.getError()) <= ArmConstants.TOLERANCE && getPosition() < 2;
+    }
+
     public boolean BallRemovingCanMove() {
         return RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && RobotContainer.elevator.atPoint()
                 && getPosition() < ArmConstants.MAX_ANGLE_BALL;
