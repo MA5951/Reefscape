@@ -67,12 +67,12 @@ public class Intake extends StateControlledSubsystem {
   }
 
   public boolean SortingCanMove() {
-    return RobotContainer.currentRobotState == RobotConstants.SORTING
-        && ((getRearSensor() && intakeIO.getIntendedVoltage() > 0) || !getRearSensor()); //TODO need to be checkt in sim
+    return RobotContainer.currentRobotState == RobotConstants.SORTING; 
   }
 
   @Override
   public boolean canMove() {
+    System.out.println(intakeIO.getAppliedVolts());
     return IntakeCanMove() || ScoringCanMove() || BallRemovingCanMove() || SortingCanMove()
         || getSystemFunctionState() == StatesConstants.MANUEL
         || RobotContainer.intake.getTargetState() == IntakeConstants.HOLD

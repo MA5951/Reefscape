@@ -149,11 +149,14 @@ public class RobotContainer extends DeafultRobotContainer {
     new Trigger(() -> driverController.getL1Button() && SuperStructure.hasGamePiece()
         && currentRobotState != RobotConstants.SORTING)
         .onTrue(Do(() -> SuperStructure.updateScoringFace()))
-        .onTrue(Do(() -> SuperStructure.setScoringLocation(Field.ScoringLocation.LEFT)));
+        .onTrue(Do(() -> SuperStructure.setScoringLocation(Field.ScoringLocation.LEFT)))
+        .onTrue(Do(() -> setSCORING()));
 
     new Trigger(() -> driverController.getR1Button() && SuperStructure.hasGamePiece()
         && currentRobotState != RobotConstants.SORTING)
-        .onTrue(Do(() -> SuperStructure.setScoringLocation(Field.ScoringLocation.RIGHT)));
+        .onTrue(Do(() -> SuperStructure.updateScoringFace()))
+        .onTrue(Do(() -> SuperStructure.setScoringLocation(Field.ScoringLocation.RIGHT)))
+        .onTrue(Do(() -> setSCORING()));
 
     new Trigger(() -> currentRobotState == RobotConstants.SCORING && !SuperStructure.hasGamePiece()
         && SuperStructure.isDistanceToCloseArm()).onFalse(Do(() -> setIDLE()));

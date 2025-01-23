@@ -66,16 +66,19 @@ public class TeleopSwerveController extends Command {
       xyControllerLog.update("Drive Controller");
       theathControllerLog.update("Angle Controller");
     } else if (RobotContainer.currentRobotState == RobotConstants.SCORING) {
-      SuperStructure.updateXYAdjustController();
+      xyControllerLog.update(SuperStructure.updateXYAdjustController());
       robotSpeeds = autoAdjustXYController.update();
       robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
-      xyControllerLog.update("XY Controller");
       theathControllerLog.update("Angle Controller");
     } else {
       xyControllerLog.update("Drive Controller");
       theathControllerLog.update("Drive Controller");
       robotSpeeds = driveController.update();
     }
+
+    // xyControllerLog.update("Drive Controller");
+    // theathControllerLog.update("Drive Controller");
+    // robotSpeeds = driveController.update();
 
     swerve.drive(robotSpeeds);
   }

@@ -115,14 +115,18 @@ public class SuperStructure extends GenericSuperStracture {
         }
     }
 
-    public static void updateXYAdjustController() {
+    public static String updateXYAdjustController() {
         if (RobotContainer.currentRobotState == RobotConstants.SCORING) {
-            if (RobotContainer.currentRobotState == RobotConstants.SCORING
-                    && RobotContainer.vision.getTagID() == scoringFace.TagID() &&
+            if (RobotContainer.vision.getTagID() == scoringFace.TagID() &&
                     currentPoseSupplier.get().getTranslation()
                             .getDistance(
                                     scoringFace.tagPose().getTranslation()) < RobotConstants.DistanceToRelativAlign) {
-                TeleopSwerveController.autoAdjustXYController.updateSetPoint(VisionConstants.RELATIV_REEF_SET_POINT);
+                if (scoringLocation == Field.ScoringLocation.LEFT) {
+                    TeleopSwerveController.autoAdjustXYController.updateSetPoint(VisionConstants.RELATIV_LEFT_REEF_SET_POINT);
+                } else if (scoringLocation == Field.ScoringLocation.RIGHT) {
+                    TeleopSwerveController.autoAdjustXYController.updateSetPoint(VisionConstants.RELATIV_RIGHT_REEF_SET_POINT);
+                }
+                
                 TeleopSwerveController.autoAdjustXYController
                         .updateMeaurment(() -> RobotContainer.vision.getPoseForRelativReefAlign());
                 TeleopSwerveController.autoAdjustXYController.setPID(
@@ -136,6 +140,7 @@ public class SuperStructure extends GenericSuperStracture {
                         SwerveConstants.REL_XY_TOLORANCE);
                 TeleopSwerveController.autoAdjustXYController.setConstrains(SwerveConstants.REL_XY_CONSTRAINTS);
                 TeleopSwerveController.autoAdjustXYController.setField(false);
+                return "RELATIV XY";
             } else {
                 TeleopSwerveController.autoAdjustXYController.updateSetPoint(scoringFace.getAlignPose());
                 TeleopSwerveController.autoAdjustXYController.updateMeaurment(currentPoseSupplier);
@@ -150,8 +155,11 @@ public class SuperStructure extends GenericSuperStracture {
                         SwerveConstants.ABS_XY_TOLORANCE);
                 TeleopSwerveController.autoAdjustXYController.setConstrains(SwerveConstants.ABS_XY_CONSTRAINTS);
                 TeleopSwerveController.autoAdjustXYController.setField(true);
+                return "ABS XY";
             }
+            
         }
+        return "NONE";
     }
 
     public static boolean hasGamePiece() {
