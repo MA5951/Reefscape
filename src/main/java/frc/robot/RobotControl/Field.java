@@ -49,17 +49,11 @@ public class Field {
     }
 
     public static enum ScoringLocation {
-        LEFT(0, 0),  //TODO add a real value //tEST
-        RIGHT(0, 0), //TODO add a real value//tEST
-        NONE(0, 0);
+        LEFT(),  
+        RIGHT(), 
+        NONE();
 
-        public final double tX;
-        public final double distanceFromTag;
-
-        ScoringLocation(double Tx, double DistanceFromTag) {
-            tX = Tx;
-            distanceFromTag = DistanceFromTag;
-        }
+       
     }
 
     public static enum BallHight {

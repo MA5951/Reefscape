@@ -65,7 +65,7 @@ public class TeleopSwerveController extends Command {
       robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
       xyControllerLog.update("Drive Controller");
       theathControllerLog.update("Angle Controller");
-    } else if (RobotContainer.currentRobotState == RobotConstants.SCORING) {
+    } else if (RobotContainer.currentRobotState == RobotConstants.SCORING && RobotContainer.intake.getRearSensor()) {
       xyControllerLog.update(SuperStructure.updateXYAdjustController());
       robotSpeeds = autoAdjustXYController.update();
       robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;

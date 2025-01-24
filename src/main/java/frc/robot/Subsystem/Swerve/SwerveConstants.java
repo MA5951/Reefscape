@@ -263,7 +263,7 @@ public class SwerveConstants {
         public final static double THATA_KP = 0.1;
         public final static double THATA_KI = 0;
         public final static double THATA_KD = 0.0;
-        public final static double ANGLE_PID_TOLORANCE = Math.toRadians(3);
+        public final static double ANGLE_PID_TOLORANCE = 10;
         public final static double ANGLE_RANGE = 180;
 
         // Swerve AutoAdjustXY

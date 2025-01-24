@@ -1,6 +1,8 @@
 
 package frc.robot.RobotControl;
 
+import org.photonvision.simulation.VideoSimUtil;
+
 import com.ma5951.utils.RobotControl.GenericSuperStracture;
 import com.ma5951.utils.RobotControl.StatesTypes.State;
 import com.ma5951.utils.Utils.DriverStationUtil;
@@ -81,7 +83,7 @@ public class SuperStructure extends GenericSuperStracture {
         return RobotContainer.arm.getVelocity() * 0.3;// TODO CALC
     }
 
-    public void updateEejctPose() {
+    public static void updateEejctPose() {
         ejectPose = currentPoseSupplier.get();
     }
 
@@ -115,12 +117,28 @@ public class SuperStructure extends GenericSuperStracture {
         }
     }
 
+    public static void setAbsXY() {
+        TeleopSwerveController.autoAdjustXYController.updateSetPoint(scoringFace.getAlignPose());
+                TeleopSwerveController.autoAdjustXYController.updateMeaurment(currentPoseSupplier);
+                TeleopSwerveController.autoAdjustXYController.setPID(
+                        SwerveConstants.ABS_X_KP,
+                        SwerveConstants.ABS_X_KI,
+                        SwerveConstants.ABS_X_KD,
+                        SwerveConstants.ABS_XY_TOLORANCE,
+                        SwerveConstants.ABS_Y_KP,
+                        SwerveConstants.ABS_Y_KI,
+                        SwerveConstants.ABS_Y_KD,
+                        SwerveConstants.ABS_XY_TOLORANCE);
+                TeleopSwerveController.autoAdjustXYController.setConstrains(SwerveConstants.ABS_XY_CONSTRAINTS);
+                TeleopSwerveController.autoAdjustXYController.setField(true);
+    }
+
     public static String updateXYAdjustController() {
         if (RobotContainer.currentRobotState == RobotConstants.SCORING) {
             if (RobotContainer.vision.getTagID() == scoringFace.TagID() &&
                     currentPoseSupplier.get().getTranslation()
                             .getDistance(
-                                    scoringFace.tagPose().getTranslation()) < RobotConstants.DistanceToRelativAlign) {
+                                    scoringFace.tagPose().getTranslation()) < RobotConstants.DistanceToRelativAlign && TeleopSwerveController.angleAdjustController.getAtPoint()) {
                 if (scoringLocation == Field.ScoringLocation.LEFT) {
                     TeleopSwerveController.autoAdjustXYController.updateSetPoint(VisionConstants.RELATIV_LEFT_REEF_SET_POINT);
                 } else if (scoringLocation == Field.ScoringLocation.RIGHT) {

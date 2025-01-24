@@ -7,7 +7,6 @@ import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
 import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
 import frc.robot.RobotControl.SuperStructure;
-import frc.robot.Subsystem.Arm.ArmConstants;
 import frc.robot.Subsystem.Intake.IOs.IntakeIO;
 import frc.robot.commands.Swerve.TeleopSwerveController;
 
@@ -59,7 +58,7 @@ public class Intake extends StateControlledSubsystem {
 
   public boolean ScoringCanMove() {
     return RobotContainer.currentRobotState == RobotConstants.SCORING && RobotContainer.elevator.atPoint()
-        && TeleopSwerveController.atPointForScoring() && RobotContainer.arm.atPoint() && SuperStructure.hasGamePiece();
+        && TeleopSwerveController.atPointForScoring() && RobotContainer.arm.atPoint() && getRearSensor();
   }
 
   public boolean BallRemovingCanMove() {
@@ -72,7 +71,6 @@ public class Intake extends StateControlledSubsystem {
 
   @Override
   public boolean canMove() {
-    System.out.println(intakeIO.getAppliedVolts());
     return IntakeCanMove() || ScoringCanMove() || BallRemovingCanMove() || SortingCanMove()
         || getSystemFunctionState() == StatesConstants.MANUEL
         || RobotContainer.intake.getTargetState() == IntakeConstants.HOLD
