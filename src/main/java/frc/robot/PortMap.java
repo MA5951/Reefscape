@@ -7,7 +7,7 @@ import com.ctre.phoenix6.CANBus;
 public class PortMap {
 
     public static class CanBus {
-        public static final CANBus CANivoreBus= new CANBus("Swerve");
+        public static final CANBus CANivoreBus= new CANBus("*");
         public static final CANBus RioBus = new CANBus("rio");
     }
     
@@ -42,8 +42,8 @@ public class PortMap {
     }
 
     public class Elevator {
-        public static final int elevatorMasterMotor = 14;
-        public static final int elevatorSlaveMotor = 15;
+        public static final int elevatorMasterMotor = 18;
+        public static final int elevatorSlaveMotor = 17;
         public static final int elevatorLimitSwich = 6;
     }
 
@@ -60,8 +60,8 @@ public class PortMap {
     }
 
     public class Arm {
-        public static final int armMotor = 17;
-        public static final int armEncoder = 18;
+        public static final int armMotor = 15;
+        public static final int armEncoder = 19;
     }
 }
 

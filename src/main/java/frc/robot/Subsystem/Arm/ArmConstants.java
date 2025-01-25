@@ -10,7 +10,7 @@ import frc.robot.Subsystem.Arm.IOs.ArmIOSim;
 
 public class ArmConstants {
 
-    public static final double MAX_ANGLE = 180; 
+    public static final double MAX_ANGLE = 200; 
     public static final double MIN_ANGLE = 0;  
     public static final double PARALLEL_ANGLE = 90;
     public static final double MAX_ANGLE_BALL = 110; 
@@ -20,21 +20,21 @@ public class ArmConstants {
     public static final double ANGLE_L3 = 100;
     public static final double ANGLE_L4 = 145;
 
-    public static final double INTAKE_CORALS_ANGLE = 35;
+    public static final double INTAKE_CORALS_ANGLE = 32;
     public static final double EJECT_BALL_START_ANGLE = 0;
     public static final double EJECT_BALL_STOP_ANGLE = 0;
     
-    public static final double HOLD_ANGLE = 10;
+    public static final double HOLD_ANGLE = 90;
 
     public static final double ABS_ENCODER_OFFSET = 0;
 
     public static final double GEAR_RATIO = 18;
 
-    public static final double kP = 10000;
+    public static final double kP = 25;//35
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kS = 0;
-    public static final double FEED_FORWARD_VOLTAGE = 0;
+    public static final double FEED_FORWARD_VOLTAGE = 0.1;
 
     public static final int CONTROL_SLOT = 0;
     public static final double TOLERANCE = 2;

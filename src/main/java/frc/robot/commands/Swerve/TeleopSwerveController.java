@@ -60,25 +60,25 @@ public class TeleopSwerveController extends Command {
   @Override
   public void execute() {
 
-    if (RobotContainer.currentRobotState == RobotConstants.INTAKE) {
-      robotSpeeds = driveController.update();
-      robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
-      xyControllerLog.update("Drive Controller");
-      theathControllerLog.update("Angle Controller");
-    } else if (RobotContainer.currentRobotState == RobotConstants.SCORING && RobotContainer.intake.getRearSensor()) {
-      xyControllerLog.update(SuperStructure.updateXYAdjustController());
-      robotSpeeds = autoAdjustXYController.update();
-      robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
-      theathControllerLog.update("Angle Controller");
-    } else {
-      xyControllerLog.update("Drive Controller");
-      theathControllerLog.update("Drive Controller");
-      robotSpeeds = driveController.update();
-    }
+    // if (RobotContainer.currentRobotState == RobotConstants.INTAKE) {
+    //   robotSpeeds = driveController.update();
+    //   robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
+    //   xyControllerLog.update("Drive Controller");
+    //   theathControllerLog.update("Angle Controller");
+    // } else if (RobotContainer.currentRobotState == RobotConstants.SCORING && RobotContainer.intake.getRearSensor()) {
+    //   xyControllerLog.update(SuperStructure.updateXYAdjustController());
+    //   robotSpeeds = autoAdjustXYController.update();
+    //   robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
+    //   theathControllerLog.update("Angle Controller");
+    // } else {
+    //   xyControllerLog.update("Drive Controller");
+    //   theathControllerLog.update("Drive Controller");
+    //   robotSpeeds = driveController.update();
+    // }
 
-    // xyControllerLog.update("Drive Controller");
-    // theathControllerLog.update("Drive Controller");
-    // robotSpeeds = driveController.update();
+    xyControllerLog.update("Drive Controller");
+    theathControllerLog.update("Drive Controller");
+    robotSpeeds = driveController.update();
 
     swerve.drive(robotSpeeds);
   }

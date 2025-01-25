@@ -20,6 +20,8 @@ public class Arm extends StateControlledSubsystem {
     private Arm() {
         super(ArmConstants.SUBSYSTEM_STATES, "Arm");
         atPointLog = new LoggedBool("/Subsystems/Arm/AtPoint");
+
+        resetPose();
     }
 
     public double getFeedForwardVoltage() {
@@ -63,7 +65,7 @@ public class Arm extends StateControlledSubsystem {
     }
 
     public void setAngle(double angle) {
-        armIO.setAngle(angle);
+        armIO.setAngle(angle , getFeedForwardVoltage());
     }
 
     public boolean atPoint() {
@@ -81,8 +83,7 @@ public class Arm extends StateControlledSubsystem {
 
     @Override
     public boolean canMove() {
-        return (BallRemovingCanMove() ) || (RobotContainer.intake.getTargetState() != IntakeConstants.SORTING
-                && RobotContainer.currentRobotState != RobotConstants.CLIMB
+        return (BallRemovingCanMove() ) || (RobotContainer.currentRobotState != RobotConstants.CLIMB
                 && Math.abs(getCurrent()) < ArmConstants.kCAN_MOVE_CURRENT_LIMIT
 
                 && getSetPoint() >= ArmConstants.MIN_ANGLE && getSetPoint() <= ArmConstants.MAX_ANGLE)

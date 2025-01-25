@@ -77,7 +77,7 @@ public class Elevator extends StateControlledSubsystem {
   @Override
   public boolean canMove() {
     return getSystemFunctionState() == StatesConstants.MANUEL
-        || getSetPoint() <= ElevatorConstants.MAX_HIGHT && getSetPoint() >= ElevatorConstants.MIN_HIGHT &&
+        || getHight() <= ElevatorConstants.MAX_HIGHT && getHight() >= ElevatorConstants.MIN_HIGHT &&
             Math.abs(getCurrent()) <= ElevatorConstants.CAN_MOVE_CURRENT_LIMIT;
   }
 

@@ -72,8 +72,8 @@ public class IntakeIOReal implements IntakeIO {
         motorConfig.CurrentLimits.SupplyCurrentLowerLimit = IntakeConstants.CONTINUES_CURRENT_LIMIT;
         motorConfig.CurrentLimits.SupplyCurrentLowerTime = IntakeConstants.PEAK_CURRENT_TIME;
 
-        motorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        motorConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+        motorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+        motorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
         motorConfig.HardwareLimitSwitch.ForwardLimitEnable = false;
         motorConfig.HardwareLimitSwitch.ReverseLimitEnable = false;
@@ -82,11 +82,11 @@ public class IntakeIOReal implements IntakeIO {
     }
 
     public boolean getFrontSensor() {
-        return forwardLimit.getValueAsDouble() == 1d; 
+        return forwardLimit.getValueAsDouble() != 1d; 
     }
 
     public boolean getRearSensor() {
-        return reverseLimit.getValueAsDouble() == 1d;
+        return reverseLimit.getValueAsDouble() != 1d;
     }
 
     public double getCurrent() {

@@ -26,7 +26,7 @@ public class ArmIOReal implements ArmIO {
     protected TalonFXConfiguration armConfig;
     private PositionVoltage positionControl;
 
-    protected CANcoder encoder;
+    protected CANcoder absEncoder;
 
     private StatusSignal<Angle> motorPosition;
     private StatusSignal<AngularVelocity> motorVelocity;
@@ -40,14 +40,15 @@ public class ArmIOReal implements ArmIO {
     private LoggedDouble motorVelocityLog;
     private LoggedDouble motorCurrentLog;
     private LoggedDouble motorVoltageLog;
+    private LoggedDouble absPositionLog;
     private LoggedDouble errorLog;
     private LoggedDouble setPointLog;
 
     public ArmIOReal() {
         armMotor = new TalonFX(PortMap.Arm.armMotor, PortMap.CanBus.RioBus);
         armConfig = new TalonFXConfiguration();
-        encoder = new CANcoder(PortMap.Arm.armEncoder, PortMap.CanBus.RioBus);
-        positionControl = new PositionVoltage(getAbsolutePosition()); 
+        absEncoder = new CANcoder(PortMap.Arm.armEncoder, PortMap.CanBus.RioBus);
+        positionControl = new PositionVoltage(0); 
 
 
         motorPosition = armMotor.getPosition();
@@ -56,7 +57,7 @@ public class ArmIOReal implements ArmIO {
         motorVoltage = armMotor.getMotorVoltage();
         error = armMotor.getClosedLoopError();
         setPoint = armMotor.getClosedLoopReference();
-        encoderPosition = encoder.getAbsolutePosition();
+        encoderPosition = absEncoder.getAbsolutePosition();
 
         motorPositionLog = new LoggedDouble("/Subsystems/Arm/IO/Motor Position");
         motorVelocityLog = new LoggedDouble("/Subsystems/Arm/IO/Motor Velocity");
@@ -64,6 +65,10 @@ public class ArmIOReal implements ArmIO {
         motorVoltageLog = new LoggedDouble("Subsystems/Arm/IO/Motor Voltage");
         errorLog = new LoggedDouble("/Subsystems/Arm/IO/Error");
         setPointLog = new LoggedDouble("/Subsystems/Arm/IO/Set Point");
+        absPositionLog = new LoggedDouble("Subsystems/Arm/IO/Abs Position");
+
+        encoderPosition.refresh();
+        armMotor.setPosition(0);
 
         configMotor();
     }
@@ -74,7 +79,7 @@ public class ArmIOReal implements ArmIO {
         armConfig.Voltage.PeakForwardVoltage = RobotConstants.NOMINAL_VOLTAGE; 
         armConfig.Voltage.PeakReverseVoltage = -RobotConstants.NOMINAL_VOLTAGE; 
 
-        armConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        armConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
         armConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
 
@@ -91,11 +96,8 @@ public class ArmIOReal implements ArmIO {
     }
 
     public double getAbsolutePosition() {
-        if (Robot.isReal()) {
             return ConvUtil.RotationsToDegrees(encoderPosition.getValueAsDouble() / 3) + ArmConstants.ABS_ENCODER_OFFSET; 
-        }
-
-        return 0;
+       
     }
 
     public double getCurrent() {
@@ -142,9 +144,10 @@ public class ArmIOReal implements ArmIO {
         armMotor.setVoltage(volt);
     }
 
-    public void setAngle(double angle) {
+    public void setAngle(double angle , double FEED_FORWARD) {
         armMotor.setControl(
-                positionControl.withPosition(ConvUtil.DegreesToRotations(angle)).withSlot(ArmConstants.CONTROL_SLOT));
+                positionControl.withPosition(ConvUtil.DegreesToRotations(angle)).withSlot(ArmConstants.CONTROL_SLOT)
+                .withFeedForward(FEED_FORWARD));
     }
 
     public void updatePeriodic() {
@@ -154,7 +157,8 @@ public class ArmIOReal implements ArmIO {
                 motorCurrent,
                 motorVoltage,
                 error,
-                setPoint);
+                setPoint,
+                encoderPosition);
 
         motorPositionLog.update(getPosition());
         motorVelocityLog.update(getVelocity());
@@ -162,5 +166,6 @@ public class ArmIOReal implements ArmIO {
         motorVoltageLog.update(getAppliedVolts());
         errorLog.update(getError());
         setPointLog.update(getSetPoint());
+        absPositionLog.update(getAbsolutePosition());
     }
 }

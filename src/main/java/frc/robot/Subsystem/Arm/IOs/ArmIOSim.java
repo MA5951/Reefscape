@@ -12,7 +12,7 @@ public class ArmIOSim extends ArmIOReal {
 
     public  ArmIOSim() {
         super();
-        canCoderSimstate = new CANcoderSimState(encoder);
+        canCoderSimstate = new CANcoderSimState(absEncoder);
         armMotorSim = new TalonFXMotorSim(armMotor, armConfig, DCMotor.getKrakenX60(1), 0.004, false);
     }
 

@@ -12,9 +12,11 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import frc.robot.Robot;
 import frc.robot.RobotConstants;
 import frc.robot.Subsystem.Vision.Filters.VisionFiltersConfig;
 import frc.robot.Subsystem.Vision.IOs.VisionIO;
+import frc.robot.Subsystem.Vision.IOs.VisionIOReal;
 import frc.robot.Subsystem.Vision.IOs.VisionSim;
 
 public class VisionConstants {
@@ -46,6 +48,10 @@ public class VisionConstants {
     public final static VisionFiltersConfig AUTO_FILTERS_CONFIG = TELEOP_FILTERS_CONFIG;
 
     public static final VisionIO getVisionIO() {
+        if (Robot.isReal()) {
+            return new VisionIOReal();
+        }
+
         return new VisionSim();
     }
 }

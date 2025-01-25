@@ -55,33 +55,37 @@ public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
                 }
                 break;
             case "INTAKE":
-                intake.setVoltage(IntakeConstants.INTAKE_SPEED_BEFORE_FIRST_SENSOR);
-                SuperStructure.updateEejctPose();
+                if (!intake.getRearSensor()) {
+                    intake.setVoltage(IntakeConstants.INTAKE_SPEED_BEFORE_FIRST_SENSOR);
+                    SuperStructure.updateEejctPose();
+                }
+
+
+                System.out.println("HHHHHHHHH");
                 break;
             case "SCORING":
                 intake.setVoltage(SuperStructure.getScoringPreset().ejectVolt);
                 SuperStructure.updateEejctPose();
                 break;
             case "SORTING":
-                if (sortingNum > IntakeConstants.SORTIN_NUM) {
-                    RobotContainer.setIDLE();
-                    RobotContainer.arm.setTargetState(ArmConstants.HOLD);
-                    intake.setTargetState(IntakeConstants.HOLD);
-                    sortingNum = 0;
-                    updatedSortin = false;
-                }
-
-                if (intake.getRearSensor()) {
-                    intake.setVoltage(-IntakeConstants.SORTING_SPEED);
-                    if (!updatedSortin) {
-                        sortingNum++;
-                        updatedSortin = true;
+                    if (sortingNum > IntakeConstants.SORTIN_NUM) {
+                        RobotContainer.setIDLE();
+                        RobotContainer.arm.setTargetState(ArmConstants.HOLD);
+                        intake.setTargetState(IntakeConstants.HOLD);
+                        sortingNum = 0;
+                        updatedSortin = false;
                     }
-                } else if (!intake.getRearSensor()) {
-                    updatedSortin = false;
-                    intake.setVoltage(IntakeConstants.SORTING_SPEED);
-                }
-                
+    
+                    if (intake.getRearSensor()) {
+                        intake.setVoltage(IntakeConstants.SORTING_SPEED);
+                        if (!updatedSortin) {
+                            sortingNum++;
+                            updatedSortin = true;
+                        }
+                    } else if (!intake.getRearSensor()) {
+                        updatedSortin = false;
+                        intake.setVoltage(-IntakeConstants.SORTING_SPEED);
+                    }
 
                 break;
         }

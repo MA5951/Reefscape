@@ -46,6 +46,7 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
                 } else {
                     arm.setAngle(ArmConstants.MIN_ANGLE);
                 }
+
                 break;
             case "HOLD":
                 arm.setAngle(ArmConstants.HOLD_ANGLE);
@@ -76,7 +77,7 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
     @Override
     public void ManuelLoop() {
         super.ManuelLoop();
-        arm.setVoltage(RobotContainer.operatorController.getRightY() * ArmConstants.kMANUEL_VOLTAGE_LIMIT);
+        arm.setVoltage(-RobotContainer.operatorController.getRightY() * ArmConstants.kMANUEL_VOLTAGE_LIMIT);
     }
 
     @Override

@@ -66,7 +66,7 @@ public class Intake extends StateControlledSubsystem {
   }
 
   public boolean SortingCanMove() {
-    return RobotContainer.currentRobotState == RobotConstants.SORTING; 
+    return RobotContainer.currentRobotState == RobotConstants.SORTING && RobotContainer.arm.atPoint() && RobotContainer.arm.getVelocity() < 1 && RobotContainer.arm.getPosition() > 50 ; 
   }
 
   @Override

@@ -5,6 +5,7 @@ import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.StrictFollower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -28,6 +29,7 @@ public class ElevatorIOReal implements ElevatorIO {
     private DigitalInput limitSwitch;
 
     private MotionMagicVoltage MotionMagic; 
+    private PositionVoltage positionVoltage;
     protected TalonFXConfiguration masterConfig;
     private StrictFollower masterFollower;
 
@@ -37,6 +39,8 @@ public class ElevatorIOReal implements ElevatorIO {
     private StatusSignal<Voltage> masterMotorAppliedVoltage;
     private StatusSignal<Double> masterError;
     private StatusSignal<Double> masterSetPoint;
+    private StatusSignal<Angle> slavepOsel;
+    private StatusSignal<Voltage> slaveAppliedVolts;
 
     private LoggedDouble masterMotorCurrentLog;
     private LoggedDouble masterMotorPositionLog;
@@ -49,7 +53,8 @@ public class ElevatorIOReal implements ElevatorIO {
         masterMotor = new TalonFX(PortMap.Elevator.elevatorMasterMotor, PortMap.CanBus.CANivoreBus);
         slaveMotor = new TalonFX(PortMap.Elevator.elevatorSlaveMotor, PortMap.CanBus.CANivoreBus);
         masterConfig = new TalonFXConfiguration();
-        MotionMagic = new MotionMagicVoltage(ElevatorConstants.MIN_HIGHT);
+        MotionMagic = new MotionMagicVoltage(0);
+        positionVoltage = new PositionVoltage(0);
         masterFollower = new StrictFollower(PortMap.Elevator.elevatorMasterMotor); 
 
         limitSwitch = new DigitalInput(PortMap.Elevator.elevatorLimitSwich);
@@ -60,6 +65,8 @@ public class ElevatorIOReal implements ElevatorIO {
         masterMotorAppliedVoltage = masterMotor.getMotorVoltage();
         masterError = masterMotor.getClosedLoopError();
         masterSetPoint = masterMotor.getClosedLoopReference();
+        slavepOsel= slaveMotor.getPosition();
+        slaveAppliedVolts = slaveMotor.getMotorVoltage();
 
         masterMotorCurrentLog = new LoggedDouble("/Subsystems/Elevator/IO/Master Motor Current");
         masterMotorPositionLog = new LoggedDouble("/Subsystems/Elevator/IO/Master Motor Position");
@@ -69,10 +76,12 @@ public class ElevatorIOReal implements ElevatorIO {
         masterSetPointLog = new LoggedDouble("/Subsystems/Elevator/IO/Master Set Point");
 
         configMotors();
+
+        masterMotor.setPosition(0);
     }
 
     public void configMotors() {
-        masterConfig.Feedback.SensorToMechanismRatio = ElevatorConstants.GEAR* ElevatorConstants.SPROKET_CIRCUMFERENCE;
+        masterConfig.Feedback.SensorToMechanismRatio = ElevatorConstants.GEAR * ElevatorConstants.SPROKET_CIRCUMFERENCE;
 
         masterConfig.Voltage.PeakForwardVoltage = RobotConstants.NOMINAL_VOLTAGE;
         masterConfig.Voltage.PeakReverseVoltage = -RobotConstants.NOMINAL_VOLTAGE;
@@ -108,7 +117,7 @@ public class ElevatorIOReal implements ElevatorIO {
     }
 
     public double getPosition() {
-        return masterMotorPosition.getValueAsDouble(); //* ElevatorConstants.SPROKET_CIRCUMFERENCE;
+        return masterMotorPosition.getValueAsDouble()  * 2 / 100;
     }
 
     public double getVelocity() {
@@ -120,16 +129,16 @@ public class ElevatorIOReal implements ElevatorIO {
     }
 
     public double getError() {
-        return masterError.getValueAsDouble(); //* ElevatorConstants.SPROKET_CIRCUMFERENCE;
+        return masterError.getValueAsDouble() * 2 / 100; 
     }
 
     
     public double getSetPoint() {
-        return masterSetPoint.getValueAsDouble(); //* ElevatorConstants.SPROKET_CIRCUMFERENCE;
+        return masterSetPoint.getValueAsDouble()* 2 / 100; 
     }
 
     public void resetPosition(double newHight) {
-        masterMotor.setPosition(newHight);//To cheack if gear has issues
+        masterMotor.setPosition(newHight);
     }
 
     public void setVoltage(double volt) {
@@ -157,7 +166,10 @@ public class ElevatorIOReal implements ElevatorIO {
     }
 
     public void setHight(double hight) {
-        masterMotor.setControl(MotionMagic.withPosition(hight ).withSlot(ElevatorConstants.CONTROL_SLOT)); //Check if gear has iisues  
+        //masterMotor.setControl(positionVoltage.withPosition((hight / 2 * 100) ).withSlot(ElevatorConstants.CONTROL_SLOT));
+        masterMotor.setControl(MotionMagic.withPosition((hight / 2 * 100 ) ).withSlot(ElevatorConstants.CONTROL_SLOT).withFeedForward(
+            ElevatorConstants.FEED_FORWARD
+        ));
         slaveMotor.setControl(masterFollower);
     }
 
@@ -171,12 +183,16 @@ public class ElevatorIOReal implements ElevatorIO {
             masterSetPoint
         );
 
+        slavepOsel.refresh();
+        slaveAppliedVolts.refresh();
+
         masterMotorCurrentLog.update(getCurrent());
         masterMotorPositionLog.update(getPosition());
         masterMotorVelocityLog.update(getVelocity());
-        masterMotorAppliedVoltageLog.update(getVelocity());
+        masterMotorAppliedVoltageLog.update(getAppliedVolts());
         masterErrorLog.update(getError());
         masterSetPointLog.update(getSetPoint());
+
     }
 }
 
