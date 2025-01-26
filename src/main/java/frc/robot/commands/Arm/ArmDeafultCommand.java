@@ -41,10 +41,10 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
         super.AutomaticLoop();
         switch (arm.getTargetState().getName()) {
             case "IDLE":
-                if (arm.atPoint() && arm.atMinPose()) {
+                if (arm.atPoint() && arm.atMinPose()) { 
                     arm.setVoltage(arm.getFeedForwardVoltage());
                 } else {
-                    arm.setAngle(ArmConstants.MIN_ANGLE);
+                    arm.setAngle(ArmConstants.ZERO_ANGLE);
                 }
 
                 break;
@@ -58,7 +58,7 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
                 arm.setAngle(SuperStructure.getScoringPreset().angle);
                 break;
             case "BALLREMOVING":
-                // TODO new
+                arm.setAngle(ArmConstants.EJECT_BALL_STOP_ANGLE);
                 break;
         }
     }

@@ -36,12 +36,29 @@ public class SuperStructure extends GenericSuperStracture {
     private static Field.ScoringLocation scoringLocation;
     private static ReefFace scoringFace;
     private static Pose2d ejectPose;
+    public static boolean isScoringAutomatic = true;
 
     public SuperStructure() {
         super(() -> PoseEstimator.getInstance().getEstimatedRobotPose(),
                 () -> SwerveSubsystem.getInstance().getVelocityVector());
-        setScoringPreset(Field.ScoringLevel.L1);
+        setScoringPreset(Field.ScoringLevel.L4);
         setScoringLocation(Field.ScoringLocation.RIGHT);
+    }
+
+    public static void toggleAutoScoring() {
+        if (isScoringAutomatic) {
+            isScoringAutomatic = false;
+        } else {
+            isScoringAutomatic = true;
+        }
+    }
+
+    public static boolean atScoringPose() {
+        return RobotContainer.elevator.getHight() > scoringLevel.hight - 0.1 &&  Math.abs(RobotContainer.arm.getPosition() - scoringLevel.angle) < 3;
+    }
+
+    public static boolean atBallRemoving() {
+        return RobotContainer.elevator.getHight() >= (0.25 - 0.01) && RobotContainer.elevator.atPoint();
     }
 
     public static void setScoringPreset(Field.ScoringLevel ScoringLevel) {
@@ -80,15 +97,17 @@ public class SuperStructure extends GenericSuperStracture {
     }
 
     public static double getCoralHoldValue() {
-        return RobotContainer.arm.getVelocity() * 0.3;// TODO CALC
+        return RobotContainer.arm.getVelocity() / 107 * 1.5;
     }
 
-    public static void updateEejctPose() {
+    public static void updatePose() {
         ejectPose = currentPoseSupplier.get();
     }
 
     public static boolean isDistanceToCloseArm() {
-        return ejectPose.getTranslation().getDistance(
+        return RobotContainer.currentRobotState == RobotConstants.SCORING ? ejectPose.getTranslation().getDistance(
+                currentPoseSupplier.get().getTranslation()) >= RobotConstants.DistanceToCloseArm + RobotConstants.DistanceOffsetScoring : 
+                ejectPose.getTranslation().getDistance(
                 currentPoseSupplier.get().getTranslation()) >= RobotConstants.DistanceToCloseArm;
     }
 

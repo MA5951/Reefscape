@@ -14,6 +14,7 @@ public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
     private static Intake intake = RobotContainer.intake;
     private static int sortingNum = 0;
     private static Boolean updatedSortin = false;
+    private static boolean hasEntered = false;
 
     public IntakeDeafultCommand() {
         super(intake);
@@ -46,48 +47,61 @@ public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
         switch (intake.getTargetState().getName()) {
             case "IDLE":
                 intake.setVoltage(0);
+                hasEntered = false;
                 break;
             case "HOLD":
                 intake.setVoltage(SuperStructure.getCoralHoldValue());
 
-                if (RobotContainer.arm.atPoint() && RobotContainer.currentRobotState == RobotConstants.SCORING) {
-                    intake.setTargetState(IntakeConstants.SCORING);
+                if (RobotContainer.currentRobotState == RobotConstants.SCORING) {
+                    intake.setTargetState(IntakeConstants
+                    .SCORING);
                 }
                 break;
             case "INTAKE":
-                if (!intake.getRearSensor()) {
-                    intake.setVoltage(IntakeConstants.INTAKE_SPEED_BEFORE_FIRST_SENSOR);
-                    SuperStructure.updateEejctPose();
+                    if (!intake.getRearSensor() && !hasEntered) {
+                        intake.setVoltage(IntakeConstants.INTAKE_SPEED_BEFORE_FIRST_SENSOR);
+                        SuperStructure.updatePose(); 
+
+                    } else if (intake.getRearSensor() && intake.getFrontSensor()) {
+                        intake.setVoltage(IntakeConstants.SORTING_SPEED);
+                        hasEntered = true;
+                    } else {
+                        intake.setTargetState(IntakeConstants.IDLE);
                 }
-
-
-                System.out.println("HHHHHHHHH");
                 break;
             case "SCORING":
-                intake.setVoltage(SuperStructure.getScoringPreset().ejectVolt);
-                SuperStructure.updateEejctPose();
+                if (SuperStructure.isScoringAutomatic || (!SuperStructure.isScoringAutomatic && RobotContainer.driverController.getL1Button() || RobotContainer.driverController.getR1Button())) {
+                    intake.setVoltage(SuperStructure.getScoringPreset().ejectVolt);
+                    SuperStructure.updatePose();
+                }
                 break;
             case "SORTING":
-                    if (sortingNum > IntakeConstants.SORTIN_NUM) {
-                        RobotContainer.setIDLE();
-                        RobotContainer.arm.setTargetState(ArmConstants.HOLD);
-                        intake.setTargetState(IntakeConstants.HOLD);
-                        sortingNum = 0;
-                        updatedSortin = false;
+                if (sortingNum > IntakeConstants.SORTIN_NUM) {
+                    RobotContainer.setIDLE();
+                    RobotContainer.arm.setTargetState(ArmConstants.HOLD);
+                    intake.setTargetState(IntakeConstants.HOLD);
+                    sortingNum = 0;
+                    updatedSortin = false;
+                }
+
+                if (intake.getRearSensor()) {
+                    intake.setVoltage(IntakeConstants.SORTING_SPEED);
+                    if (!updatedSortin) {
+                        sortingNum++;
+                        updatedSortin = true;
                     }
-    
-                    if (intake.getRearSensor()) {
-                        intake.setVoltage(IntakeConstants.SORTING_SPEED);
-                        if (!updatedSortin) {
-                            sortingNum++;
-                            updatedSortin = true;
-                        }
-                    } else if (!intake.getRearSensor()) {
-                        updatedSortin = false;
-                        intake.setVoltage(-IntakeConstants.SORTING_SPEED);
-                    }
+                } else if (!intake.getRearSensor()) {
+                    updatedSortin = false;
+                    intake.setVoltage(-IntakeConstants.SORTING_SPEED);
+                }
 
                 break;
+            case "BALLREMOVING":
+                if (RobotContainer.arm.getPosition() > 32) {
+                    intake.setVoltage(-3);
+                } else {
+                    intake.setVoltage(0);
+                }
         }
     }
 
@@ -100,6 +114,7 @@ public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
     public void CANT_MOVE() {
         super.CANT_MOVE();
         intake.setVoltage(0);
+        hasEntered = false;
     }
 
     @Override

@@ -143,29 +143,32 @@ public class RobotContainer extends DeafultRobotContainer {
         .onTrue(Do(() -> setINTAKE()));
 
     new Trigger(
-        () -> currentRobotState == RobotConstants.INTAKE && SuperStructure.hasGamePiece() && intake.getRearSensor() && SuperStructure.isDistanceToCloseArm())
+        () -> currentRobotState == RobotConstants.INTAKE && SuperStructure.hasGamePiece() && SuperStructure.isDistanceToCloseArm()
+        && intake.getTargetState() == IntakeConstants.IDLE)
         .onTrue(Do(() -> setSORTING()));
+    
+    
 
 
     // // Scoring
-    // new Trigger(() -> driverController.getL1Button() && SuperStructure.hasGamePiece()
-    //     && currentRobotState != RobotConstants.SORTING)
-    //     .onTrue(Do(() -> SuperStructure.updateScoringFace()))
-    //     .onTrue(Do(() -> SuperStructure.setScoringLocation(Field.ScoringLocation.LEFT)))
-    //     .onTrue(Do(() -> setSCORING()));
+    new Trigger(() -> driverController.getL1Button() && SuperStructure.hasGamePiece()
+        && currentRobotState != RobotConstants.SORTING)
+        .onTrue(Do(() -> SuperStructure.updateScoringFace()))
+        .onTrue(Do(() -> SuperStructure.setScoringLocation(Field.ScoringLocation.LEFT)))
+        .onTrue(Do(() -> setSCORING()));
 
-    // new Trigger(() -> driverController.getR1Button() && SuperStructure.hasGamePiece()
-    //     && currentRobotState != RobotConstants.SORTING)
-    //     .onTrue(Do(() -> SuperStructure.updateScoringFace()))
-    //     .onTrue(Do(() -> SuperStructure.setScoringLocation(Field.ScoringLocation.RIGHT)))
-    //     .onTrue(Do(() -> setSCORING()));
+    new Trigger(() -> driverController.getR1Button() && SuperStructure.hasGamePiece()
+        && currentRobotState != RobotConstants.SORTING)
+        .onTrue(Do(() -> SuperStructure.updateScoringFace()))
+        .onTrue(Do(() -> SuperStructure.setScoringLocation(Field.ScoringLocation.RIGHT)))
+        .onTrue(Do(() -> setSCORING()));
 
-    // new Trigger(() -> currentRobotState == RobotConstants.SCORING && !SuperStructure.hasGamePiece()
-    //     && SuperStructure.isDistanceToCloseArm()).onTrue(Do(() -> setIDLE()));
+    new Trigger(() -> currentRobotState == RobotConstants.SCORING && !SuperStructure.hasGamePiece()
+        && SuperStructure.isDistanceToCloseArm()).onTrue(Do(() -> setIDLE()));
 
-    // // Ball Removing
-    // new Trigger(() -> driverController.getL2Button() && !SuperStructure.hasGamePiece() && SuperStructure.isDistanceToCloseArm())
-    //     .onTrue(Do(() -> setBALLREMOVING()));
+    // Ball Removing
+    new Trigger(() -> driverController.getL2Button() && !SuperStructure.hasGamePiece())
+        .onTrue(Do(() -> setBALLREMOVING())); //Not too close
 
     // // Climb
     // new Trigger(() -> driverController.getSquareButton() && currentRobotState == RobotConstants.IDLE)
@@ -173,6 +176,8 @@ public class RobotContainer extends DeafultRobotContainer {
 
     // IDLE
     new Trigger(() -> driverController.getTouchpadButton()).onTrue(Do(() -> setIDLE()));
+
+    new Trigger(() -> driverController.getRawButton(9)).onTrue(Do(() -> SuperStructure.toggleAutoScoring()));
   }
 
   private static Command Do(Runnable toRun) {

@@ -52,13 +52,14 @@ public class Intake extends StateControlledSubsystem {
   }
 
   public boolean IntakeCanMove() {
-    return RobotContainer.currentRobotState == RobotConstants.INTAKE && RobotContainer.elevator.atPoint()
-        && !getRearSensor() && RobotContainer.arm.atPoint(); 
+    return RobotContainer.currentRobotState == RobotConstants.INTAKE && RobotContainer.elevator.atPoint(); 
   }
 
   public boolean ScoringCanMove() {
-    return RobotContainer.currentRobotState == RobotConstants.SCORING && RobotContainer.elevator.atPoint()
-        && TeleopSwerveController.atPointForScoring() && RobotContainer.arm.atPoint() && getRearSensor();
+    return SuperStructure.isScoringAutomatic == true ? RobotContainer.currentRobotState == RobotConstants.SCORING && ((RobotContainer.elevator.atPoint()
+        && TeleopSwerveController.atPointForScoring() && RobotContainer.arm.atPoint() && getFrontSensor()) || getTargetState() == IntakeConstants.HOLD) 
+        : RobotContainer.currentRobotState == RobotConstants.SCORING && ((RobotContainer.elevator.atPoint()
+        && RobotContainer.arm.atPoint() &&  SuperStructure.atScoringPose() &&(getFrontSensor() || getRearSensor())) || getTargetState() == IntakeConstants.HOLD) ;
   }
 
   public boolean BallRemovingCanMove() {

@@ -7,6 +7,7 @@ import com.ma5951.utils.Utils.ConvUtil;
 
 import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
+import frc.robot.RobotControl.SuperStructure;
 import frc.robot.Subsystem.Arm.IOs.ArmIO;
 import frc.robot.Subsystem.Intake.IntakeConstants;
 
@@ -25,7 +26,7 @@ public class Arm extends StateControlledSubsystem {
     }
 
     public double getFeedForwardVoltage() {
-        return Math.sin(ConvUtil.DegreesToRadians(getPosition()) * ArmConstants.FEED_FORWARD_VOLTAGE);
+        return Math.sin(ConvUtil.DegreesToRadians(getPosition())) * ArmConstants.FEED_FORWARD_VOLTAGE;
     }
 
     public double getAbsolutePosition() {
@@ -77,16 +78,16 @@ public class Arm extends StateControlledSubsystem {
     }
 
     public boolean BallRemovingCanMove() {
-        return RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && RobotContainer.elevator.atPoint()
-                && getPosition() < ArmConstants.MAX_ANGLE_BALL;
+        return (RobotContainer.currentRobotState == RobotConstants.BALLREMOVING 
+                && SuperStructure.atBallRemoving()) || RobotContainer.currentRobotState != RobotConstants.BALLREMOVING  ;
     }
 
     @Override
     public boolean canMove() {
-        return (BallRemovingCanMove() ) || (RobotContainer.currentRobotState != RobotConstants.CLIMB
+        return (BallRemovingCanMove()  && (RobotContainer.currentRobotState != RobotConstants.CLIMB
                 && Math.abs(getCurrent()) < ArmConstants.kCAN_MOVE_CURRENT_LIMIT
 
-                && getSetPoint() >= ArmConstants.MIN_ANGLE && getSetPoint() <= ArmConstants.MAX_ANGLE)
+                && getSetPoint() >= ArmConstants.MIN_ANGLE && getSetPoint() <= ArmConstants.MAX_ANGLE))
                 || getSystemFunctionState() == StatesConstants.MANUEL;
     }
 

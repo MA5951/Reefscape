@@ -16,7 +16,6 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import frc.robot.PortMap;
-import frc.robot.Robot;
 import frc.robot.RobotConstants;
 import frc.robot.Subsystem.Arm.ArmConstants;
 

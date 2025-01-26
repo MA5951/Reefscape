@@ -3,6 +3,7 @@ package frc.robot.commands.Elevator;
 
 import com.ma5951.utils.RobotControl.Commands.RobotFunctionStatesCommand;
 
+import edu.wpi.first.math.filter.Debouncer;
 import frc.robot.RobotContainer;
 import frc.robot.RobotControl.SuperStructure;
 import frc.robot.Subsystem.Elevator.Elevator;
@@ -10,6 +11,8 @@ import frc.robot.Subsystem.Elevator.ElevatorConstants;
 
 public class ElevatorDeafultCommand extends RobotFunctionStatesCommand {
     private static Elevator elevator = RobotContainer.elevator;
+    private static Debouncer homeDebouncer = new Debouncer(ElevatorConstants.HOME_TIME);
+
 
     public ElevatorDeafultCommand() {
         super(elevator);
@@ -41,19 +44,19 @@ public class ElevatorDeafultCommand extends RobotFunctionStatesCommand {
         super.AutomaticLoop();
         switch (elevator.getTargetState().getName()) {
             case "IDLE":
-                if (elevator.atPoint() && elevator.atMinPose()) {
-                    elevator.setVoltage(elevator.getFeedForwardVoltage());
+                if (elevator.atPoint() && elevator.atMinPose()) { 
+                    elevator.setVoltage(0); 
                 } else {
                     elevator.setHight(ElevatorConstants.MIN_HIGHT);
                 }
                 break;
             case "HOME":
-                if (!elevator.getLimitSwitch()) {
-                    elevator.setVoltage(ElevatorConstants.HOME_VOLTAGE);
-                } else {
-                    elevator.resetPose(ElevatorConstants.MIN_HIGHT);
-                    RobotContainer.setIDLE();
-                }
+            if (!homeDebouncer.calculate(elevator.getCurrent() < ElevatorConstants.HOME_CURRENT)) {
+                elevator.setVoltage(ElevatorConstants.HOME_VOLTAGE);
+            } else {
+                elevator.resetPose(ElevatorConstants.MIN_HIGHT);
+                RobotContainer.setIDLE();
+            }
                 break;
             case "INTAKE":
                 elevator.setHight(ElevatorConstants.HIGHT_INTAKE_CORAL);
@@ -67,6 +70,8 @@ public class ElevatorDeafultCommand extends RobotFunctionStatesCommand {
             case "CLIMB":
                 elevator.setVoltage(elevator.getFeedForwardVoltage());
                 break;
+
+
         }
     }
 

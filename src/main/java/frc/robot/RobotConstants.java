@@ -26,13 +26,16 @@ public class RobotConstants {
     public static final State BALLREMOVING = new State("BALLREMOVING ");
     public static final State CLIMB = new State("CLIMB ");
     public static final State SORTING = new State("SORTING ");
+    public static final State EJECT = new State("EJECT");
 
     // Automation Constants
     public static final double DistanceToBallRemove = 2.2;
-    public static final double DistanceToCloseArm = 0.4;
+    public static final double DistanceToCloseArm = 0.2;
+    public static final double DistanceOffsetScoring = 0.1;
     public static final double DistanceToAlign = 1;
     public static final double DistanceToRelativAlign = 2;
     public static final double SpeedToScore = 0.5;
+    public static final double ToloranceToScoring = 0.02;
 
     // FieldConstants
     public static final Translation2d FieldZeroCorner = new Translation2d(0, 0);

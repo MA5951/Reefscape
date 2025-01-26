@@ -58,7 +58,7 @@ public class TeleopSwerveController extends Command {
   }
 
   @Override
-  public void execute() {
+  public void execute() { //40 precent //add ball removing // deadbound in swerve
 
     // if (RobotContainer.currentRobotState == RobotConstants.INTAKE) {
     //   robotSpeeds = driveController.update();
@@ -75,6 +75,7 @@ public class TeleopSwerveController extends Command {
     //   theathControllerLog.update("Drive Controller");
     //   robotSpeeds = driveController.update();
     // }
+
 
     xyControllerLog.update("Drive Controller");
     theathControllerLog.update("Drive Controller");

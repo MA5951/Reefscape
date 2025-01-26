@@ -3,7 +3,6 @@ package frc.robot.Subsystem.Elevator;
 
 import com.ma5951.utils.RobotControl.StatesTypes.State;
 import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
-import com.ma5951.utils.Utils.ConvUtil;
 
 import frc.robot.Robot;
 import frc.robot.Subsystem.Elevator.IOs.ElevatorIO;
@@ -14,13 +13,13 @@ public class ElevatorConstants {
 
     public static final double MAX_HIGHT = 1.475;
     public static final double MIN_HIGHT = -0.003;
-    public static final double HIGHT_L2 = 1;
-    public static final double HIGHT_L3 = 1.3;
-    public static final double HIGHT_L1 = 0.4;
-    public static final double HIGHT_L4 = 2;
+    public static final double HIGHT_L2 = 0.48;
+    public static final double HIGHT_L3 = 0.78;
+    public static final double HIGHT_L1 = 0.13;
+    public static final double HIGHT_L4 = 1.47;
     public static final double HIGHT_INTAKE_CORAL = 0.59;
-    public static final double HIGHT_EJECT_BALL_LOW = 1.1;
-    public static final double HIGHT_EJECT_BALL_HIGH = 1.4;
+    public static final double HIGHT_EJECT_BALL_LOW = 0.25;
+    public static final double HIGHT_EJECT_BALL_HIGH = 0.5;
     public static final double HIGHT_PROSESOR = 0;
     public static final double HIGHT_ZERO = 0;
 
@@ -36,13 +35,14 @@ public class ElevatorConstants {
     public static final double TOLORANCE = 0.015;
     public static final double FEED_FORWARD = 0.42;
     
-    public static final double HOME_VOLTAGE = -3;
-    public static final double HOME_CURRENT = 30;
+    public static final double HOME_VOLTAGE = -1;
+    public static final double HOME_CURRENT = -30;
+    public static final double HOME_TIME = 0.2;
     public static final double CAN_MOVE_CURRENT_LIMIT = 150;
     public static final double MANUEL_VOLTAGE_LIMIT = 6;
     
-    public static final double ACCELERATION = 30 / SPROKET_CIRCUMFERENCE;//12
-    public static final double CRUSIE_VELOCITY = 14 / SPROKET_CIRCUMFERENCE;//20
+    public static final double ACCELERATION = 30 / SPROKET_CIRCUMFERENCE;
+    public static final double CRUSIE_VELOCITY = 14 / SPROKET_CIRCUMFERENCE;
     public static final double JERK = 0;
 
     public static final double WEIGHT_OF_MOVING_PARTS = 9;
@@ -58,7 +58,7 @@ public class ElevatorConstants {
     public static final State INTAKE = new State("INTAKE");
     public static final State SCORING = new State("SCORING");
     public static final State CLIMB = new State("SORTING");
-    public static final State BALLREMOVING  = new State("BALLREMOVING ");
+    public static final State BALLREMOVING  = new State("BALLREMOVING");
 
     public static final State[] SUBSYSTEM_STATES = new State[] {IDLE , HOLD , INTAKE , SCORING , CLIMB , BALLREMOVING , HOME};
 
