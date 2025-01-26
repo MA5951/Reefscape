@@ -28,15 +28,15 @@ public class Climb extends StateControlledSubsystem {
   }
 
   public double getCurrent() {
-    return (climbIO.getLeftCurrent() + climbIO.getRightCurrent()) /2 ;
+    return climbIO.getMasterCurrent() ;
   }
 
   public double getAppliedVolts() {
-    return (climbIO.getLeftAppliedVolts() + climbIO.getRightAppliedVolts()) /2 ;
+    return climbIO.getMasterAppliedVolts() ;
   }
 
   public double getVelocity() {
-    return (climbIO.getLeftVelocity() + climbIO.getRightVelocity()) /2 ;
+    return climbIO.getMasterVelocity() ;
   }
 
   public static Climb getInstance() {

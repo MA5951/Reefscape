@@ -3,6 +3,7 @@ package frc.robot.Subsystem.climb.IOs;
 
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.StrictFollower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -18,139 +19,95 @@ import frc.robot.Subsystem.climb.climbConstants;
 
 public class ClimbIOReal implements ClimbIO{
     
-    protected TalonFX rightMotor;
-    protected TalonFX leftMotor;
+    protected TalonFX masterMotor;
+    protected TalonFX slaveMotor;
 
-    protected TalonFXConfiguration rightConfig;
-    protected TalonFXConfiguration leftConfig;
+    protected TalonFXConfiguration masterConfig;
 
     private DigitalInput firstSensor;
     private DigitalInput secondSensor;
 
-    private StatusSignal<Current> RightMotorCurrent; 
-    private StatusSignal<Current> LeftMotorCurrent;
+    private StatusSignal<Current> masterMotorCurrent; 
 
-    private StatusSignal<AngularVelocity> RightMotorVelocity;
-    private StatusSignal<AngularVelocity> LeftMotorVelocity;
+    private StatusSignal<AngularVelocity> masterMotorVelocity;
 
-    private StatusSignal<Voltage> RightMotorapliedVolts;
-    private StatusSignal<Voltage> LeftMotorapliedVolts;
+    private StatusSignal<Voltage> masterMotorapliedVolts;
 
-    private LoggedDouble RightMotorCurrentLog;
-    private LoggedDouble LeftMotorCurrentLog;
-    private LoggedDouble RightMotorVelocityLog;
-    private LoggedDouble LeftMotorVelocityLog;
-    private LoggedDouble RightMotorapliedVoltsLog;
-    private LoggedDouble LeftMotorapliedVoltsLog;
+    private LoggedDouble masterMotorCurrentLog;
+    private LoggedDouble masterMotorVelocityLog;
+    private LoggedDouble masterMotorapliedVoltsLog;
+
+    private StrictFollower masterFollwer;
 
 
     public ClimbIOReal() {
-        rightMotor = new TalonFX(PortMap.Climb.ClimbRightMotor, PortMap.CanBus.CANivoreBus);
-        leftMotor = new TalonFX(PortMap.Climb.ClimbLeftMotor, PortMap.CanBus.CANivoreBus);
+        masterMotor = new TalonFX(PortMap.Climb.ClimbMasterMotor, PortMap.CanBus.CANivoreBus);
+        slaveMotor = new TalonFX(PortMap.Climb.ClimbSlaveMotor, PortMap.CanBus.CANivoreBus);
 
-        rightConfig = new TalonFXConfiguration();
-        leftConfig = new TalonFXConfiguration();
+        masterConfig = new TalonFXConfiguration();
 
         firstSensor = new DigitalInput(PortMap.Climb.ClimbFirstSensor);
         secondSensor = new DigitalInput(PortMap.Climb.ClimbSecondSensor);
 
-        RightMotorCurrent = rightMotor.getStatorCurrent();
-        LeftMotorCurrent = leftMotor.getStatorCurrent();
+        masterFollwer = new StrictFollower(PortMap.Climb.ClimbMasterMotor);
 
-        RightMotorVelocity = rightMotor.getVelocity();
-        LeftMotorVelocity = rightMotor.getVelocity();
+        masterMotorCurrent = masterMotor.getStatorCurrent();
 
-        RightMotorapliedVolts = rightMotor.getMotorVoltage();
-        LeftMotorapliedVolts = leftMotor.getMotorVoltage();
+        masterMotorVelocity = masterMotor.getVelocity();
 
-        RightMotorCurrentLog = new LoggedDouble("/Subsystems/Climb/IO/Right Motor Current");
-        LeftMotorCurrentLog = new LoggedDouble("/Subsystems/Climb/IO/Left Motor Current");
-        RightMotorVelocityLog = new LoggedDouble("/Subsystems/Climb/IO/Right Motor Velocity");
-        LeftMotorVelocityLog = new LoggedDouble("/Subsystems/Climb/IO/Left Motor Velocity");
-        RightMotorapliedVoltsLog = new LoggedDouble("/Subsystems/Climb/IO/Right Motor aplied Volts");
-        LeftMotorapliedVoltsLog = new LoggedDouble("/Subsystems/Climb/IO/Left Motor aplied Volts");
+        masterMotorapliedVolts = masterMotor.getMotorVoltage();
+
+        masterMotorCurrentLog = new LoggedDouble("/Subsystems/Climb/IO/master Motor Current");
+        masterMotorVelocityLog = new LoggedDouble("/Subsystems/Climb/IO/master Motor Velocity");
+        masterMotorapliedVoltsLog = new LoggedDouble("/Subsystems/Climb/IO/master Motor aplied Volts");
     }
 
-    public void RightConfig() {
-        rightConfig.Feedback.RotorToSensorRatio = climbConstants.GEAR;
+    public void masterConfig() {
+        masterConfig.Feedback.RotorToSensorRatio = climbConstants.GEAR;
 
-        rightConfig.Voltage.PeakForwardVoltage = 12;
-        rightConfig.Voltage.PeakReverseVoltage = -12;
+        masterConfig.Voltage.PeakForwardVoltage = 12;
+        masterConfig.Voltage.PeakReverseVoltage = -12;
 
-        rightConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        rightConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        masterConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        masterConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
-        rightConfig.CurrentLimits.SupplyCurrentLimitEnable = climbConstants.kENABLE_CURRENT_LIMIT;
-        rightConfig.CurrentLimits.SupplyCurrentLimit = climbConstants.kCURRENT_LIMIT;
-        rightConfig.CurrentLimits.SupplyCurrentLowerLimit = climbConstants.kCONTINUOUS_LOWER_LIMIT;
-        rightConfig.CurrentLimits.SupplyCurrentLowerTime = climbConstants.kCONTINUOUS_CURRENT_TIME;
+        masterConfig.CurrentLimits.SupplyCurrentLimitEnable = climbConstants.kENABLE_CURRENT_LIMIT;
+        masterConfig.CurrentLimits.SupplyCurrentLimit = climbConstants.kCURRENT_LIMIT;
+        masterConfig.CurrentLimits.SupplyCurrentLowerLimit = climbConstants.kCONTINUOUS_LOWER_LIMIT;
+        masterConfig.CurrentLimits.SupplyCurrentLowerTime = climbConstants.kCONTINUOUS_CURRENT_TIME;
 
-        rightMotor.getConfigurator().apply(rightConfig);
+        masterMotor.getConfigurator().apply(masterConfig);
+        slaveMotor.getConfigurator().apply(masterConfig);
     }
 
-    public void LeftConfig() {
-        leftConfig.Feedback.RotorToSensorRatio = climbConstants.GEAR;
-
-        leftConfig.Voltage.PeakForwardVoltage = 12;
-        leftConfig.Voltage.PeakReverseVoltage = -12;
-
-        leftConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        leftConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-
-        leftConfig.CurrentLimits.SupplyCurrentLimitEnable = climbConstants.kENABLE_CURRENT_LIMIT;
-        leftConfig.CurrentLimits.SupplyCurrentLimit = climbConstants.kCURRENT_LIMIT;
-        leftConfig.CurrentLimits.SupplyCurrentLowerLimit = climbConstants.kCONTINUOUS_LOWER_LIMIT;
-        leftConfig.CurrentLimits.SupplyCurrentLowerTime = climbConstants.kCONTINUOUS_CURRENT_TIME;
-
-        leftMotor.getConfigurator().apply(leftConfig);
-    }
 
     public void setVoltage(double volt) {
-        leftMotor.setVoltage(volt);
+        masterMotor.setVoltage(volt);
+        slaveMotor.setControl(masterFollwer);
     }
 
-    public void setLeftNutralMode(boolean isBreak) {
+    public void setMasterNutralMode(boolean isBreak) {
         if (isBreak) {
-            leftConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+            masterConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         }
         else {
-            leftConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+            masterConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         }
-        leftMotor.getConfigurator().apply(leftConfig);
+        masterMotor.getConfigurator().apply(masterConfig);
+        slaveMotor.getConfigurator().apply(masterConfig);
     }
 
-    public void setRightNutralMode(boolean isBreak) {
-        if (isBreak) {
-            rightConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        }
-        else {
-            rightConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-        }
-        rightMotor.getConfigurator().apply(leftConfig);
+
+    public double getMasterCurrent() {
+        return masterMotorCurrent.getValueAsDouble();
     }
 
-    public double getRightCurrent() {
-        return RightMotorCurrent.getValueAsDouble();
+    public double getMasterVelocity() {
+        return ConvUtil.RadiansToDegrees(masterMotorVelocity.getValueAsDouble());
     }
 
-    public double getRightVelocity() {
-        return ConvUtil.RadiansToDegrees(RightMotorVelocity.getValueAsDouble());
-    }
-
-    public double getRightAppliedVolts() {
-        return RightMotorapliedVolts.getValueAsDouble();
-    }
-
-    public double getLeftCurrent() {
-        return LeftMotorCurrent.getValueAsDouble();
-    }
-
-    public double getLeftVelocity() {
-        return ConvUtil.RadiansToDegrees(LeftMotorVelocity.getValueAsDouble());
-    }
-
-    public double getLeftAppliedVolts() {
-        return LeftMotorapliedVolts.getValueAsDouble();
+    public double getMasterAppliedVolts() {
+        return masterMotorapliedVolts.getValueAsDouble();
     }
 
     public Boolean getFirstSensor() {
@@ -162,12 +119,15 @@ public class ClimbIOReal implements ClimbIO{
     }
 
     public void updatePeriodic() {
-        RightMotorCurrentLog.update(getRightCurrent());
-        LeftMotorCurrentLog.update(getLeftCurrent());
-        RightMotorVelocityLog.update(getRightVelocity());
-        LeftMotorVelocityLog.update(getLeftVelocity());
-        RightMotorapliedVoltsLog.update(getRightAppliedVolts());
-        LeftMotorapliedVoltsLog.update(getLeftAppliedVolts());
+        masterMotorCurrentLog.update(getMasterCurrent());
+        masterMotorVelocityLog.update(getMasterVelocity());
+        masterMotorapliedVoltsLog.update(getMasterAppliedVolts());
+
+        StatusSignal.refreshAll(
+        masterMotorCurrent,
+        masterMotorVelocity,
+        masterMotorapliedVolts
+        );
     }
 
 }

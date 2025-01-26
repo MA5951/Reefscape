@@ -5,21 +5,13 @@ public interface ClimbIO {
 
     void setVoltage(double volt);
 
-    void setRightNutralMode(boolean isBreak);
+    void setMasterNutralMode(boolean isBreak);
 
-    void setLeftNutralMode(boolean isBreak);
+    double getMasterVelocity();
 
-    double getRightVelocity();
+    double getMasterCurrent();
 
-    double getRightCurrent();
-
-    double getRightAppliedVolts();
-
-    double getLeftVelocity();
-
-    double getLeftCurrent();
-
-    double getLeftAppliedVolts();
+    double getMasterAppliedVolts();
 
     Boolean getFirstSensor();
 
