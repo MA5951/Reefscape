@@ -31,7 +31,6 @@ public class ArmIOReal implements ArmIO {
     private StatusSignal<AngularVelocity> motorVelocity;
     private StatusSignal<Current> motorCurrent;
     private StatusSignal<Voltage> motorVoltage;
-    private StatusSignal<Double> error;
     private StatusSignal<Double> setPoint;
     private StatusSignal<Angle> encoderPosition;
 
@@ -54,7 +53,6 @@ public class ArmIOReal implements ArmIO {
         motorVelocity = armMotor.getVelocity();
         motorCurrent = armMotor.getStatorCurrent();
         motorVoltage = armMotor.getMotorVoltage();
-        error = armMotor.getClosedLoopError();
         setPoint = armMotor.getClosedLoopReference();
         encoderPosition = absEncoder.getAbsolutePosition();
 
@@ -116,7 +114,7 @@ public class ArmIOReal implements ArmIO {
     }
 
     public double getError() {
-        return ConvUtil.RotationsToDegrees(error.getValueAsDouble());
+        return getSetPoint() - getPosition();
     }
 
     public double getSetPoint() {
@@ -155,7 +153,6 @@ public class ArmIOReal implements ArmIO {
                 motorVelocity,
                 motorCurrent,
                 motorVoltage,
-                error,
                 setPoint,
                 encoderPosition);
 

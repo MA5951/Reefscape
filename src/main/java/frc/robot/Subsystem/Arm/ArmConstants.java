@@ -17,9 +17,9 @@ public class ArmConstants {
     public static final double ZERO_ANGLE = 10;
 
     public static final double ANGLE_L1 = 27;
-    public static final double ANGLE_L2 = 100;
+    public static final double ANGLE_L2 = 122;
     public static final double ANGLE_L3 = 140;
-    public static final double ANGLE_L4 = 140;
+    public static final double ANGLE_L4 = 148.5;
 
     public static final double INTAKE_CORALS_ANGLE = 32;
     public static final double EJECT_BALL_START_ANGLE = 0;
@@ -31,7 +31,7 @@ public class ArmConstants {
 
     public static final double GEAR_RATIO = 18;
 
-    public static final double kP = 15;//35
+    public static final double kP = 20;//35
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kS = 0;
@@ -40,9 +40,9 @@ public class ArmConstants {
     public static final int CONTROL_SLOT = 0;
     public static final double TOLERANCE = 3;
 
-    public static final double PEAK_CURRENT_LIMIT = 17;
-    public static final double CONTINUOUS_CURRENT_LIMIT = 12;
-    public static final double CONTINUOUS_CURRENT_DURATION = 0.1;
+    public static final double PEAK_CURRENT_LIMIT = 7;
+    public static final double CONTINUOUS_CURRENT_LIMIT = 6;
+    public static final double CONTINUOUS_CURRENT_DURATION = 0.05;
     public static final boolean ENABLE_CURRENT_LIMIT = true;
 
     public static final double kCAN_MOVE_CURRENT_LIMIT = 40;

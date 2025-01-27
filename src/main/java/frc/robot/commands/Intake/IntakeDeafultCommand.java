@@ -70,10 +70,8 @@ public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
                 }
                 break;
             case "SCORING":
-                if (SuperStructure.isScoringAutomatic || (!SuperStructure.isScoringAutomatic && RobotContainer.driverController.getL1Button() || RobotContainer.driverController.getR1Button())) {
                     intake.setVoltage(SuperStructure.getScoringPreset().ejectVolt);
                     SuperStructure.updatePose();
-                }
                 break;
             case "SORTING":
                 if (sortingNum > IntakeConstants.SORTIN_NUM) {

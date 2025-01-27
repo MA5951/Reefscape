@@ -59,7 +59,10 @@ public class Intake extends StateControlledSubsystem {
     return SuperStructure.isScoringAutomatic == true ? RobotContainer.currentRobotState == RobotConstants.SCORING && ((RobotContainer.elevator.atPoint()
         && TeleopSwerveController.atPointForScoring() && RobotContainer.arm.atPoint() && getFrontSensor()) || getTargetState() == IntakeConstants.HOLD) 
         : RobotContainer.currentRobotState == RobotConstants.SCORING && ((RobotContainer.elevator.atPoint()
-        && RobotContainer.arm.atPoint() &&  SuperStructure.atScoringPose() &&(getFrontSensor() || getRearSensor())) || getTargetState() == IntakeConstants.HOLD) ;
+        && RobotContainer.arm.atPoint() &&  SuperStructure.atScoringPose() &&(getFrontSensor() || getRearSensor())) || getTargetState() == IntakeConstants.HOLD) &&
+        (RobotContainer.driverController.getL1Button() || RobotContainer.driverController.getR1Button());
+
+
   }
 
   public boolean BallRemovingCanMove() {

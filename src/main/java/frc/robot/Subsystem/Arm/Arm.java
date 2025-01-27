@@ -9,7 +9,6 @@ import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
 import frc.robot.RobotControl.SuperStructure;
 import frc.robot.Subsystem.Arm.IOs.ArmIO;
-import frc.robot.Subsystem.Intake.IntakeConstants;
 
 public class Arm extends StateControlledSubsystem {
     private static Arm arm;

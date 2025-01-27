@@ -4,6 +4,8 @@
 
 package frc.robot.commands.Swerve;
 
+import java.lang.invoke.ClassSpecializer.Factory;
+
 import com.ma5951.utils.Logger.LoggedString;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -13,6 +15,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.PS5Controller;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
@@ -36,7 +39,9 @@ public class TeleopSwerveController extends Command {
   private static LoggedString xyControllerLog;
   private static LoggedString theathControllerLog;
 
-  public TeleopSwerveController(PS5Controller controller) { // TODO add left of right ajust
+  public static Timer ballsTimer;
+
+  public TeleopSwerveController(PS5Controller controller) {
     swerve = SwerveSubsystem.getInstance();
 
     driveController = new FieldCentricDriveController(controller, () -> controller.getR2Button(),
@@ -46,6 +51,8 @@ public class TeleopSwerveController extends Command {
 
     autoAdjustXYController = new AutoAdjustXYController(() -> PoseEstimator.getInstance().getEstimatedRobotPose(),
         () -> SwerveSubsystem.getInstance().getFusedHeading());
+
+    ballsTimer = new Timer();
 
     xyControllerLog = new LoggedString("/Subsystems/Swerve/Controllers/XY Controller");
     theathControllerLog = new LoggedString("/Subsystems/Swerve/Controllers/Theath Controller");
@@ -58,24 +65,30 @@ public class TeleopSwerveController extends Command {
   }
 
   @Override
-  public void execute() { //40 precent //add ball removing // deadbound in swerve
+  public void execute() { // 40 precent //add ball removing // deadbound in swerve
 
     // if (RobotContainer.currentRobotState == RobotConstants.INTAKE) {
-    //   robotSpeeds = driveController.update();
-    //   robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
-    //   xyControllerLog.update("Drive Controller");
-    //   theathControllerLog.update("Angle Controller");
-    // } else if (RobotContainer.currentRobotState == RobotConstants.SCORING && RobotContainer.intake.getRearSensor()) {
-    //   xyControllerLog.update(SuperStructure.updateXYAdjustController());
-    //   robotSpeeds = autoAdjustXYController.update();
-    //   robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
-    //   theathControllerLog.update("Angle Controller");
+    // robotSpeeds = driveController.update();
+    // robotSpeeds.omegaRadiansPerSecond =
+    // angleAdjustController.update().omegaRadiansPerSecond;
+    // xyControllerLog.update("Drive Controller");
+    // theathControllerLog.update("Angle Controller");
+    // } else if (RobotContainer.currentRobotState == RobotConstants.SCORING &&
+    // RobotContainer.intake.getRearSensor()) {
+    // xyControllerLog.update(SuperStructure.updateXYAdjustController());
+    // robotSpeeds = autoAdjustXYController.update();
+    // robotSpeeds.omegaRadiansPerSecond =
+    // angleAdjustController.update().omegaRadiansPerSecond;
+    // theathControllerLog.update("Angle Controller");
     // } else {
-    //   xyControllerLog.update("Drive Controller");
-    //   theathControllerLog.update("Drive Controller");
-    //   robotSpeeds = driveController.update();
+    // xyControllerLog.update("Drive Controller");
+    // theathControllerLog.update("Drive Controller");
+    // robotSpeeds = driveController.update();
     // }
 
+    if (RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && !ballsTimer.hasElapsed(RobotConstants.TimeToDriveBalls)) {
+      
+    }
 
     xyControllerLog.update("Drive Controller");
     theathControllerLog.update("Drive Controller");

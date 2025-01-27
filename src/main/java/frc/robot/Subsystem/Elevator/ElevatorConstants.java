@@ -11,12 +11,12 @@ import frc.robot.Subsystem.Elevator.IOs.ElevatorIOSim;
 
 public class ElevatorConstants {
 
-    public static final double MAX_HIGHT = 1.475;
+    public static final double MAX_HIGHT = 1.48;
     public static final double MIN_HIGHT = -0.003;
-    public static final double HIGHT_L2 = 0.48;
-    public static final double HIGHT_L3 = 0.78;
+    public static final double HIGHT_L2 = 0.5;
+    public static final double HIGHT_L3 = 0.85;
     public static final double HIGHT_L1 = 0.13;
-    public static final double HIGHT_L4 = 1.47;
+    public static final double HIGHT_L4 = 1.477;
     public static final double HIGHT_INTAKE_CORAL = 0.59;
     public static final double HIGHT_EJECT_BALL_LOW = 0.25;
     public static final double HIGHT_EJECT_BALL_HIGH = 0.5;
@@ -32,7 +32,7 @@ public class ElevatorConstants {
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kS = 0;
-    public static final double TOLORANCE = 0.015;
+    public static final double TOLORANCE = 0.01;
     public static final double FEED_FORWARD = 0.42;
     
     public static final double HOME_VOLTAGE = -1;

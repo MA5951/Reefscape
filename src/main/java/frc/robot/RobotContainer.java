@@ -7,9 +7,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotControl.Field;
 import frc.robot.RobotControl.SuperStructure;
+import frc.robot.RobotControl.Field.ScoringLevel;
 import frc.robot.Subsystem.Arm.Arm;
 import frc.robot.Subsystem.Arm.ArmConstants;
 import frc.robot.Subsystem.Elevator.Elevator;
@@ -55,13 +57,13 @@ public class RobotContainer extends DeafultRobotContainer {
     @SuppressWarnings("unused")
     SuperStructure superStructure = new SuperStructure();
 
-    configureBindings(); 
-    setUpAutoCommands(); 
+    configureBindings();
+    setUpAutoCommands();
 
   }
 
   public static void setUpAutoCommands() {
-    // setAutoOptions(null); //TODO add the code 
+    // setAutoOptions(null); //TODO add the code
   }
 
   public static void configureTeleopCommands() {
@@ -108,6 +110,8 @@ public class RobotContainer extends DeafultRobotContainer {
   }
 
   public static void setBALLREMOVING() {
+    TeleopSwerveController.ballsTimer.reset();
+    TeleopSwerveController.ballsTimer.start();
     setCurrentState(RobotConstants.BALLREMOVING);
     intake.setTargetState(IntakeConstants.BALLREMOVING);
     arm.setTargetState(ArmConstants.BALLREMOVING);
@@ -134,9 +138,9 @@ public class RobotContainer extends DeafultRobotContainer {
     new Trigger(() -> driverController.getTriangleButton())
         .onTrue(Do(() -> TeleopSwerveController.driveController.updateDriveHeading()));
 
-    // // Manuel Vision Update
-    // new Trigger(() -> driverController.getPSButton())
-    //     .onTrue(Do(() -> Vision.getInstance().updateOdometry()));
+    // Manuel Vision Update
+    new Trigger(() -> driverController.getPSButton())
+        .onTrue(Do(() -> Vision.getInstance().updateOdometry()));
 
     // Intake
     new Trigger(() -> driverController.getR1Button() && !SuperStructure.hasGamePiece())
@@ -148,7 +152,7 @@ public class RobotContainer extends DeafultRobotContainer {
         .onTrue(Do(() -> setSORTING()));
     
     
-
+    
 
     // // Scoring
     new Trigger(() -> driverController.getL1Button() && SuperStructure.hasGamePiece()
@@ -169,6 +173,8 @@ public class RobotContainer extends DeafultRobotContainer {
     // Ball Removing
     new Trigger(() -> driverController.getL2Button() && !SuperStructure.hasGamePiece())
         .onTrue(Do(() -> setBALLREMOVING())); //Not too close
+    
+    
 
     // // Climb
     // new Trigger(() -> driverController.getSquareButton() && currentRobotState == RobotConstants.IDLE)
@@ -177,11 +183,21 @@ public class RobotContainer extends DeafultRobotContainer {
     // IDLE
     new Trigger(() -> driverController.getTouchpadButton()).onTrue(Do(() -> setIDLE()));
 
+    //Auto Scoring
     new Trigger(() -> driverController.getRawButton(9)).onTrue(Do(() -> SuperStructure.toggleAutoScoring()));
+
+    //Scoring Levels
+    new Trigger(() -> driverController.getPOV() == 180).onTrue(Do(() -> SuperStructure.setScoringPreset(ScoringLevel.L1)));
+
+    new Trigger(() -> driverController.getPOV() == 0).onTrue(Do(() -> SuperStructure.setScoringPreset(ScoringLevel.L4)));
+
+    new Trigger(() -> driverController.getPOV() == 270).onTrue(Do(() -> SuperStructure.setScoringPreset(ScoringLevel.L3)));
+
+    new Trigger(() -> driverController.getPOV() == 90).onTrue(Do(() -> SuperStructure.setScoringPreset(ScoringLevel.L2)));
   }
 
   private static Command Do(Runnable toRun) {
-    return CommandUtil.instantOf(toRun); 
+    return CommandUtil.instantOf(toRun);
   }
 
 }
