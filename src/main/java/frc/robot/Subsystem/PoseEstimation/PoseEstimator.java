@@ -31,7 +31,7 @@ public class PoseEstimator {
             new SwerveModulePosition(),
             new SwerveModulePosition()
         },
-        new Pose2d(2,2, new Rotation2d()),
+        new Pose2d(4.08,5.52, Rotation2d.k180deg),
         PoseEstimatorConstants.ODOMETRY_DEVS,//Oodmetry Devs
         PoseEstimatorConstants.VISION_DEVS);//Vision Devs
 
@@ -48,8 +48,8 @@ public class PoseEstimator {
     }
 
     public void updateVision(Pose2d pose , double timestamp) {
-        lastVisionUpdateLog.update(Timer.getFPGATimestamp());
-        robotPoseEstimator.addVisionMeasurement(pose, timestamp);
+        lastVisionUpdateLog.update(timestamp);
+        robotPoseEstimator.addVisionMeasurement(pose , timestamp);
     }
 
     public Pose2d getEstimatedRobotPose() {

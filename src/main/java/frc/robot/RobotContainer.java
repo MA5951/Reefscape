@@ -102,12 +102,13 @@ public class RobotContainer extends DeafultRobotContainer {
   }
 
   public static void setSCORING() {
+    SuperStructure.updateScoringFace();
     SuperStructure.setAbsXY();
     SuperStructure.updateAngleAdjustController();
     setCurrentState(RobotConstants.SCORING);
-    intake.setTargetState(IntakeConstants.HOLD);
-    arm.setTargetState(ArmConstants.SCORING);
-    elevator.setTargetState(ElevatorConstants.SCORING);
+    // intake.setTargetState(IntakeConstants.HOLD);
+    // arm.setTargetState(ArmConstants.SCORING);
+    // elevator.setTargetState(ElevatorConstants.SCORING);
   }
 
   public static void setBALLREMOVING() {
@@ -155,7 +156,6 @@ public class RobotContainer extends DeafultRobotContainer {
     // // Scoring
     new Trigger(() -> driverController.getL1Button() && SuperStructure.hasGamePiece()
         && currentRobotState != RobotConstants.SORTING)
-        .onTrue(Do(() -> SuperStructure.updateScoringFace()))
         .onTrue(Do(() -> SuperStructure.setScoringLocation(Field.ScoringLocation.LEFT)))
         .onTrue(Do(() -> setSCORING()));
 

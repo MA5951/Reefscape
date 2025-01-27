@@ -4,7 +4,6 @@
 
 package frc.robot.commands.Swerve;
 
-
 import com.ma5951.utils.Logger.LoggedString;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -49,7 +48,6 @@ public class TeleopSwerveController extends Command {
     autoAdjustXYController = new AutoAdjustXYController(() -> PoseEstimator.getInstance().getEstimatedRobotPose(),
         () -> SwerveSubsystem.getInstance().getFusedHeading());
 
-
     xyControllerLog = new LoggedString("/Subsystems/Swerve/Controllers/XY Controller");
     theathControllerLog = new LoggedString("/Subsystems/Swerve/Controllers/Theath Controller");
 
@@ -86,9 +84,13 @@ public class TeleopSwerveController extends Command {
       robotSpeeds.vxMetersPerSecond = -1;
       robotSpeeds.vyMetersPerSecond = 0;
       robotSpeeds.omegaRadiansPerSecond = 0;
-    }  
-    
-    
+    } else if (RobotContainer.currentRobotState == RobotConstants.SCORING) {
+      xyControllerLog.update(SuperStructure.updateXYAdjustController());
+      //robotSpeeds = autoAdjustXYController.update();
+      robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
+      theathControllerLog.update("Angle Controller");
+    }
+
     else {
       xyControllerLog.update("Drive Controller");
       theathControllerLog.update("Drive Controller");

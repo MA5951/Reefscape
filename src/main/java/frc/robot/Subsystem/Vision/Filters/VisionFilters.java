@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Rectangle2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.RobotConstants;
 import frc.robot.Subsystem.Vision.IOs.VisionIO;
 
 @SuppressWarnings("static-access")
@@ -52,9 +53,13 @@ public class VisionFilters {
     }
 
     public boolean isValidForUpdate(Pose2d visionPose2d) {
-        return inVelocityFilter() && inField(visionPose2d) && notInFieldObstacles(visionPose2d)
+        return inVelocityFilter() && inField(visionPose2d)
+        // && notInFieldObstacles(visionPose2d)
                 && inOdometryRange(visionPose2d)
-                && shouldUpdateByRobotState() && notDeafultPose() && isVisionMatchingVelocity(visionPose2d);
+                && shouldUpdateByRobotState() 
+                && notDeafultPose() 
+                //&& isVisionMatchingVelocity(visionPose2d);
+                ;
     }
 
     private boolean inVelocityFilter() {
@@ -97,7 +102,7 @@ public class VisionFilters {
         robotVelocity = robotVelocityVectorSupplier.get();
         if (robotVelocity < config.maxVelocityForVisionVelocityFilter) {
             return (robotPoSupplier.get().getTranslation().getDistance(
-                    visionPose.getTranslation()) <= robotVelocity * 0.02 + config.VISION_VELOCITY_TOLERANCE);
+                    visionPose.getTranslation()) <= robotVelocity * RobotConstants.kDELTA_TIME + config.VISION_VELOCITY_TOLERANCE);
         }
 
         return true;
@@ -112,7 +117,7 @@ public class VisionFilters {
     }
 
     private boolean notDeafultPose() {
-        return visionIO.getEstimatedPose().pose != deafultPose;
+        return visionIO.getEstimatedPose().pose.getX() != 0 && visionIO.getEstimatedPose().pose.getY() != 0;
     }
 
 }

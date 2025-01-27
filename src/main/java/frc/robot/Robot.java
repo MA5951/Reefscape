@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.RobotControl.SuperStructure;
 import frc.robot.Subsystem.PoseEstimation.PoseEstimator;
 import frc.robot.Subsystem.Swerve.SwerveConstants;
 
@@ -57,6 +58,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
     PoseEstimator.getInstance().update();
+    SuperStructure.update();
     RobotContainer.setAllianceData();
     RobotContainer.updatePeriodic();
 

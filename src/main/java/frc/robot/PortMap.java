@@ -55,7 +55,7 @@ public class PortMap {
     }
 
     public class Vision {
-        public final static String FRONT_CAMERA_NAME = "limelight-camera-FRONT";
+        public final static String FRONT_CAMERA_NAME = "limelight-front";
         public final static String BACK_CAMERA_NAME = "limelight-camera-BACK";
     }
 

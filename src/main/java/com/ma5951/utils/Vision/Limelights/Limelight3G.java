@@ -38,7 +38,7 @@ public class Limelight3G {
   }
 
   public LimelightHelpers.PoseEstimate getEstimatedPose() {
-    return LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(name) != null ? LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(name) : new PoseEstimate();
+    return LimelightHelpers.getBotPoseEstimate_wpiBlue(name) != null ? LimelightHelpers.getBotPoseEstimate_wpiBlue(name) : new PoseEstimate();
   }
 
   public boolean isTarget() {
