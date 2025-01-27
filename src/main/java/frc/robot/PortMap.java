@@ -42,8 +42,8 @@ public class PortMap {
     }
 
     public class Climb {
-        public static final int ClimbLeftMotor = 50;
-        public static final int ClimbRightMotor = 52;
+        public static final int ClimbMasterMotor = 50;
+        public static final int ClimbSlaveMotor = 52;
 
         public static final int ClimbFirstSensor = 1;
         public static final int ClimbSecondSensor = 2;
