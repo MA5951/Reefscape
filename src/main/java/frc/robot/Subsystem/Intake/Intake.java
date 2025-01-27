@@ -3,10 +3,12 @@ package frc.robot.Subsystem.Intake;
 
 import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
+import com.ma5951.utils.Utils.BooleanLatch;
 
 import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
 import frc.robot.RobotControl.SuperStructure;
+import frc.robot.Subsystem.Arm.Arm;
 import frc.robot.Subsystem.Intake.IOs.IntakeIO;
 import frc.robot.commands.Swerve.TeleopSwerveController;
 
@@ -14,9 +16,11 @@ public class Intake extends StateControlledSubsystem {
   private static Intake intake;
 
   private IntakeIO intakeIO = IntakeConstants.getIntakeIO();
+  public static BooleanLatch armAtPointLatch;
 
   private Intake() {
     super(IntakeConstants.SUBSYSTEM_STATES, "Intake");
+    armAtPointLatch = new BooleanLatch(() -> Arm.getInstance().atPoint());
   }
 
   public boolean getFrontSensor() {
@@ -59,14 +63,14 @@ public class Intake extends StateControlledSubsystem {
     return SuperStructure.isScoringAutomatic == true ? RobotContainer.currentRobotState == RobotConstants.SCORING && ((RobotContainer.elevator.atPoint()
         && TeleopSwerveController.atPointForScoring() && RobotContainer.arm.atPoint() && getFrontSensor()) || getTargetState() == IntakeConstants.HOLD) 
         : RobotContainer.currentRobotState == RobotConstants.SCORING && ((RobotContainer.elevator.atPoint()
-        && RobotContainer.arm.atPoint() &&  SuperStructure.atScoringPose() &&(getFrontSensor() || getRearSensor())) || getTargetState() == IntakeConstants.HOLD) &&
+        && armAtPointLatch.get() &&(getFrontSensor() || getRearSensor())) || getTargetState() == IntakeConstants.HOLD) &&
         (RobotContainer.driverController.getL1Button() || RobotContainer.driverController.getR1Button());
 
 
   }
 
   public boolean BallRemovingCanMove() {
-    return RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && RobotContainer.elevator.atPoint();
+    return RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && RobotContainer.elevator.atPoint() && RobotContainer.arm.getPosition() < 129;
   }
 
   public boolean SortingCanMove() {

@@ -16,7 +16,7 @@ public class ElevatorConstants {
     public static final double HIGHT_L2 = 0.5;
     public static final double HIGHT_L3 = 0.85;
     public static final double HIGHT_L1 = 0.13;
-    public static final double HIGHT_L4 = 1.477;
+    public static final double HIGHT_L4 = 1.47;
     public static final double HIGHT_INTAKE_CORAL = 0.59;
     public static final double HIGHT_EJECT_BALL_LOW = 0.25;
     public static final double HIGHT_EJECT_BALL_HIGH = 0.5;
@@ -28,7 +28,7 @@ public class ElevatorConstants {
     public static final double SPROKET_CIRCUMFERENCE = SPROKET_PITCH_DIAMETER * Math.PI;
 
     public static final int CONTROL_SLOT = 0;
-    public static final double kP = 1;
+    public static final double kP = 1.1;
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kS = 0;

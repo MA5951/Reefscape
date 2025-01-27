@@ -44,7 +44,7 @@ public class ElevatorDeafultCommand extends RobotFunctionStatesCommand {
         super.AutomaticLoop();
         switch (elevator.getTargetState().getName()) {
             case "IDLE":
-                if (elevator.atPoint() && elevator.atMinPose()) { 
+                if (elevator.atPoint()) { 
                     elevator.setVoltage(0); 
                 } else {
                     elevator.setHight(ElevatorConstants.MIN_HIGHT);

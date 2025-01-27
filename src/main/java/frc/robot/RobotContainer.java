@@ -87,6 +87,7 @@ public class RobotContainer extends DeafultRobotContainer {
 
   public static void setIDLE() {
     setCurrentState(RobotConstants.IDLE);
+    Intake.armAtPointLatch.reset();
     intake.setTargetState(IntakeConstants.IDLE);
     arm.setTargetState(ArmConstants.IDLE);
     elevator.setTargetState(ElevatorConstants.IDLE);
@@ -110,8 +111,7 @@ public class RobotContainer extends DeafultRobotContainer {
   }
 
   public static void setBALLREMOVING() {
-    TeleopSwerveController.ballsTimer.reset();
-    TeleopSwerveController.ballsTimer.start();
+    SuperStructure.updatePose();
     setCurrentState(RobotConstants.BALLREMOVING);
     intake.setTargetState(IntakeConstants.BALLREMOVING);
     arm.setTargetState(ArmConstants.BALLREMOVING);
@@ -147,12 +147,10 @@ public class RobotContainer extends DeafultRobotContainer {
         .onTrue(Do(() -> setINTAKE()));
 
     new Trigger(
-        () -> currentRobotState == RobotConstants.INTAKE && SuperStructure.hasGamePiece() && SuperStructure.isDistanceToCloseArm()
-        && intake.getTargetState() == IntakeConstants.IDLE)
+        () -> currentRobotState == RobotConstants.INTAKE && SuperStructure.hasGamePiece()
+            && SuperStructure.isDistanceToCloseArm()
+            && intake.getTargetState() == IntakeConstants.IDLE)
         .onTrue(Do(() -> setSORTING()));
-    
-    
-    
 
     // // Scoring
     new Trigger(() -> driverController.getL1Button() && SuperStructure.hasGamePiece()
@@ -172,28 +170,34 @@ public class RobotContainer extends DeafultRobotContainer {
 
     // Ball Removing
     new Trigger(() -> driverController.getL2Button() && !SuperStructure.hasGamePiece())
-        .onTrue(Do(() -> setBALLREMOVING())); //Not too close
-    
-    
+        .onTrue(Do(() -> setBALLREMOVING())); // Not too close
+
+    new Trigger(() -> currentRobotState == RobotConstants.BALLREMOVING && SuperStructure.isDistanceToEndBallRemove())
+        .onTrue(Do(() -> setIDLE()));
 
     // // Climb
-    // new Trigger(() -> driverController.getSquareButton() && currentRobotState == RobotConstants.IDLE)
-    //     .onTrue(Do(() -> setCLIMB()));
+    // new Trigger(() -> driverController.getSquareButton() && currentRobotState ==
+    // RobotConstants.IDLE)
+    // .onTrue(Do(() -> setCLIMB()));
 
     // IDLE
     new Trigger(() -> driverController.getTouchpadButton()).onTrue(Do(() -> setIDLE()));
 
-    //Auto Scoring
+    // Auto Scoring
     new Trigger(() -> driverController.getRawButton(9)).onTrue(Do(() -> SuperStructure.toggleAutoScoring()));
 
-    //Scoring Levels
-    new Trigger(() -> driverController.getPOV() == 180).onTrue(Do(() -> SuperStructure.setScoringPreset(ScoringLevel.L1)));
+    // Scoring Levels
+    new Trigger(() -> driverController.getPOV() == 180)
+        .onTrue(Do(() -> SuperStructure.setScoringPreset(ScoringLevel.L1)));
 
-    new Trigger(() -> driverController.getPOV() == 0).onTrue(Do(() -> SuperStructure.setScoringPreset(ScoringLevel.L4)));
+    new Trigger(() -> driverController.getPOV() == 0)
+        .onTrue(Do(() -> SuperStructure.setScoringPreset(ScoringLevel.L4)));
 
-    new Trigger(() -> driverController.getPOV() == 270).onTrue(Do(() -> SuperStructure.setScoringPreset(ScoringLevel.L3)));
+    new Trigger(() -> driverController.getPOV() == 270)
+        .onTrue(Do(() -> SuperStructure.setScoringPreset(ScoringLevel.L3)));
 
-    new Trigger(() -> driverController.getPOV() == 90).onTrue(Do(() -> SuperStructure.setScoringPreset(ScoringLevel.L2)));
+    new Trigger(() -> driverController.getPOV() == 90)
+        .onTrue(Do(() -> SuperStructure.setScoringPreset(ScoringLevel.L2)));
   }
 
   private static Command Do(Runnable toRun) {

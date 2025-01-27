@@ -19,7 +19,7 @@ public class ArmConstants {
     public static final double ANGLE_L1 = 27;
     public static final double ANGLE_L2 = 122;
     public static final double ANGLE_L3 = 140;
-    public static final double ANGLE_L4 = 148.5;
+    public static final double ANGLE_L4 = 150;
 
     public static final double INTAKE_CORALS_ANGLE = 32;
     public static final double EJECT_BALL_START_ANGLE = 0;

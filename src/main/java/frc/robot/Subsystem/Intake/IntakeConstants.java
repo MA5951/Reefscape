@@ -16,12 +16,12 @@ public class IntakeConstants {
     public static final double INTAKE_FACTOR_AFTER_SENSOR = 1;
     public static final double SORTING_SPEED = 2.2; 
     public static final double EJECT_SPEED_L1 = 1.7; 
-    public static final double EJECT_SPEED_L234 = -6; 
+    public static final double EJECT_SPEED_L234 = -2.5; 
     public static final double INTAKE_WIDHT = 0; 
     public static final double CORAL_HOLDING_VALUE = 0; 
     //public static final double BALLֹ_EJECTING_VALUE = 0;
     public static final double GEAR = 5;
-    public static final int SORTIN_NUM = 4;
+    public static final int SORTIN_NUM = 5;
     public static final double MANUEL_VOLTAGE_LIMIT = 3;
 
     

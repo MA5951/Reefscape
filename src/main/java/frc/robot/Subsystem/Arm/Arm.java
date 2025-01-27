@@ -5,6 +5,7 @@ import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
 import com.ma5951.utils.Utils.ConvUtil;
 
+import edu.wpi.first.math.filter.Debouncer;
 import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
 import frc.robot.RobotControl.SuperStructure;
@@ -16,6 +17,7 @@ public class Arm extends StateControlledSubsystem {
     private LoggedBool atPointLog;
 
     private ArmIO armIO = ArmConstants.getArmIO();
+    private Debouncer atPointDebouncer = new Debouncer(RobotConstants.kDELTA_TIME * 2);
 
     private Arm() {
         super(ArmConstants.SUBSYSTEM_STATES, "Arm");
@@ -69,7 +71,7 @@ public class Arm extends StateControlledSubsystem {
     }
 
     public boolean atPoint() {
-        return Math.abs(armIO.getError()) <= ArmConstants.TOLERANCE;
+        return atPointDebouncer.calculate(Math.abs(armIO.getError()) <= ArmConstants.TOLERANCE) ;
     }
 
     public boolean atMinPose() {
@@ -78,7 +80,7 @@ public class Arm extends StateControlledSubsystem {
 
     public boolean BallRemovingCanMove() {
         return (RobotContainer.currentRobotState == RobotConstants.BALLREMOVING 
-                && SuperStructure.atBallRemoving()) || RobotContainer.currentRobotState != RobotConstants.BALLREMOVING  ;
+                && RobotContainer.elevator.atPoint()) || RobotContainer.currentRobotState != RobotConstants.BALLREMOVING  ;
     }
 
     @Override

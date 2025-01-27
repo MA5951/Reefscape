@@ -53,14 +53,6 @@ public class SuperStructure extends GenericSuperStracture {
         }
     }
 
-    public static boolean atScoringPose() {
-        return RobotContainer.elevator.getHight() > scoringLevel.hight - 0.1 &&  Math.abs(RobotContainer.arm.getPosition() - scoringLevel.angle) < 3;
-    }
-
-    public static boolean atBallRemoving() {
-        return RobotContainer.elevator.getHight() >= (0.25 - 0.01) && RobotContainer.elevator.atPoint();
-    }
-
     public static void setScoringPreset(Field.ScoringLevel ScoringLevel) {
         scoringLevel = ScoringLevel;
     }
@@ -109,6 +101,11 @@ public class SuperStructure extends GenericSuperStracture {
                 currentPoseSupplier.get().getTranslation()) >= RobotConstants.DistanceToCloseArm + RobotConstants.DistanceOffsetScoring : 
                 ejectPose.getTranslation().getDistance(
                 currentPoseSupplier.get().getTranslation()) >= RobotConstants.DistanceToCloseArm;
+    }
+
+    public static boolean isDistanceToEndBallRemove() {
+        return ejectPose.getTranslation().getDistance(
+            currentPoseSupplier.get().getTranslation()) >= RobotConstants.DistanceToDriveBalls;
     }
 
     public static double getAngleForIntakeAlign() {

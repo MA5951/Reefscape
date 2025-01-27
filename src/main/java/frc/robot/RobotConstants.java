@@ -36,7 +36,7 @@ public class RobotConstants {
     public static final double DistanceToRelativAlign = 2;
     public static final double SpeedToScore = 0.5;
     public static final double ToloranceToScoring = 0.02;
-    public static final double TimeToDriveBalls = 0.7;
+    public static final double DistanceToDriveBalls = 0.7;
 
     // FieldConstants
     public static final Translation2d FieldZeroCorner = new Translation2d(0, 0);

@@ -4,7 +4,6 @@
 
 package frc.robot.commands.Swerve;
 
-import java.lang.invoke.ClassSpecializer.Factory;
 
 import com.ma5951.utils.Logger.LoggedString;
 
@@ -39,8 +38,6 @@ public class TeleopSwerveController extends Command {
   private static LoggedString xyControllerLog;
   private static LoggedString theathControllerLog;
 
-  public static Timer ballsTimer;
-
   public TeleopSwerveController(PS5Controller controller) {
     swerve = SwerveSubsystem.getInstance();
 
@@ -52,7 +49,6 @@ public class TeleopSwerveController extends Command {
     autoAdjustXYController = new AutoAdjustXYController(() -> PoseEstimator.getInstance().getEstimatedRobotPose(),
         () -> SwerveSubsystem.getInstance().getFusedHeading());
 
-    ballsTimer = new Timer();
 
     xyControllerLog = new LoggedString("/Subsystems/Swerve/Controllers/XY Controller");
     theathControllerLog = new LoggedString("/Subsystems/Swerve/Controllers/Theath Controller");
@@ -86,13 +82,18 @@ public class TeleopSwerveController extends Command {
     // robotSpeeds = driveController.update();
     // }
 
-    if (RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && !ballsTimer.hasElapsed(RobotConstants.TimeToDriveBalls)) {
-      
+    if (RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && RobotContainer.arm.getPosition() > 90) {
+      robotSpeeds.vxMetersPerSecond = -1;
+      robotSpeeds.vyMetersPerSecond = 0;
+      robotSpeeds.omegaRadiansPerSecond = 0;
+    }  
+    
+    
+    else {
+      xyControllerLog.update("Drive Controller");
+      theathControllerLog.update("Drive Controller");
+      robotSpeeds = driveController.update();
     }
-
-    xyControllerLog.update("Drive Controller");
-    theathControllerLog.update("Drive Controller");
-    robotSpeeds = driveController.update();
 
     swerve.drive(robotSpeeds);
   }

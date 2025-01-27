@@ -122,7 +122,7 @@ public class ElevatorIOReal implements ElevatorIO {
     }
 
     public double getError() {
-        return masterError.getValueAsDouble() * 2 / 100; 
+        return ( MotionMagic.Position * 2 / 100 )- getPosition(); 
     }
 
     
