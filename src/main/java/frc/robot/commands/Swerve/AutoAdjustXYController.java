@@ -15,7 +15,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import frc.robot.Subsystem.Swerve.SwerveConstants;
-import frc.robot.Utils.MAProfieldPIDController;
 
 public class AutoAdjustXYController implements SwerveController {
 
@@ -29,7 +28,6 @@ public class AutoAdjustXYController implements SwerveController {
     private LoggedDouble ySpeedLog;
     private LoggedBool atPointLog;
     private LoggedPose2d targetPoseLog;
-    private LoggedPose2d setPointPoseLog;
     private Pose2d targetPose;
     private boolean isFieldRelativ = true;
     private Supplier<Double> gyromMeasurment;
@@ -44,7 +42,6 @@ public class AutoAdjustXYController implements SwerveController {
         ySpeedLog = new LoggedDouble("/Subsystems/Swerve/Controllers/XY Adjust Controller/Y Speed");
         atPointLog = new LoggedBool("/Subsystems/Swerve/Controllers/XY Adjust Controller/At Point");
         targetPoseLog = new LoggedPose2d("/Subsystems/Swerve/Controllers/XY Adjust Controller/Goal Point");
-        setPointPoseLog = new LoggedPose2d("/Subsystems/Swerve/Controllers/XY Adjust Controller/Set Point");
 
         xController.setTolerance(SwerveConstants.ABS_XY_TOLORANCE);
         yController.setTolerance(SwerveConstants.ABS_XY_TOLORANCE);
@@ -81,10 +78,9 @@ public class AutoAdjustXYController implements SwerveController {
         ySpeedLog.update(chassisSpeeds.vyMetersPerSecond);
         atPointLog.update(atPoint());
         targetPoseLog.update(targetPose);
-        // setPointPoseLog.update(new Pose2d(xController.getSetpoint().position, yController.getSetpoint().position,
-        //         targetPose.getRotation()));
 
-        if (true) {
+
+        if (isFieldRelativ) {
             return ChassisSpeedsUtil.FromFieldToRobot(chassisSpeeds, new Rotation2d(
                     Math.toRadians((gyromMeasurment.get() - gyroOffset.get()))));
         }

@@ -267,18 +267,18 @@ public class SwerveConstants {
         public final static double ANGLE_RANGE = 180;
 
         // Swerve AutoAdjustXY
-        public final static double ABS_X_KP = 2;
+        public final static double ABS_X_KP = 1.9;
         public final static double ABS_X_KI = 0;
         public final static double ABS_X_KD = 0;
         
-        public final static double ABS_Y_KP = 1.7;
+        public final static double ABS_Y_KP = 1.9;
         public final static double ABS_Y_KI = 0;
         public final static double ABS_Y_KD = 0;
 
-        public final static double REL_X_KP = 0;
+        public final static double REL_X_KP = 0.07;
         public final static double REL_X_KI = 0;
         public final static double REL_X_KD = 0;
-        public final static double REL_Y_KP = 0;
+        public final static double REL_Y_KP = 0.01;
         public final static double REL_Y_KI = 0;
         public final static double REL_Y_KD = 0;
 
@@ -286,7 +286,7 @@ public class SwerveConstants {
         public final static double ABS_XY_TOLORANCE = 0.05;
 
         public final static Constraints REL_XY_CONSTRAINTS = new Constraints(4.9, 6);
-        public final static double REL_XY_TOLORANCE = 0.2;
+        public final static double REL_XY_TOLORANCE = 0.1;
 
         // Swerve RelativAngleAdjust
         public final static double RELATIV_THATA_KP = 0.00615;

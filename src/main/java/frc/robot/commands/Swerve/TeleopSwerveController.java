@@ -36,7 +36,8 @@ public class TeleopSwerveController extends Command {
   private static ChassisSpeeds robotSpeeds;
   private static LoggedString xyControllerLog;
   private static LoggedString theathControllerLog;
-  private static SwerveModuleState[] currentStates ;
+  private static SwerveModuleState[] currentStates;
+  private static String alignType = "NONE";
 
   public TeleopSwerveController(PS5Controller controller) {
     swerve = SwerveSubsystem.getInstance();
@@ -58,7 +59,7 @@ public class TeleopSwerveController extends Command {
 
   @Override
   public void initialize() {
-    
+
   }
 
   @Override
@@ -88,10 +89,15 @@ public class TeleopSwerveController extends Command {
       robotSpeeds.vyMetersPerSecond = 0;
       robotSpeeds.omegaRadiansPerSecond = 0;
     } else if (RobotContainer.currentRobotState == RobotConstants.SCORING) {
-      //xyControllerLog.update(SuperStructure.updateXYAdjustController());
-      robotSpeeds = autoAdjustXYController.update();
-      robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
-      theathControllerLog.update("Angle Controller");
+      alignType = SuperStructure.updateXYAdjustController();
+      xyControllerLog.update(alignType);
+      if ((alignType == "RELATIV XY" && RobotContainer.vision.isTarget())
+          || (alignType != "RELATIV XY" && alignType != "NONE")) {
+        robotSpeeds = autoAdjustXYController.update();
+        //robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
+        robotSpeeds.omegaRadiansPerSecond = 0;
+        theathControllerLog.update("Angle Controller");
+      }
     }
 
     else {
@@ -107,10 +113,10 @@ public class TeleopSwerveController extends Command {
   public void end(boolean interrupted) {
     currentStates = swerve.getSwerveModuleStates();
     swerve.setModules(new SwerveModuleState[] {
-        new SwerveModuleState( 0 , currentStates[0].angle),
-        new SwerveModuleState( 0 , currentStates[1].angle),
-        new SwerveModuleState( 0 , currentStates[2].angle),
-        new SwerveModuleState( 0 , currentStates[3].angle),
+        new SwerveModuleState(0, currentStates[0].angle),
+        new SwerveModuleState(0, currentStates[1].angle),
+        new SwerveModuleState(0, currentStates[2].angle),
+        new SwerveModuleState(0, currentStates[3].angle),
     });
   }
 

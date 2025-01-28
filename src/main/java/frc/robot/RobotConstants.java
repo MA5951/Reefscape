@@ -33,7 +33,7 @@ public class RobotConstants {
     public static final double DistanceToCloseArm = 0.2;
     public static final double DistanceOffsetScoring = 0.1;
     public static final double DistanceToAlign = 1;
-    public static final double DistanceToRelativAlign = 2;
+    public static final double DistanceToRelativAlign = 0.3;
     public static final double SpeedToScore = 0.5;
     public static final double ToloranceToScoring = 0.02;
     public static final double DistanceToDriveBalls = 0.7;
@@ -61,6 +61,7 @@ public class RobotConstants {
     public static final Pose2d Tag20Pose = new Pose2d(4.904739999999999, 4.745482, Rotation2d.fromDegrees(-120));
     public static final Pose2d Tag21Pose = new Pose2d(5.321046, 4.0259, Rotation2d.fromDegrees(180));
     public static final Pose2d Tag22Pose = new Pose2d(4.904739999999999, 3.3063179999999996, Rotation2d.fromDegrees(120));
+
 
     //Source
     public static final Pose2d Tag1Pose = new Pose2d(16.697198, 0.65532, Rotation2d.fromDegrees(-52));

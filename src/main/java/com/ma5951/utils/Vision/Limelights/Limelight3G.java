@@ -50,7 +50,7 @@ public class Limelight3G {
   }
 
   public LimelightHelpers.RawDetection getRawDetection() {
-    return getRawDetection(0);
+    return getRawDetection(1);
   }
 
   public LimelightHelpers.RawFiducial getRawFiducial(int detectionIndex) {
@@ -68,6 +68,7 @@ public class Limelight3G {
   public double getTx() {
     return isTarget() ? LimelightHelpers.getTX(name) : 0;
   }
+
 
   public double getTy() {
     return isTarget() ? LimelightHelpers.getTY(name) : 0;

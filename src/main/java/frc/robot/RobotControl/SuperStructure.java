@@ -42,6 +42,7 @@ public class SuperStructure extends GenericSuperStracture {
     private static LoggedPose2d reefFace;
     private static LoggedDouble alignAngle;
 
+
     public SuperStructure() {
         super(() -> PoseEstimator.getInstance().getEstimatedRobotPose(),
                 () -> SwerveSubsystem.getInstance().getVelocityVector());
@@ -159,12 +160,78 @@ public class SuperStructure extends GenericSuperStracture {
     }
 
     public static String updateXYAdjustController() {
-        if (RobotContainer.currentRobotState == RobotConstants.SCORING) {
-            if (RobotContainer.vision.getTagID() == scoringFace.TagID() &&
-                    currentPoseSupplier.get().getTranslation()
-                            .getDistance(
-                                    scoringFace.tagPose().getTranslation()) < RobotConstants.DistanceToRelativAlign
-                    && TeleopSwerveController.angleAdjustController.getAtPoint()) {
+        // if (RobotContainer.currentRobotState == RobotConstants.SCORING) {
+        //     if (RobotContainer.vision.getTagID() == scoringFace.TagID() &&
+        //             currentPoseSupplier.get().getTranslation()
+        //                     .getDistance(
+        //                             scoringFace.tagPose().getTranslation()) < RobotConstants.DistanceToRelativAlign
+        //             && TeleopSwerveController.angleAdjustController.getAtPoint()) {
+        //         if (scoringLocation == Field.ScoringLocation.LEFT) {
+        //             TeleopSwerveController.autoAdjustXYController
+        //                     .updateSetPoint(VisionConstants.RELATIV_LEFT_REEF_SET_POINT);
+        //         } else if (scoringLocation == Field.ScoringLocation.RIGHT) {
+        //             TeleopSwerveController.autoAdjustXYController
+        //                     .updateSetPoint(VisionConstants.RELATIV_RIGHT_REEF_SET_POINT);
+        //         }
+
+        //         TeleopSwerveController.autoAdjustXYController
+        //                 .updateMeaurment(() -> RobotContainer.vision.getPoseForRelativReefAlign());
+        //         TeleopSwerveController.autoAdjustXYController.setPID(
+        //                 SwerveConstants.REL_X_KP,
+        //                 SwerveConstants.REL_X_KI,
+        //                 SwerveConstants.REL_X_KD,
+        //                 SwerveConstants.REL_XY_TOLORANCE,
+        //                 SwerveConstants.REL_Y_KP,
+        //                 SwerveConstants.REL_Y_KI,
+        //                 SwerveConstants.REL_Y_KD,
+        //                 SwerveConstants.REL_XY_TOLORANCE);
+        //         TeleopSwerveController.autoAdjustXYController.setConstrains(SwerveConstants.REL_XY_CONSTRAINTS);
+        //         TeleopSwerveController.autoAdjustXYController.setField(false);
+
+        //         return "RELATIV XY";
+        //     } else if (currentPoseSupplier.get().getTranslation()
+        //             .getDistance(
+        //                     scoringFace.tagPose().getTranslation()) < RobotConstants.DistanceToRelativAlign) {
+        //         if (scoringLocation == Field.ScoringLocation.LEFT) {
+        //             TeleopSwerveController.autoAdjustXYController
+        //                     .updateSetPoint(scoringFace.getLeftAlignPose());
+        //         } else if (scoringLocation == Field.ScoringLocation.RIGHT) {
+        //             TeleopSwerveController.autoAdjustXYController
+        //                     .updateSetPoint(scoringFace.getRightAlignPose());
+        //         }
+
+        //         TeleopSwerveController.autoAdjustXYController.updateMeaurment(currentPoseSupplier);
+        //         TeleopSwerveController.autoAdjustXYController.setPID(
+        //                 SwerveConstants.ABS_X_KP,
+        //                 SwerveConstants.ABS_X_KI,
+        //                 SwerveConstants.ABS_X_KD,
+        //                 SwerveConstants.ABS_XY_TOLORANCE,
+        //                 SwerveConstants.ABS_Y_KP,
+        //                 SwerveConstants.ABS_Y_KI,
+        //                 SwerveConstants.ABS_Y_KD,
+        //                 SwerveConstants.ABS_XY_TOLORANCE);
+        //         TeleopSwerveController.autoAdjustXYController.setConstrains(SwerveConstants.ABS_XY_CONSTRAINTS);
+        //         TeleopSwerveController.autoAdjustXYController.setField(true);
+        //         return "ABS XY Final Pose";
+        //     } else {
+        //         TeleopSwerveController.autoAdjustXYController.updateSetPoint(scoringFace.getAlignPose());
+        //         TeleopSwerveController.autoAdjustXYController.updateMeaurment(currentPoseSupplier);
+        //         TeleopSwerveController.autoAdjustXYController.setPID(
+        //                 SwerveConstants.ABS_X_KP,
+        //                 SwerveConstants.ABS_X_KI,
+        //                 SwerveConstants.ABS_X_KD,
+        //                 SwerveConstants.ABS_XY_TOLORANCE,
+        //                 SwerveConstants.ABS_Y_KP,
+        //                 SwerveConstants.ABS_Y_KI,
+        //                 SwerveConstants.ABS_Y_KD,
+        //                 SwerveConstants.ABS_XY_TOLORANCE);
+        //         TeleopSwerveController.autoAdjustXYController.setConstrains(SwerveConstants.ABS_XY_CONSTRAINTS);
+        //         TeleopSwerveController.autoAdjustXYController.setField(true);
+        //         return "ABS XY";
+        //     }
+
+        // }
+
                 if (scoringLocation == Field.ScoringLocation.LEFT) {
                     TeleopSwerveController.autoAdjustXYController
                             .updateSetPoint(VisionConstants.RELATIV_LEFT_REEF_SET_POINT);
@@ -186,26 +253,8 @@ public class SuperStructure extends GenericSuperStracture {
                         SwerveConstants.REL_XY_TOLORANCE);
                 TeleopSwerveController.autoAdjustXYController.setConstrains(SwerveConstants.REL_XY_CONSTRAINTS);
                 TeleopSwerveController.autoAdjustXYController.setField(false);
-                return "RELATIV XY";
-            } else {
-                TeleopSwerveController.autoAdjustXYController.updateSetPoint(scoringFace.getAlignPose());
-                TeleopSwerveController.autoAdjustXYController.updateMeaurment(currentPoseSupplier);
-                TeleopSwerveController.autoAdjustXYController.setPID(
-                        SwerveConstants.ABS_X_KP,
-                        SwerveConstants.ABS_X_KI,
-                        SwerveConstants.ABS_X_KD,
-                        SwerveConstants.ABS_XY_TOLORANCE,
-                        SwerveConstants.ABS_Y_KP,
-                        SwerveConstants.ABS_Y_KI,
-                        SwerveConstants.ABS_Y_KD,
-                        SwerveConstants.ABS_XY_TOLORANCE);
-                TeleopSwerveController.autoAdjustXYController.setConstrains(SwerveConstants.ABS_XY_CONSTRAINTS);
-                TeleopSwerveController.autoAdjustXYController.setField(true);
-                return "ABS XY";
-            }
 
-        }
-        return "NONE";
+        return "RELATIV XY";
     }
 
     public static boolean hasGamePiece() {
