@@ -102,10 +102,10 @@ public class RobotContainer extends DeafultRobotContainer {
   }
 
   public static void setSCORING() {
+    setCurrentState(RobotConstants.SCORING);
     SuperStructure.updateScoringFace();
     SuperStructure.setAbsXY();
     SuperStructure.updateAngleAdjustController();
-    setCurrentState(RobotConstants.SCORING);
     // intake.setTargetState(IntakeConstants.HOLD);
     // arm.setTargetState(ArmConstants.SCORING);
     // elevator.setTargetState(ElevatorConstants.SCORING);

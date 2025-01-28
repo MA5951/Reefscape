@@ -40,6 +40,7 @@ public class SuperStructure extends GenericSuperStracture {
     private static Pose2d ejectPose;
     public static boolean isScoringAutomatic = true;
     private static LoggedPose2d reefFace;
+    private static LoggedDouble alignAngle;
 
     public SuperStructure() {
         super(() -> PoseEstimator.getInstance().getEstimatedRobotPose(),
@@ -48,6 +49,8 @@ public class SuperStructure extends GenericSuperStracture {
         setScoringLocation(Field.ScoringLocation.RIGHT);
 
         reefFace = new LoggedPose2d("/SuperStructure/Reef Face");
+        alignAngle = new LoggedDouble("/SuperStructure/Align Angle");
+        updateScoringFace();
     }
 
     public static void toggleAutoScoring() {
@@ -210,7 +213,8 @@ public class SuperStructure extends GenericSuperStracture {
     }
 
     public static void update() {
-        reefFace.update(Field.getClosestReefFace(currentPoseSupplier.get()).getAlignPose());
+        reefFace.update(scoringFace.getAlignPose());
+        alignAngle.update(scoringFace.AbsAngle());
     }
 
 }

@@ -8,7 +8,6 @@ import com.ma5951.utils.Utils.ConvUtil;
 import edu.wpi.first.math.filter.Debouncer;
 import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
-import frc.robot.RobotControl.SuperStructure;
 import frc.robot.Subsystem.Arm.IOs.ArmIO;
 
 public class Arm extends StateControlledSubsystem {

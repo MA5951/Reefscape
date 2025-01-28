@@ -36,6 +36,7 @@ public class TeleopSwerveController extends Command {
   private static ChassisSpeeds robotSpeeds;
   private static LoggedString xyControllerLog;
   private static LoggedString theathControllerLog;
+  private static SwerveModuleState[] currentStates ;
 
   public TeleopSwerveController(PS5Controller controller) {
     swerve = SwerveSubsystem.getInstance();
@@ -43,19 +44,21 @@ public class TeleopSwerveController extends Command {
     driveController = new FieldCentricDriveController(controller, () -> controller.getR2Button(),
         SwerveConstants.DRIVER_SLOW_FACTOR, () -> SwerveSubsystem.getInstance().getFusedHeading());
 
-    angleAdjustController = new AngleAdjustController(() -> SwerveSubsystem.getInstance().getFusedHeading());
+    angleAdjustController = new AngleAdjustController(() -> SwerveSubsystem.getInstance().getAbsYaw());
 
     autoAdjustXYController = new AutoAdjustXYController(() -> PoseEstimator.getInstance().getEstimatedRobotPose(),
-        () -> SwerveSubsystem.getInstance().getFusedHeading());
+        () -> SwerveSubsystem.getInstance().getFusedHeading(), () -> driveController.getGyroOffset());
 
     xyControllerLog = new LoggedString("/Subsystems/Swerve/Controllers/XY Controller");
     theathControllerLog = new LoggedString("/Subsystems/Swerve/Controllers/Theath Controller");
+    currentStates = swerve.getSwerveModuleStates();
 
     addRequirements(swerve);
   }
 
   @Override
   public void initialize() {
+    
   }
 
   @Override
@@ -85,8 +88,8 @@ public class TeleopSwerveController extends Command {
       robotSpeeds.vyMetersPerSecond = 0;
       robotSpeeds.omegaRadiansPerSecond = 0;
     } else if (RobotContainer.currentRobotState == RobotConstants.SCORING) {
-      xyControllerLog.update(SuperStructure.updateXYAdjustController());
-      //robotSpeeds = autoAdjustXYController.update();
+      //xyControllerLog.update(SuperStructure.updateXYAdjustController());
+      robotSpeeds = autoAdjustXYController.update();
       robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
       theathControllerLog.update("Angle Controller");
     }
@@ -102,11 +105,12 @@ public class TeleopSwerveController extends Command {
 
   @Override
   public void end(boolean interrupted) {
+    currentStates = swerve.getSwerveModuleStates();
     swerve.setModules(new SwerveModuleState[] {
-        new SwerveModuleState(),
-        new SwerveModuleState(),
-        new SwerveModuleState(),
-        new SwerveModuleState()
+        new SwerveModuleState( 0 , currentStates[0].angle),
+        new SwerveModuleState( 0 , currentStates[1].angle),
+        new SwerveModuleState( 0 , currentStates[2].angle),
+        new SwerveModuleState( 0 , currentStates[3].angle),
     });
   }
 

@@ -41,7 +41,7 @@ public class SwerveConstants {
 
         // Modules constants
         public final static double TURNING_GEAR_RATIO = 150d / 7;
-        public final static double DRIVE_GEAR_RATIO = 6.12;
+        public final static double DRIVE_GEAR_RATIO = 6.75;
         public final static double WHEEL_RADIUS = 0.0508;
         public final static double WHEEL_CIRCUMFERENCE = 2 * WHEEL_RADIUS * Math.PI;
 
@@ -224,7 +224,7 @@ public class SwerveConstants {
         public final static boolean DRIVE_ENBLE_CURRENT_LIMIT = true;
 
         // Swerve physics
-        public final static double MAX_VELOCITY = 5.2;
+        public final static double MAX_VELOCITY = 4.9;
         public final static double MAX_ANGULAR_VELOCITY = MAX_VELOCITY / RADIUS;// Radians
         public final static SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
                         SwerveConstants.frontLeftLocation, SwerveConstants.frontRightLocation,
@@ -249,7 +249,7 @@ public class SwerveConstants {
                         DRIVE_TRAIN_SIMULATION_CONFIG, new Pose2d(2, 2, new Rotation2d()));
 
         // Module Limits
-        public final static ModuleLimits DEFUALT = new ModuleLimits(5.2, Units.feetToMeters(65),
+        public final static ModuleLimits DEFUALT = new ModuleLimits(4.9, Units.feetToMeters(75),
                         Units.degreesToRadians(700));
 
         // Odometry
@@ -260,28 +260,29 @@ public class SwerveConstants {
         // Swerve controllers
 
         // Swerve AngleAdjust
-        public final static double THATA_KP = 0.1;
+        public final static double THATA_KP = 0.07;
         public final static double THATA_KI = 0;
         public final static double THATA_KD = 0.0;
         public final static double ANGLE_PID_TOLORANCE = 2;
         public final static double ANGLE_RANGE = 180;
 
         // Swerve AutoAdjustXY
-        public final static double ABS_X_KP = 0.4;
+        public final static double ABS_X_KP = 2;
         public final static double ABS_X_KI = 0;
-        public final static double ABS_X_KD = 0.014;
-        public final static double ABS_Y_KP = 0.15;
+        public final static double ABS_X_KD = 0;
+        
+        public final static double ABS_Y_KP = 1.7;
         public final static double ABS_Y_KI = 0;
-        public final static double ABS_Y_KD = 0.0017;
+        public final static double ABS_Y_KD = 0;
 
-        public final static double REL_X_KP = 0.4;
+        public final static double REL_X_KP = 0;
         public final static double REL_X_KI = 0;
-        public final static double REL_X_KD = 0.014;
-        public final static double REL_Y_KP = 0.15;
+        public final static double REL_X_KD = 0;
+        public final static double REL_Y_KP = 0;
         public final static double REL_Y_KI = 0;
-        public final static double REL_Y_KD = 0.0017;
+        public final static double REL_Y_KD = 0;
 
-        public final static Constraints ABS_XY_CONSTRAINTS = new Constraints(4.9, 6);
+        public final static Constraints ABS_XY_CONSTRAINTS = new Constraints(0.5, 1);
         public final static double ABS_XY_TOLORANCE = 0.05;
 
         public final static Constraints REL_XY_CONSTRAINTS = new Constraints(4.9, 6);

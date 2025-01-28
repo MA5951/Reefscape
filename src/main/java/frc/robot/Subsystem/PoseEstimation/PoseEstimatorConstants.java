@@ -16,8 +16,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 /** Add your docs here. */
 public class PoseEstimatorConstants {
 
-    public final static Vector<N3> ODOMETRY_DEVS = VecBuilder.fill(0.9, 0.9, 0.9);
-    public final static Vector<N3> VISION_DEVS = VecBuilder.fill(0.01, 0.01, 0.01);
+    public final static Vector<N3> ODOMETRY_DEVS = VecBuilder.fill(0.9, 0.9, 0.4);
+    public final static Vector<N3> VISION_DEVS = VecBuilder.fill(0.02, 0.02, 0.04);
 
     public static Supplier<Boolean> ODOMETRY_UPDATE_CONSTRAINS = () -> DriverStation.isEnabled() && !DriverStation.isTest();
 

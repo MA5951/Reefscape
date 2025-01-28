@@ -34,7 +34,7 @@ public class FieldCentricDriveController implements SwerveController {
 
     public ChassisSpeeds update() {
 
-        xSpeed = -controller.getLeftX();
+        xSpeed = controller.getLeftX();
         ySpeed = controller.getLeftY();
         turningSpeed = controller.getRightX();
 
@@ -50,17 +50,21 @@ public class FieldCentricDriveController implements SwerveController {
             turningSpeed = turningSpeed * reductionPrecent;
         }
 
-        chassisSpeeds.vxMetersPerSecond = xSpeed;
-        chassisSpeeds.vyMetersPerSecond = ySpeed;
+        chassisSpeeds.vxMetersPerSecond = ySpeed;
+        chassisSpeeds.vyMetersPerSecond = xSpeed;
         chassisSpeeds.omegaRadiansPerSecond = turningSpeed;
 
         return ChassisSpeedsUtil.FromFieldToRobot(chassisSpeeds, new Rotation2d(
                 Math.toRadians((angleSupplier.get() - gyroOffset))));
 
+
     }
 
     public void updateDriveHeading() {
         gyroOffset = angleSupplier.get();
+    }
+    public double getGyroOffset() {
+        return gyroOffset;
     }
 
 }

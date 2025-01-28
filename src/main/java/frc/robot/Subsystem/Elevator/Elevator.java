@@ -10,7 +10,6 @@ import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
 
 import edu.wpi.first.math.filter.Debouncer;
 import frc.robot.RobotConstants;
-import frc.robot.Subsystem.Arm.ArmConstants;
 import frc.robot.Subsystem.Elevator.IOs.ElevatorIO;
 
 public class Elevator extends StateControlledSubsystem {
