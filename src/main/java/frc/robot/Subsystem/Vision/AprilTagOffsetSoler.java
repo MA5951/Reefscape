@@ -97,7 +97,7 @@ public class AprilTagOffsetSolver {
         double[][] R_qr_to_robot = multiply3x3And3x3(R_cam_to_robot, R_qr_to_cam);
 
         // Invert transformation to get robot's pose in QR frame
-        double[][] R_robot_to_qr = transpose3x3(R_qr_to_robot);
+        double[][] R_robot_to_qr = transpose3x3(R_qr_to_robot(R_qr_to_robot));
 
         // Compute robot's position in QR frame
         double[] pRobotInQr = multiply3x3AndVec(R_robot_to_qr, pQrInRobot);
@@ -426,5 +426,15 @@ public class AprilTagOffsetSolver {
      */
     private static double[] addVec(double[] a, double[] b) {
         return new double[]{ a[0] + b[0], a[1] + b[1], a[2] + b[2] };
-    } 
+    }
+
+    /**
+     * Generates the transpose of the given rotation matrix.
+     *
+     * @param R_qr_to_robot Rotation matrix from QR to Robot frame
+     * @return Transposed rotation matrix (Robot to QR frame)
+     */
+    private static double[][] R_robot_to_qr(double[][] R_qr_to_robot) {
+        return transpose3x3(R_qr_to_robot);
+    }
 }
