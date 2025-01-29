@@ -13,12 +13,12 @@ public class AprilTagOffsetCalculatorConstants {
     // Mode 1: 1280x800 at 120 FPS
     public static final int IMAGE_WIDTH_1280x800 = 1280; // pixels
     public static final int IMAGE_HEIGHT_1280x800 = 800; // pixels
-    public static final int FRAME_RATE_1280x800 = 120;   // FPS
+    // public static final int FRAME_RATE_1280x800 = 120;   // FPS
 
     // Mode 2: 640x480 at 240 FPS
     public static final int IMAGE_WIDTH_640x480 = 640;   // pixels
     public static final int IMAGE_HEIGHT_640x480 = 480;  // pixels
-    public static final int FRAME_RATE_640x480 = 240;    // FPS
+    // public static final int FRAME_RATE_640x480 = 240;    // FPS
 
     // Select Active Mode
     // Choose the active mode by setting one of the following flags to true
