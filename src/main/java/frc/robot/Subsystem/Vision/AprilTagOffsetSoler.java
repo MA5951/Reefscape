@@ -1,6 +1,6 @@
 package frc.robot.Subsystem.Vision;
 
-public class RobotQrPoseSolver {
+public class AprilTagOffsetSoler {
     // receives x, y pixel coordinates of the QR code corners
     public static double[] computeOffsetAndAngle(
             double topLeftX, double topLeftY,
@@ -9,8 +9,8 @@ public class RobotQrPoseSolver {
             double bottomRightX, double bottomRightY) {
 
         
-        double L = OffsetCalculatorConstants.QR_SIZE;
-        double QR_Z = OffsetCalculatorConstants.QR_Z_OFFSET;
+        double L = AprilTagOffsetCalculatorConstants.QR_SIZE;
+        double QR_Z = AprilTagOffsetCalculatorConstants.QR_Z_OFFSET;
         double[][] worldPts = new double[][]{
                 { -L / 2,  L / 2, QR_Z },  // Top-Left
                 {  L / 2,  L / 2, QR_Z },  // Top-Right
@@ -31,8 +31,8 @@ public class RobotQrPoseSolver {
 
         
         double[][] K = {
-                { OffsetCalculatorConstants.FX, 0.0, OffsetCalculatorConstants.CX },
-                { 0.0, OffsetCalculatorConstants.FY, OffsetCalculatorConstants.CY },
+                { AprilTagOffsetCalculatorConstants.FX, 0.0, AprilTagOffsetCalculatorConstants.CX },
+                { 0.0, AprilTagOffsetCalculatorConstants.FY, AprilTagOffsetCalculatorConstants.CY },
                 { 0.0, 0.0, 1.0 }
         };
         double[][] Kinv = invert3x3(K);
@@ -60,15 +60,15 @@ public class RobotQrPoseSolver {
 
         
         double[][] R_cam_to_robot = rotationFromRollPitchYawDeg(
-                OffsetCalculatorConstants.CAM_ROLL_DEG,
-                OffsetCalculatorConstants.CAM_PITCH_DEG,
-                OffsetCalculatorConstants.CAM_YAW_DEG
+                AprilTagOffsetCalculatorConstants.CAM_ROLL_DEG,
+                AprilTagOffsetCalculatorConstants.CAM_PITCH_DEG,
+                AprilTagOffsetCalculatorConstants.CAM_YAW_DEG
         );
 
        
-        double[] camOffsetRobot = { OffsetCalculatorConstants.CAM_X_OFFSET,
-                                     OffsetCalculatorConstants.CAM_Y_OFFSET,
-                                     OffsetCalculatorConstants.CAM_Z_OFFSET };
+        double[] camOffsetRobot = { AprilTagOffsetCalculatorConstants.CAM_X_OFFSET,
+                                     AprilTagOffsetCalculatorConstants.CAM_Y_OFFSET,
+                                     AprilTagOffsetCalculatorConstants.CAM_Z_OFFSET };
 
         
 

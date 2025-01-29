@@ -1,6 +1,6 @@
 package frc.robot.Subsystem.Vision;
 
-public class OffsetCalculatorConstants {
+public class AprilTagOffsetCalculatorConstants {
     // qr code parameters
     public static final double QR_SIZE = 0.10; // in meters (10 cm)
 
