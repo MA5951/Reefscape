@@ -145,8 +145,8 @@ public class Vision extends SubsystemBase {
 
     if (!didUpdatedGyro) {
       if (isUpdateGyro) {
-        didUpdatedGyro = true;
-        SwerveSubsystem.getInstance().getGyro().updateOffset();
+        //didUpdatedGyro = true;
+        //SwerveSubsystem.getInstance().getGyro().updateOffset();
       }
     }
 

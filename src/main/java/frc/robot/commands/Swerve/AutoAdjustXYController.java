@@ -47,6 +47,7 @@ public class AutoAdjustXYController implements SwerveController {
         yController.setTolerance(SwerveConstants.ABS_XY_TOLORANCE);
 
         updateSetPoint(setPoint);
+        isFieldRelativ = true;
 
     }
 
@@ -71,8 +72,8 @@ public class AutoAdjustXYController implements SwerveController {
     }
 
     public ChassisSpeeds update() {
-        chassisSpeeds.vyMetersPerSecond = -xController.calculate(currentPoseSupplier.get().getX());
-        chassisSpeeds.vxMetersPerSecond = yController.calculate(currentPoseSupplier.get().getY());
+        chassisSpeeds.vxMetersPerSecond =  xController.calculate(currentPoseSupplier.get().getX());
+        chassisSpeeds.vyMetersPerSecond = yController.calculate(currentPoseSupplier.get().getY());
 
         xSpeedLog.update(chassisSpeeds.vxMetersPerSecond);
         ySpeedLog.update(chassisSpeeds.vyMetersPerSecond);
@@ -80,15 +81,11 @@ public class AutoAdjustXYController implements SwerveController {
         targetPoseLog.update(targetPose);
 
 
-        if (isFieldRelativ) {
-            return ChassisSpeedsUtil.FromFieldToRobot(chassisSpeeds, new Rotation2d(
-                    Math.toRadians((gyromMeasurment.get() - gyroOffset.get()))));
-        }
-
-        return chassisSpeeds;
+        return ChassisSpeedsUtil.FromFieldToRobot(chassisSpeeds, new Rotation2d(
+                    Math.toRadians(-(gyromMeasurment.get() - gyroOffset.get()))));
     }
 
-    public void updateSetPoint(Pose2d setPoint) {
+    public void updateSetPoint(Pose2d setPoint) { 
         xController.setSetpoint(setPoint.getX());
         yController.setSetpoint(setPoint.getY());
 

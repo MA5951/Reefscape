@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.RobotControl.SuperStructure;
 import frc.robot.Subsystem.PoseEstimation.PoseEstimator;
 import frc.robot.Subsystem.Swerve.SwerveConstants;
+import frc.robot.commands.Swerve.TeleopSwerveController;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -42,6 +43,8 @@ public class Robot extends TimedRobot {
     ScoringPose = RobotConstants.SIM_ARM_OFFSET;
     maLog = MALog.getInstance(RobotConstants.COMP_LOG);
 
+    RobotContainer.configureTeleopCommands();
+
   }
 
   @Override
@@ -51,8 +54,7 @@ public class Robot extends TimedRobot {
     SuperStructure.update();
     RobotContainer.setAllianceData();
     RobotContainer.updatePeriodic();
-
-
+    
   }
 
   @Override
@@ -89,7 +91,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    RobotContainer.configureTeleopCommands();
+    
   }
 
   @Override

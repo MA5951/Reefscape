@@ -114,6 +114,8 @@ public class RobotContainer extends DeafultRobotContainer {
   public static void setSCORINGALIGN() {
     setCurrentState(RobotConstants.SCORING);
     SuperStructure.isFine = false;
+    SuperStructure.isFinalLeft = false;
+    SuperStructure.isFinalRight = false;
     SuperStructure.updateScoringFace();
     SuperStructure.setAbsXY();
     SuperStructure.updateAngleAdjustController();
@@ -162,13 +164,13 @@ public class RobotContainer extends DeafultRobotContainer {
         .onTrue(Do(() -> setSORTING()));
 
     // // Scoring
-    new Trigger(() -> driverController.getL1Button() && SuperStructure.hasGamePiece()
-        && currentRobotState != RobotConstants.SORTING)
+    new Trigger(() -> driverController.getL1Button() 
+        && currentRobotState != RobotConstants.SORTING && SuperStructure.hasGamePiece())
         .onTrue(Do(() -> SuperStructure.setScoringLocation(Field.ScoringLocation.LEFT)))
         .onTrue(Do(() -> setSCORINGALIGN()));
 
-    new Trigger(() -> driverController.getR1Button() && SuperStructure.hasGamePiece()
-        && currentRobotState != RobotConstants.SORTING)
+    new Trigger(() -> driverController.getR1Button() 
+        && currentRobotState != RobotConstants.SORTING && SuperStructure.hasGamePiece())
         .onTrue(Do(() -> SuperStructure.updateScoringFace()))
         .onTrue(Do(() -> SuperStructure.setScoringLocation(Field.ScoringLocation.RIGHT)))
         .onTrue(Do(() -> setSCORINGALIGN()));

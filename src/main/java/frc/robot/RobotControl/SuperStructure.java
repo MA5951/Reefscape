@@ -42,6 +42,8 @@ public class SuperStructure extends GenericSuperStracture {
     private static LoggedPose2d reefFace;
     private static LoggedDouble alignAngle;
     public static boolean isFine;
+    public static boolean isFinalLeft;
+    public static boolean isFinalRight;
 
     public SuperStructure() {
         super(() -> PoseEstimator.getInstance().getEstimatedRobotPose(),
@@ -156,33 +158,36 @@ public class SuperStructure extends GenericSuperStracture {
                 SwerveConstants.ABS_Y_KD,
                 SwerveConstants.ABS_XY_TOLORANCE);
         TeleopSwerveController.autoAdjustXYController.setConstrains(SwerveConstants.ABS_XY_CONSTRAINTS);
-        TeleopSwerveController.autoAdjustXYController.setField(true);
     }
 
     public static String updateXYAdjustController() {
         if (RobotContainer.currentRobotState == RobotConstants.SCORING) {
              if (isDitancetToFineAlign() || isFine) {
                 if (scoringLocation == Field.ScoringLocation.LEFT) {
-                    TeleopSwerveController.autoAdjustXYController
+                    if (isDitancetToFinalAlignLeft() || isFinalLeft) {
+                        TeleopSwerveController.autoAdjustXYController
                             .updateSetPoint(scoringFace.getLeftAlignPose());
-                } else if (scoringLocation == Field.ScoringLocation.RIGHT) {
-                    TeleopSwerveController.autoAdjustXYController
+                            isFinalLeft = true;
+                    } else {
+                        TeleopSwerveController.autoAdjustXYController
+                            .updateSetPoint(scoringFace.getLeftSemiAlignPose());
+                    }
+                } else if (scoringLocation == Field.ScoringLocation.RIGHT || isFinalRight) {
+                    if (isDitancetToFinalAlignRight()) {
+                        TeleopSwerveController.autoAdjustXYController
                             .updateSetPoint(scoringFace.getRightAlignPose());
+                            isFinalRight = true;
+                    } else {
+                        TeleopSwerveController.autoAdjustXYController
+                            .updateSetPoint(scoringFace.getRightSemiAlignPose());
+                    }
                 }
-                // TeleopSwerveController.autoAdjustXYController.setPID(
-                // SwerveConstants.ABS_X_KP / 2,
-                // SwerveConstants.ABS_X_KI / 2,
-                // SwerveConstants.ABS_X_KD / 2,
-                // SwerveConstants.ABS_XY_TOLORANCE,
-                // SwerveConstants.ABS_Y_KP / 2,
-                // SwerveConstants.ABS_Y_KI / 2,
-                // SwerveConstants.ABS_Y_KD / 2,
-                // SwerveConstants.ABS_XY_TOLORANCE);
+                
                 isFine = true;
 
 
                 return "ABS XY Final Pose";
-            } else if (!isFine){
+            } else if (!isFine && !isFinalLeft && !isFinalRight){
                 TeleopSwerveController.autoAdjustXYController.updateSetPoint(scoringFace.getAlignPose() );
                 return "ABS XY";
             }
@@ -195,8 +200,20 @@ public class SuperStructure extends GenericSuperStracture {
 
     public static boolean isDitancetToFineAlign() {
         return currentPoseSupplier.get().getTranslation()
-        .getDistance(
-                scoringFace.getAlignPose().getTranslation()) < RobotConstants.DistanceToRelativAlign ;
+                .getDistance(
+                        scoringFace.getAlignPose().getTranslation()) < RobotConstants.DistanceToRelativAlign;
+    }
+
+    public static boolean isDitancetToFinalAlignLeft() {
+        return currentPoseSupplier.get().getTranslation()
+                .getDistance(
+                        scoringFace.getLeftSemiAlignPose().getTranslation()) < 0.1;
+    }
+
+    public static boolean isDitancetToFinalAlignRight() {
+        return currentPoseSupplier.get().getTranslation()
+                .getDistance(
+                        scoringFace.getRightSemiAlignPose().getTranslation()) < 0.1;
     }
 
     public static boolean hasGamePiece() {

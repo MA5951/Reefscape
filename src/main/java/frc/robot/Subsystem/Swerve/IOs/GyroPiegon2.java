@@ -10,6 +10,7 @@ import java.util.Queue;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ma5951.utils.Logger.LoggedDouble;
 import com.ma5951.utils.Utils.DriverStationUtil;
@@ -44,6 +45,7 @@ public class GyroPiegon2 implements Gyro{
     private final Queue<Double> yawPositionQueue;
     private GyroData gyroData = new GyroData();
     private double gyroOffset = 0;
+    private Pigeon2Configuration config;
 
     private LoggedDouble yaw;
     private LoggedDouble pitch;
@@ -59,6 +61,8 @@ public class GyroPiegon2 implements Gyro{
         name = type;
 
         gyro = new Pigeon2(id, canBus);
+
+        
 
         gyroYaw = gyro.getYaw();
         gyroPitch = gyro.getPitch();
@@ -134,13 +138,25 @@ public class GyroPiegon2 implements Gyro{
         return gyroVeloRoll.getValueAsDouble();
     }
 
+    public double normalYaw(double yaw) {
+        yaw = yaw % 360;
+
+        if (yaw > 180) {
+            yaw -= 360;
+        } else if (yaw < -180) {
+            yaw += 360;
+        }
+
+        return yaw;
+    }
+
     public void logData(GyroData data) {
         yaw.update(data.getYaw());
         pitch.update(data.getPitch());
         roll.update(data.getRoll());
         accelX.update(data.getAccelX());
         accelY.update(data.getAccelY());
-        yawNormal.update(data.getYaw() % 360);
+        yawNormal.update(normalYaw(data.getYaw()));
         veloRoll.update(data.getVeloRoll());
         veloPitch.update(data.getVeloPitch());
         veloYaw.update(data.getVeloYaw());
@@ -149,7 +165,7 @@ public class GyroPiegon2 implements Gyro{
     public GyroData update(ChassisSpeeds robotSpeeds) {
         gyroData.updateData(
             getPitch(), 
-            getYaw(), 
+            normalYaw(getYaw()), 
             getRoll(),
             getVeloYaw(),
             getVeloPitch(),
