@@ -23,7 +23,7 @@ public class LEDBase extends SubsystemBase {
     public LEDBase(int ledPort, int ledLength, boolean useLeds) {
         leds = new AddressableLED(ledPort);
         ledBuffer = new AddressableLEDBuffer(ledLength);
-        leds.setLength(ledBuffer.getLength());
+        leds.setLength(ledLength);
         leds.setData(ledBuffer);
         leds.start();
         ledsOn = useLeds;
@@ -113,7 +113,6 @@ public class LEDBase extends SubsystemBase {
     }
 
     public void runTeleopAnimation() {
-
     }
 
     public void runAutoAnimation() {
@@ -127,13 +126,16 @@ public class LEDBase extends SubsystemBase {
     @Override
     public void periodic() {
         if (ledsOn) {
-            if (DriverStation.isTeleop()) {
+            
+            if (DriverStation.isTeleopEnabled()) {
                 runTeleopAnimation();
-            } else if (DriverStation.isAutonomous()) {
+            } else if (DriverStation.isAutonomousEnabled()) {
                 runAutoAnimation();
             } else {
                 runDisableAnimation();
             }
+
+            updateLeds();
         }
     }
 }

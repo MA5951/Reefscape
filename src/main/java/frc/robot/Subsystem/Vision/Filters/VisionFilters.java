@@ -12,7 +12,6 @@ package frc.robot.Subsystem.Vision.Filters;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rectangle2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -27,7 +26,7 @@ public class VisionFilters {
     private Supplier<ChassisSpeeds> robotSpeedsSupplier;
     private Translation2d robotPose;
     private ChassisSpeeds robotSpeeds;
-    private Pose2d deafultPose = new Pose2d();
+    //private Pose2d deafultPose = new Pose2d();
     private Supplier<Double> robotVelocityVectorSupplier;
     private double robotVelocity;
 
@@ -73,18 +72,18 @@ public class VisionFilters {
         return config.fieldRectangle.contains(visionPose.getTranslation());
     }
 
-    private boolean notInFieldObstacles(Pose2d visionPose) {
-        if (config.fieldObstaclesRectangles != null) {
-            robotPose = visionPose.getTranslation();
-            for (Rectangle2d obstacles : config.fieldObstaclesRectangles) {
-                if (obstacles.contains(robotPose)) {
-                    return false;
-                }
-            }
-        }
+    // private boolean notInFieldObstacles(Pose2d visionPose) {
+    //     if (config.fieldObstaclesRectangles != null) {
+    //         robotPose = visionPose.getTranslation();
+    //         for (Rectangle2d obstacles : config.fieldObstaclesRectangles) {
+    //             if (obstacles.contains(robotPose)) {
+    //                 return false;
+    //             }
+    //         }
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
     private boolean inOdometryRange(Pose2d visionPose) {
         if ((config.visionToOdometryInTeleop && DriverStation.isTeleop()) || DriverStation.isAutonomous()) {

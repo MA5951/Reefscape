@@ -91,16 +91,10 @@ public class TeleopSwerveController extends Command {
     } else if (RobotContainer.currentRobotState == RobotConstants.SCORING) {
       alignType = SuperStructure.updateXYAdjustController();
       xyControllerLog.update(alignType);
-      if ((alignType == "RELATIV XY" && RobotContainer.vision.isTarget())
-          || (alignType != "RELATIV XY" && alignType != "NONE")) {
-        robotSpeeds = autoAdjustXYController.update();
-        //robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
-        robotSpeeds.omegaRadiansPerSecond = 0;
-        theathControllerLog.update("Angle Controller");
-      }
-    }
-
-    else {
+      robotSpeeds = autoAdjustXYController.update();
+      robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
+      theathControllerLog.update("Angle Controller");
+    } else {
       xyControllerLog.update("Drive Controller");
       theathControllerLog.update("Drive Controller");
       robotSpeeds = driveController.update();
@@ -126,7 +120,7 @@ public class TeleopSwerveController extends Command {
   }
 
   public static boolean atPointForScoring() {
-    return RobotContainer.swerve.getVelocityVector() < RobotConstants.SpeedToScore && autoAdjustXYController.atPoint()
+    return  autoAdjustXYController.atPoint()
         && angleAdjustController.getAtPoint();
   }
 }

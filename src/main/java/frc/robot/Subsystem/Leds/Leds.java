@@ -5,8 +5,6 @@
 package frc.robot.Subsystem.Leds;
 
 import com.ma5951.utils.Leds.LEDBase;
-import com.ma5951.utils.RobotControl.DeafultRobotContainer;
-import com.ma5951.utils.Utils.DriverStationUtil;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -28,9 +26,9 @@ public class Leds extends LEDBase {
     if (RobotContainer.currentRobotState == RobotConstants.INTAKE && SuperStructure.hasGamePiece()) {
       blinkColorPattern(0.5, LedsConstants.BLACK, LedsConstants.GREEN);
     } else if (RobotContainer.currentRobotState == RobotConstants.INTAKE ) {
-      blinkColorPattern(1, LedsConstants.BLACK, LedsConstants.BLUE);
+      blinkColorPattern(0.4, LedsConstants.BLACK, LedsConstants.BLUE);
     } else if (RobotContainer.currentRobotState == RobotConstants.SCORING && RobotContainer.intake.getAppliedVolts() < 0) {
-      blinkColorPattern(0.5, LedsConstants.BLACK, LedsConstants.GREEN);
+      blinkColorPattern(0.2, LedsConstants.BLACK, LedsConstants.GREEN);
     } else if (RobotContainer.currentRobotState == RobotConstants.SCORING || RobotContainer.currentRobotState == RobotConstants.BALLREMOVING) {
       smoothWaveColorPattern(2, 1, 1,  new Color [] {LedsConstants.CONE_YELLOW, LedsConstants.CUBE_PURPLE, LedsConstants.CYAN});
     } else {
@@ -47,13 +45,13 @@ public class Leds extends LEDBase {
   @Override
   public void runDisableAnimation() {
     if (!DriverStation.isDSAttached()) {
-      smoothWaveColorPattern(2, 1, 1,  new Color [] {LedsConstants.BLACK, LedsConstants.PURPLE});
+      setSolidColor(LedsConstants.PURPLE);
     }else {
-      if (RobotContainer.alliance != null) {
+      if (!RobotContainer.setAllianceData) {
         if (RobotContainer.alliance == Alliance.Red) {
-          smoothWaveColorPattern(2, 1, 1,  new Color [] {LedsConstants.BLACK, LedsConstants.RED});
+          setSolidColor(LedsConstants.RED);
         } else if (RobotContainer.alliance == Alliance.Blue) {
-          smoothWaveColorPattern(2, 1, 1,  new Color [] {LedsConstants.BLACK, LedsConstants.BLUE});
+          setSolidColor(LedsConstants.BLUE);
         } 
       }
     }

@@ -39,7 +39,7 @@ public class RobotContainer extends DeafultRobotContainer {
   public static Arm arm;
   public static Elevator elevator;
   public static Alliance alliance;
-  private static boolean setAllianceData = true;
+  public static boolean setAllianceData = true;
 
   public RobotContainer() {
     super(
@@ -85,6 +85,7 @@ public class RobotContainer extends DeafultRobotContainer {
     if (setAllianceData && DriverStation.getAlliance().isPresent()) {
       alliance = DriverStation.getAlliance().get();
       Field.setAllianceReefFaces(alliance);
+      setAllianceData = false;
     }
   }
 
@@ -105,13 +106,17 @@ public class RobotContainer extends DeafultRobotContainer {
   }
 
   public static void setSCORING() {
+    intake.setTargetState(IntakeConstants.HOLD);
+    arm.setTargetState(ArmConstants.SCORING);
+    elevator.setTargetState(ElevatorConstants.SCORING);
+  }
+
+  public static void setSCORINGALIGN() {
     setCurrentState(RobotConstants.SCORING);
+    SuperStructure.isFine = false;
     SuperStructure.updateScoringFace();
-    //SuperStructure.setAbsXY();
+    SuperStructure.setAbsXY();
     SuperStructure.updateAngleAdjustController();
-    // intake.setTargetState(IntakeConstants.HOLD);
-    // arm.setTargetState(ArmConstants.SCORING);
-    // elevator.setTargetState(ElevatorConstants.SCORING);
   }
 
   public static void setBALLREMOVING() {
@@ -160,16 +165,19 @@ public class RobotContainer extends DeafultRobotContainer {
     new Trigger(() -> driverController.getL1Button() && SuperStructure.hasGamePiece()
         && currentRobotState != RobotConstants.SORTING)
         .onTrue(Do(() -> SuperStructure.setScoringLocation(Field.ScoringLocation.LEFT)))
-        .onTrue(Do(() -> setSCORING()));
+        .onTrue(Do(() -> setSCORINGALIGN()));
 
     new Trigger(() -> driverController.getR1Button() && SuperStructure.hasGamePiece()
         && currentRobotState != RobotConstants.SORTING)
         .onTrue(Do(() -> SuperStructure.updateScoringFace()))
         .onTrue(Do(() -> SuperStructure.setScoringLocation(Field.ScoringLocation.RIGHT)))
-        .onTrue(Do(() -> setSCORING()));
+        .onTrue(Do(() -> setSCORINGALIGN()));
 
     new Trigger(() -> currentRobotState == RobotConstants.SCORING && !SuperStructure.hasGamePiece()
         && SuperStructure.isDistanceToCloseArm()).onTrue(Do(() -> setIDLE()));
+
+    new Trigger(() -> currentRobotState == RobotConstants.SCORING && SuperStructure.isDitancetToFineAlign())
+    .onTrue(Do(() -> setSCORING()));
 
     // Ball Removing
     new Trigger(() -> driverController.getL2Button() && !SuperStructure.hasGamePiece())

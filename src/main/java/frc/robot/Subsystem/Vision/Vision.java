@@ -10,8 +10,6 @@ import com.ma5951.utils.Logger.LoggedInt;
 import com.ma5951.utils.Logger.LoggedPose2d;
 import com.ma5951.utils.Vision.Limelights.LimelightHelpers;
 import com.ma5951.utils.Vision.Limelights.LimelightHelpers.PoseEstimate;
-import com.ma5951.utils.Vision.Limelights.LimelightHelpers.RawDetection;
-import com.ma5951.utils.Vision.Limelights.LimelightHelpers.RawFiducial;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -44,16 +42,7 @@ public class Vision extends SubsystemBase {
   private boolean isUpdateGyro;
   private boolean didUpdatedGyro = false;
 
-  private LoggedDouble corner0X;
-  private LoggedDouble corner0Y;
-  private LoggedDouble corner1X;
-  private LoggedDouble corner1Y;
-  private LoggedDouble corner2X;
-  private LoggedDouble corner2Y;
-  private LoggedDouble corner3X;
-  private LoggedDouble corner3Y;
 
-  private RawDetection rawFiducial;
 
   public Vision() {
     visionPose2dLog = new LoggedPose2d("/Subsystems/Vision/Vision Pose");
@@ -64,14 +53,6 @@ public class Vision extends SubsystemBase {
     isValidLog = new LoggedBool("/Subsystems/Vision/Is Valid For Update");
     isValidForResetLog = new LoggedBool("/Subsystems/Vision/Is Valid For Reset");
 
-    corner0X = new LoggedDouble("/Subsystems/Vision/Corners/0 X");
-    corner0Y = new LoggedDouble("/Subsystems/Vision/Corners/0 Y");
-    corner1X = new LoggedDouble("/Subsystems/Vision/Corners/1 X");
-    corner1Y = new LoggedDouble("/Subsystems/Vision/Corners/1 Y");
-    corner2X = new LoggedDouble("/Subsystems/Vision/Corners/2 X");
-    corner2Y = new LoggedDouble("/Subsystems/Vision/Corners/2 Y");
-    corner3X = new LoggedDouble("/Subsystems/Vision/Corners/3 X");
-    corner3Y = new LoggedDouble("/Subsystems/Vision/Corners/3 Y");
   }
 
   public Pose2d getPoseForRelativReefAlign() {
@@ -138,7 +119,6 @@ public class Vision extends SubsystemBase {
   @Override
   public void periodic() {
     visionIO.update();
-    rawFiducial = visionIO.getRawDetection();
 
     if (DriverStation.isAutonomous()) {
       visionFilters.updateFilterConfig(VisionConstants.AUTO_FILTERS_CONFIG);
@@ -170,14 +150,6 @@ public class Vision extends SubsystemBase {
       }
     }
 
-    corner0X.update(rawFiducial.corner0_X);
-    corner0Y.update(rawFiducial.corner0_Y);
-    corner1X.update(rawFiducial.corner1_X);
-    corner1Y.update(rawFiducial.corner1_Y);
-    corner2X.update(rawFiducial.corner2_X);
-    corner2Y.update(rawFiducial.corner2_Y);
-    corner3X.update(rawFiducial.corner3_X);
-    corner3Y.update(rawFiducial.corner3_Y);
 
   }
 }
