@@ -2,6 +2,8 @@
 package frc.robot;
 
 
+import java.util.Calendar;
+
 import com.ctre.phoenix6.CANBus;
 
 public class PortMap {
@@ -62,6 +64,10 @@ public class PortMap {
     public class Arm {
         public static final int armMotor = 15;
         public static final int armEncoder = 19;
+    }
+
+    public class Led {
+        public static final int ledPort = 0;
     }
 }
 

@@ -15,6 +15,7 @@ public class RobotConstants {
 
     // Robot Constants
     public static final boolean COMP_LOG = false;
+    public static final boolean USE_LEDS = true;
     public static final double kDELTA_TIME = 0.02;
     public static final double NOMINAL_VOLTAGE = 12d;
     public static final Pose3d SIM_ARM_OFFSET = new Pose3d(0.035, -0.002 ,  0.613, new Rotation3d(0, 0, 0));

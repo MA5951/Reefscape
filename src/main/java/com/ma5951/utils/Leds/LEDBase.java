@@ -6,6 +6,7 @@ package com.ma5951.utils.Leds;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,13 +18,15 @@ public class LEDBase extends SubsystemBase {
     protected int firstHue = 0;
     protected double lastChange;
     protected boolean on;
+    private boolean ledsOn;
 
-    public LEDBase(int ledPort, int ledLength) {
+    public LEDBase(int ledPort, int ledLength, boolean useLeds) {
         leds = new AddressableLED(ledPort);
         ledBuffer = new AddressableLEDBuffer(ledLength);
         leds.setLength(ledBuffer.getLength());
         leds.setData(ledBuffer);
         leds.start();
+        ledsOn = useLeds;
     }
 
     public void setSolidColor(Color color) {
@@ -39,7 +42,6 @@ public class LEDBase extends SubsystemBase {
         }
         leds.setData(ledBuffer);
     }
-
 
     public void rainbowColorPattern() {
         int currentHue;
@@ -99,8 +101,7 @@ public class LEDBase extends SubsystemBase {
             Color currentColor = new Color(
                     startColor.red + (endColor.red - startColor.red) * progress,
                     startColor.green + (endColor.green - startColor.green) * progress,
-                    startColor.blue + (endColor.blue - startColor.blue) * progress
-            );
+                    startColor.blue + (endColor.blue - startColor.blue) * progress);
 
             ledBuffer.setLED(i, currentColor);
             leds.setData(ledBuffer);
@@ -109,5 +110,30 @@ public class LEDBase extends SubsystemBase {
 
     public void updateLeds() {
         leds.setData(ledBuffer);
+    }
+
+    public void runTeleopAnimation() {
+
+    }
+
+    public void runAutoAnimation() {
+
+    }
+
+    public void runDisableAnimation() {
+
+    }
+
+    @Override
+    public void periodic() {
+        if (ledsOn) {
+            if (DriverStation.isTeleop()) {
+                runTeleopAnimation();
+            } else if (DriverStation.isAutonomous()) {
+                runAutoAnimation();
+            } else {
+                runDisableAnimation();
+            }
+        }
     }
 }

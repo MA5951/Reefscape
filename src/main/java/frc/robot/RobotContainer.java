@@ -18,6 +18,7 @@ import frc.robot.Subsystem.Elevator.Elevator;
 import frc.robot.Subsystem.Elevator.ElevatorConstants;
 import frc.robot.Subsystem.Intake.Intake;
 import frc.robot.Subsystem.Intake.IntakeConstants;
+import frc.robot.Subsystem.Leds.Leds;
 import frc.robot.Subsystem.PoseEstimation.PoseEstimator;
 import frc.robot.Subsystem.Swerve.SwerveAutoFollower;
 import frc.robot.Subsystem.Swerve.SwerveSubsystem;
@@ -56,9 +57,11 @@ public class RobotContainer extends DeafultRobotContainer {
 
     @SuppressWarnings("unused")
     SuperStructure superStructure = new SuperStructure();
+    Leds.getInstance();
 
     configureBindings();
     setUpAutoCommands();
+    
 
   }
 
