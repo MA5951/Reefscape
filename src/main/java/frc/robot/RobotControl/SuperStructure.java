@@ -216,6 +216,21 @@ public class SuperStructure extends GenericSuperStracture {
                         scoringFace.getRightSemiAlignPose().getTranslation()) < 0.1;
     }
 
+    public static boolean isDitancetToOpenSystems() {
+        return currentPoseSupplier.get().getTranslation()
+                .getDistance(
+                        scoringFace.tagPose().getTranslation()) < 2.5;
+    }
+
+    public static boolean isDitancetToScore() {
+        return currentPoseSupplier.get().getTranslation()
+                .getDistance(
+                        scoringFace.getLeftAlignPose().getTranslation()) < 0.07
+                        || currentPoseSupplier.get().getTranslation()
+                        .getDistance(
+                                scoringFace.getRightAlignPose().getTranslation()) < 0.07;
+    }
+
     public static boolean hasGamePiece() {
         return getGamePiece() != Field.GamePiece.NONE;
     }

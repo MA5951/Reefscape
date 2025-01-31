@@ -89,7 +89,7 @@ public class TeleopSwerveController extends Command {
       robotSpeeds.vxMetersPerSecond = -1;
       robotSpeeds.vyMetersPerSecond = 0;
       robotSpeeds.omegaRadiansPerSecond = 0;
-    } else if (RobotContainer.currentRobotState == RobotConstants.SCORING &&  SuperStructure.isScoringAutomatic && SuperStructure.hasGamePiece()) {
+    } else if (RobotContainer.currentRobotState == RobotConstants.SCORING &&  SuperStructure.isScoringAutomatic && RobotContainer.intake.getFrontSensor()) {
       alignType = SuperStructure.updateXYAdjustController();
       xyControllerLog.update(alignType);
       robotSpeeds = autoAdjustXYController.update();
@@ -122,6 +122,6 @@ public class TeleopSwerveController extends Command {
 
   public static boolean atPointForScoring() {
     return  autoAdjustXYController.atPoint()
-        && angleAdjustController.getAtPoint();
+        && angleAdjustController.getAtPoint() && SuperStructure.isDitancetToScore();
   }
 }

@@ -178,7 +178,7 @@ public class RobotContainer extends DeafultRobotContainer {
     new Trigger(() -> currentRobotState == RobotConstants.SCORING && !SuperStructure.hasGamePiece()
         && SuperStructure.isDistanceToCloseArm()).onTrue(Do(() -> setIDLE()));
 
-    new Trigger(() -> currentRobotState == RobotConstants.SCORING && SuperStructure.isDitancetToFineAlign())
+    new Trigger(() -> currentRobotState == RobotConstants.SCORING && SuperStructure.isDitancetToOpenSystems())
     .onTrue(Do(() -> setSCORING()));
 
     // Ball Removing

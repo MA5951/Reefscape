@@ -34,7 +34,7 @@ public class Field {
 
         L3(ElevatorConstants.HIGHT_L3, ArmConstants.ANGLE_L3, IntakeConstants.EJECT_SPEED_L234),
 
-        L4(ElevatorConstants.HIGHT_L4, ArmConstants.ANGLE_L4, IntakeConstants.EJECT_SPEED_L234);
+        L4(ElevatorConstants.HIGHT_L4, ArmConstants.ANGLE_L4, IntakeConstants.EJECT_SPEED_L234 - 3.5);
 
 
         public final double hight;

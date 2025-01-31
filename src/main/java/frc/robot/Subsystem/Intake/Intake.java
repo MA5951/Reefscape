@@ -5,6 +5,7 @@ import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
 import com.ma5951.utils.Utils.BooleanLatch;
 
+import edu.wpi.first.math.filter.Debouncer;
 import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
 import frc.robot.RobotControl.SuperStructure;
@@ -17,10 +18,12 @@ public class Intake extends StateControlledSubsystem {
 
   private IntakeIO intakeIO = IntakeConstants.getIntakeIO();
   public static BooleanLatch armAtPointLatch;
+  public static Debouncer scoringAtPointDebouncer;
 
   private Intake() {
     super(IntakeConstants.SUBSYSTEM_STATES, "Intake");
     armAtPointLatch = new BooleanLatch(() -> Arm.getInstance().atPoint());
+    scoringAtPointDebouncer = new Debouncer(0.15);
   }
 
   public boolean getFrontSensor() {
@@ -79,7 +82,7 @@ public class Intake extends StateControlledSubsystem {
 
   @Override
   public boolean canMove() {
-    return IntakeCanMove() || ScoringCanMove() || BallRemovingCanMove() || SortingCanMove()
+    return IntakeCanMove() || scoringAtPointDebouncer.calculate(ScoringCanMove()) || BallRemovingCanMove() || SortingCanMove()
         || getSystemFunctionState() == StatesConstants.MANUEL
         || RobotContainer.intake.getTargetState() == IntakeConstants.HOLD
             && RobotContainer.currentRobotState != RobotConstants.CLIMB;

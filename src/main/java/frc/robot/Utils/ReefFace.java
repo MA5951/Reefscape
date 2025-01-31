@@ -14,12 +14,8 @@ public record ReefFace(double AbsAngle, int TagID, Field.BallHight BallHight , P
             return tagPose.plus(new Transform2d(-RobotConstants.DistanceToAlign, 0, tagPose.getRotation()));
         }
 
-        public Pose2d getSystemsPose() {
-            return tagPose.plus(new Transform2d(-1.5, 0, tagPose.getRotation()));
-        }
-
         public Pose2d getLeftAlignPose() {
-            return tagPose.plus(new Transform2d((-0.86/2) + 0.01,0.16, tagPose.getRotation()));
+            return tagPose.plus(new Transform2d((-0.86/2) + 0.01,0.26, tagPose.getRotation()));
         }
 
         public Pose2d getRightAlignPose() {
@@ -27,7 +23,7 @@ public record ReefFace(double AbsAngle, int TagID, Field.BallHight BallHight , P
         }
 
         public Pose2d getLeftSemiAlignPose() {
-            return tagPose.plus(new Transform2d((-0.86/2) - 0.1,0.16, tagPose.getRotation()));
+            return tagPose.plus(new Transform2d((-0.86/2) - 0.1,0.26, tagPose.getRotation()));
         }
 
         public Pose2d getRightSemiAlignPose() {
