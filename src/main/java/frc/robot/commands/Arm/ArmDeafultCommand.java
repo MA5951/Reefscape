@@ -44,7 +44,7 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
                 if (arm.atPoint() && arm.atMinPose()) { 
                     arm.setVoltage(arm.getFeedForwardVoltage());
                 } else {
-                    arm.setAngle(36);
+                    arm.setAngle(17);
                 }
 
                 break;

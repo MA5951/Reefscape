@@ -164,20 +164,20 @@ public class SuperStructure extends GenericSuperStracture {
         if (RobotContainer.currentRobotState == RobotConstants.SCORING) {
              if (isDitancetToFineAlign() || isFine) {
                 if (scoringLocation == Field.ScoringLocation.LEFT) {
-                    if (isDitancetToFinalAlignLeft() || isFinalLeft) {
+                    if ((isDitancetToFinalAlignLeft() || isFinalLeft) && arm.atPoint() && elevator.atPoint()) {
                         TeleopSwerveController.autoAdjustXYController
                             .updateSetPoint(scoringFace.getLeftAlignPose());
                             isFinalLeft = true;
-                    } else {
+                    } else if (arm.atPoint() && elevator.atPoint()) {
                         TeleopSwerveController.autoAdjustXYController
                             .updateSetPoint(scoringFace.getLeftSemiAlignPose());
                     }
-                } else if (scoringLocation == Field.ScoringLocation.RIGHT || isFinalRight) {
+                } else if ((scoringLocation == Field.ScoringLocation.RIGHT || isFinalRight) && arm.atPoint() && elevator.atPoint()) {
                     if (isDitancetToFinalAlignRight()) {
                         TeleopSwerveController.autoAdjustXYController
                             .updateSetPoint(scoringFace.getRightAlignPose());
                             isFinalRight = true;
-                    } else {
+                    } else if (arm.atPoint() && elevator.atPoint()) {
                         TeleopSwerveController.autoAdjustXYController
                             .updateSetPoint(scoringFace.getRightSemiAlignPose());
                     }

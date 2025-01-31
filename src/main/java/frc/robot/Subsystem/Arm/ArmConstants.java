@@ -31,7 +31,7 @@ public class ArmConstants {
 
     public static final double GEAR_RATIO = 18;
 
-    public static final double kP = 20;//35
+    public static final double kP = 35;//35
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kS = 0;
