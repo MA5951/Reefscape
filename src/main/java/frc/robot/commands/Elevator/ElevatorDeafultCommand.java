@@ -46,8 +46,9 @@ public class ElevatorDeafultCommand extends RobotFunctionStatesCommand {
                 if (elevator.atPoint() && elevator.getHight() < 0.1) {
                     elevator.setVoltage(0);
                 } else {
-                    elevator.setHight(1.1);// ElevatorConstants.MIN_HIGHT
+                    elevator.setHight(0);// ElevatorConstants.MIN_HIGHT
                 }
+
                 break;
             case "HOME":
                 if (!homeDebouncer.calculate(elevator.getCurrent() < ElevatorConstants.HOME_CURRENT)) {
@@ -70,7 +71,11 @@ public class ElevatorDeafultCommand extends RobotFunctionStatesCommand {
                 elevator.setVoltage(elevator.getFeedForwardVoltage());
                 break;
             case "SKTHOOK":
-                elevator.setHight(1.47);
+                if (elevator.getHight() < 1.3) {
+                    elevator.setVoltage(7);
+                } else {
+                    elevator.setVoltage(elevator.getFeedForwardVoltage());
+                }
 
         }
     }

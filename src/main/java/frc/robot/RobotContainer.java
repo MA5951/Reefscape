@@ -145,8 +145,8 @@ public class RobotContainer extends DeafultRobotContainer {
 
   public static void setSKYHOOK() {
     setCurrentState(RobotConstants.SKYHOOK);
-    arm.setTargetState(ArmConstants.HOLD);
-    elevator.setTargetState(ElevatorConstants.IDLE);
+    arm.setTargetState(ArmConstants.SKTHOOK);
+    elevator.setTargetState(ElevatorConstants.SKTHOOK);
   }
 
   private static void configureBindings() {

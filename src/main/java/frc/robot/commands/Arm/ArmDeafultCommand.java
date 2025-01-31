@@ -43,12 +43,13 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
         super.AutomaticLoop();
         switch (arm.getTargetState().getName()) {
             case "IDLE":
-                if (arm.atPoint() && arm.atMinPose()) {
-                    arm.setVoltage(arm.getFeedForwardVoltage());
-                } else {
-                    arm.setAngle(90);
-                }
+                // if (arm.atPoint() && arm.atMinPose()) {
+                //     arm.setVoltage(arm.getFeedForwardVoltage());
+                // } else {
+                //     arm.setAngle(90);
+                // }
 
+                arm.setAngle(97);
                 break;
             case "HOLD":
                 arm.setAngle(ArmConstants.HOLD_ANGLE);
@@ -68,7 +69,7 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
                 arm.setAngle(ArmConstants.EJECT_BALL_STOP_ANGLE);
                 break;
             case "SKTHOOK":
-                if (RobotContainer.elevator.getHight() > 1.22) {
+                if (RobotContainer.elevator.getHight() > 1.2) {
                     arm.setAngle(180);
                 }
         }
