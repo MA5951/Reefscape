@@ -3,8 +3,8 @@ package frc.robot.commands.Arm;
 
 import com.ma5951.utils.RobotControl.Commands.RobotFunctionStatesCommand;
 
+import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
-import frc.robot.PortMap.Intake;
 import frc.robot.RobotControl.Field;
 import frc.robot.RobotControl.SuperStructure;
 import frc.robot.Subsystem.Arm.Arm;
@@ -43,16 +43,18 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
         super.AutomaticLoop();
         switch (arm.getTargetState().getName()) {
             case "IDLE":
-                // if (arm.atPoint() && arm.atMinPose()) {
-                //     arm.setVoltage(arm.getFeedForwardVoltage());
-                // } else {
-                //     arm.setAngle(90);
-                // }
-
-                arm.setAngle(97);
+                if (arm.atPoint() && arm.atMinPose()) {
+                    arm.setVoltage(arm.getFeedForwardVoltage());
+                } else {
+                    arm.setAngle(0);
+                }
                 break;
             case "HOLD":
-                arm.setAngle(ArmConstants.HOLD_ANGLE);
+                if (RobotContainer.lastRobotState == RobotConstants.BALLREMOVING) {
+                    arm.setAngle(ArmConstants.EJECT_BALL_STOP_ANGLE);
+                } else {
+                    arm.setAngle(ArmConstants.HOLD_ANGLE);
+                }
                 break;
             case "INTAKE":
                 arm.setAngle(ArmConstants.INTAKE_CORALS_ANGLE);
@@ -60,7 +62,7 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
             case "SCORING":
                 if (SuperStructure.getScoringPreset() == Field.ScoringLevel.L4
                         && !RobotContainer.intake.getFrontSensor()) {
-                    arm.setAngle(SuperStructure.getScoringPreset().angle + 14);
+                    arm.setAngle(SuperStructure.getScoringPreset().angle + ArmConstants.ANGLE_OFFSET_L4_AFTER_EJECT);
                 } else {
                     arm.setAngle(SuperStructure.getScoringPreset().angle);
                 }
@@ -68,9 +70,11 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
             case "BALLREMOVING":
                 arm.setAngle(ArmConstants.EJECT_BALL_STOP_ANGLE);
                 break;
-            case "SKTHOOK":
-                if (RobotContainer.elevator.getHight() > 1.2) {
-                    arm.setAngle(180);
+            case "SKYHOOK":
+                if (RobotContainer.elevator.getHight() > ArmConstants.SKYHOOK_START_HIGHT) {
+                    arm.setAngle(ArmConstants.SKYHOOK_END_ANGLE);
+                } else {
+                    arm.setAngle(ArmConstants.SKYHOOK_START_ANGLE);
                 }
         }
     }

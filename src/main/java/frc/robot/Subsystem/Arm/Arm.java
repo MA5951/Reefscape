@@ -29,7 +29,6 @@ public class Arm extends StateControlledSubsystem {
 
         resetPose();
 
-        
     }
 
     public double getFeedForwardVoltage() {
@@ -73,11 +72,11 @@ public class Arm extends StateControlledSubsystem {
     }
 
     public void setAngle(double angle) {
-        armIO.setAngle(angle , getFeedForwardVoltage());
+        armIO.setAngle(angle, getFeedForwardVoltage());
     }
 
     public boolean atPoint() {
-        return atPointDebouncer.calculate(Math.abs(armIO.getError()) <= ArmConstants.TOLERANCE) ;
+        return atPointDebouncer.calculate(Math.abs(armIO.getError()) <= ArmConstants.TOLERANCE);
     }
 
     public boolean atMinPose() {
@@ -85,16 +84,20 @@ public class Arm extends StateControlledSubsystem {
     }
 
     public boolean BallRemovingCanMove() {
-        return (RobotContainer.currentRobotState == RobotConstants.BALLREMOVING 
-                && RobotContainer.elevator.atPoint()) || RobotContainer.currentRobotState != RobotConstants.BALLREMOVING  ;
+        return (RobotContainer.currentRobotState == RobotConstants.BALLREMOVING
+                && RobotContainer.elevator.atPoint())
+                || RobotContainer.currentRobotState != RobotConstants.BALLREMOVING;
+    }
+
+    public boolean physicalCanMove() {
+        return Math.abs(getCurrent()) < ArmConstants.kCAN_MOVE_CURRENT_LIMIT && 
+        ((getPosition() >= ArmConstants.MIN_ANGLE || getAppliedVolts() > 0.1) && (getPosition() <= ArmConstants.MAX_ANGLE || getAppliedVolts() < -0.1));
     }
 
     @Override
     public boolean canMove() {
-        return (BallRemovingCanMove()  && (RobotContainer.currentRobotState != RobotConstants.CLIMB
-                && Math.abs(getCurrent()) < ArmConstants.kCAN_MOVE_CURRENT_LIMIT
-
-                && getSetPoint() >= ArmConstants.MIN_ANGLE && getSetPoint() <= ArmConstants.MAX_ANGLE))
+        return (BallRemovingCanMove() && (RobotContainer.currentRobotState != RobotConstants.CLIMB
+                && physicalCanMove()))
                 || getSystemFunctionState() == StatesConstants.MANUEL;
     }
 

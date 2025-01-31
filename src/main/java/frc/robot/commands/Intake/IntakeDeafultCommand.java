@@ -52,26 +52,25 @@ public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
             case "HOLD":
                 intake.setVoltage(SuperStructure.getCoralHoldValue());
 
-                if (RobotContainer.currentRobotState == RobotConstants.SCORING) {
-                    intake.setTargetState(IntakeConstants
-                    .SCORING);
+                if (RobotContainer.currentRobotState == RobotConstants.SCORING && RobotContainer.arm.atPoint()) {
+                    intake.setTargetState(IntakeConstants.SCORING);
                 }
                 break;
             case "INTAKE":
-                    if (!intake.getRearSensor() && !hasEntered) {
-                        intake.setVoltage(IntakeConstants.INTAKE_SPEED_BEFORE_FIRST_SENSOR);
-                        SuperStructure.updatePose(); 
+                if (!intake.getRearSensor() && !hasEntered) {
+                    intake.setVoltage(IntakeConstants.INTAKE_SPEED_BEFORE_FIRST_SENSOR);
+                    SuperStructure.updatePose();
 
-                    } else if (intake.getRearSensor() && intake.getFrontSensor()) {
-                        intake.setVoltage(IntakeConstants.SORTING_SPEED);
-                        hasEntered = true;
-                    } else {
-                        intake.setTargetState(IntakeConstants.IDLE);
+                } else if (intake.getRearSensor() && intake.getFrontSensor()) {
+                    intake.setVoltage(IntakeConstants.SORTING_SPEED);
+                    hasEntered = true;
+                } else {
+                    intake.setTargetState(IntakeConstants.IDLE);
                 }
                 break;
             case "SCORING":
-                    intake.setVoltage(SuperStructure.getScoringPreset().ejectVolt);
-                    SuperStructure.updatePose();
+                intake.setVoltage(SuperStructure.getScoringPreset().ejectVolt);
+                SuperStructure.updatePose();
                 break;
             case "SORTING":
                 if (sortingNum > IntakeConstants.SORTIN_NUM) {
@@ -95,11 +94,7 @@ public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
 
                 break;
             case "BALLREMOVING":
-                if (RobotContainer.arm.getPosition() > 32) {
-                    intake.setVoltage(-3);
-                } else {
-                    intake.setVoltage(0);
-                }
+                intake.setVoltage(IntakeConstants.BALLREMOVING_VOLTAGE);
         }
     }
 

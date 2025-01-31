@@ -93,7 +93,7 @@ public class ArmIOReal implements ArmIO {
     }
 
     public double getAbsolutePosition() {
-            return ConvUtil.RotationsToDegrees(encoderPosition.getValueAsDouble() / 3) + ArmConstants.ABS_ENCODER_OFFSET; 
+            return ConvUtil.RotationsToDegrees(encoderPosition.getValueAsDouble() / ArmConstants.CANCODER_RATIO) + ArmConstants.ABS_ENCODER_OFFSET; 
        
     }
 

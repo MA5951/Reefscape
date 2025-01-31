@@ -59,30 +59,34 @@ public class Intake extends StateControlledSubsystem {
   }
 
   public boolean IntakeCanMove() {
-    return RobotContainer.currentRobotState == RobotConstants.INTAKE && RobotContainer.elevator.atPoint(); 
+    return RobotContainer.currentRobotState == RobotConstants.INTAKE && RobotContainer.elevator.atPoint();
   }
 
   public boolean ScoringCanMove() {
-    return SuperStructure.isScoringAutomatic == true ? RobotContainer.currentRobotState == RobotConstants.SCORING && ((RobotContainer.elevator.atPoint()
-        && TeleopSwerveController.atPointForScoring() && RobotContainer.arm.atPoint() && getFrontSensor()) || getTargetState() == IntakeConstants.HOLD) 
+    return SuperStructure.isScoringAutomatic == true
+        ? RobotContainer.currentRobotState == RobotConstants.SCORING && ((RobotContainer.elevator.atPoint()
+            && TeleopSwerveController.atPointForScoring() && armAtPointLatch.get() && getFrontSensor())
+            || getTargetState() == IntakeConstants.HOLD)
         : RobotContainer.currentRobotState == RobotConstants.SCORING && ((RobotContainer.elevator.atPoint()
-        && armAtPointLatch.get() &&(getFrontSensor() || getRearSensor())) || getTargetState() == IntakeConstants.HOLD) &&
-        (RobotContainer.driverController.getL1Button() || RobotContainer.driverController.getR1Button());
-
-
+            && armAtPointLatch.get() && (getFrontSensor() || getRearSensor()))
+            || getTargetState() == IntakeConstants.HOLD) &&
+            (RobotContainer.driverController.getL1Button() || RobotContainer.driverController.getR1Button());
   }
 
   public boolean BallRemovingCanMove() {
-    return RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && RobotContainer.elevator.atPoint() && RobotContainer.arm.getPosition() < 129;
+    return RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && RobotContainer.elevator.atPoint()
+        && !RobotContainer.arm.atPoint() && RobotContainer.arm.getPosition() > IntakeConstants.BALLREMOVING_ANGLE;
   }
 
   public boolean SortingCanMove() {
-    return RobotContainer.currentRobotState == RobotConstants.SORTING && RobotContainer.arm.atPoint() && RobotContainer.arm.getVelocity() < 1 && RobotContainer.arm.getPosition() > 50 ; 
+    return RobotContainer.currentRobotState == RobotConstants.SORTING && RobotContainer.arm.atPoint()
+        && RobotContainer.arm.getPosition() > IntakeConstants.SORTING_ANGLE;
   }
 
   @Override
   public boolean canMove() {
-    return IntakeCanMove() || scoringAtPointDebouncer.calculate(ScoringCanMove()) || BallRemovingCanMove() || SortingCanMove()
+    return IntakeCanMove() || scoringAtPointDebouncer.calculate(ScoringCanMove()) || BallRemovingCanMove()
+        || SortingCanMove()
         || getSystemFunctionState() == StatesConstants.MANUEL
         || RobotContainer.intake.getTargetState() == IntakeConstants.HOLD
             && RobotContainer.currentRobotState != RobotConstants.CLIMB;

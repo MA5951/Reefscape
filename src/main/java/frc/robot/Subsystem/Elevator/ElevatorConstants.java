@@ -23,6 +23,9 @@ public class ElevatorConstants {
     public static final double HIGHT_PROSESOR = 0;
     public static final double HIGHT_ZERO = 0;
 
+    public static final double SKYHOOK_STOP_HIGHT = 1.3;
+    public static final double SKYHOOK_VOLTAGE = 7;
+
     public static final double GEAR = (82d / 12d) /2d;
     public static final double SPROKET_PITCH_DIAMETER = 0.0444754;
     public static final double SPROKET_CIRCUMFERENCE = SPROKET_PITCH_DIAMETER * Math.PI;
@@ -38,7 +41,7 @@ public class ElevatorConstants {
     public static final double HOME_VOLTAGE = -1;
     public static final double HOME_CURRENT = -30;
     public static final double HOME_TIME = 0.2;
-    public static final double CAN_MOVE_CURRENT_LIMIT = 150;
+    public static final double CAN_MOVE_CURRENT_LIMIT = 40;
     public static final double MANUEL_VOLTAGE_LIMIT = 6;
     
     public static final double ACCELERATION = 30 / SPROKET_CIRCUMFERENCE;
@@ -59,9 +62,9 @@ public class ElevatorConstants {
     public static final State SCORING = new State("SCORING");
     public static final State CLIMB = new State("SORTING");
     public static final State BALLREMOVING  = new State("BALLREMOVING");
-    public static final State SKTHOOK = new State("SKTHOOK");
+    public static final State SKYHOOK = new State("SKYHOOK");
 
-    public static final State[] SUBSYSTEM_STATES = new State[] {IDLE , HOLD , INTAKE , SCORING , CLIMB , BALLREMOVING , HOME , SKTHOOK};
+    public static final State[] SUBSYSTEM_STATES = new State[] {IDLE , HOLD , INTAKE , SCORING , CLIMB , BALLREMOVING , HOME , SKYHOOK};
 
     public static final ElevatorIO getElevatorIO() {
         if (Robot.isReal()) {

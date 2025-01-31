@@ -18,13 +18,18 @@ public class IntakeConstants {
     public static final double EJECT_SPEED_L1 = 1.7; 
     public static final double EJECT_SPEED_L234 = -2.5; 
     public static final double INTAKE_WIDHT = 0; 
-    public static final double CORAL_HOLDING_VALUE = 0; 
-    //public static final double BALLֹ_EJECTING_VALUE = 0;
+    public static final double CORAL_HOLDING_VALUE = 0;
+
+    public static final double BALLREMOVING_VOLTAGE = -3;
+
+    public static final double BALLREMOVING_ANGLE = 32;
+    public static final double SORTING_ANGLE = 32;
+    
     public static final double GEAR = 5;
     public static final int SORTIN_NUM = 5;
     public static final double MANUEL_VOLTAGE_LIMIT = 3;
 
-    
+
     public static final double PEAK_CURRENT_LIMIT = 35;
     public static final double CONTINUES_CURRENT_LIMIT = 15; 
     public static final double PEAK_CURRENT_TIME = 0.1; 

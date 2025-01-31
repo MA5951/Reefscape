@@ -10,7 +10,6 @@ import java.util.Queue;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.StatusSignal;
-import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ma5951.utils.Logger.LoggedDouble;
 import com.ma5951.utils.Utils.DriverStationUtil;
@@ -45,7 +44,6 @@ public class GyroPiegon2 implements Gyro{
     private final Queue<Double> yawPositionQueue;
     private GyroData gyroData = new GyroData();
     private double gyroOffset = 0;
-    private Pigeon2Configuration config;
 
     private LoggedDouble yaw;
     private LoggedDouble pitch;

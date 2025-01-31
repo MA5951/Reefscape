@@ -12,17 +12,12 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import com.ma5951.utils.Logger.MALog;
 import com.ma5951.utils.Utils.ConvUtil;
 
-import edu.wpi.first.wpilibj.AddressableLED;
-import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.RobotControl.SuperStructure;
 import frc.robot.Subsystem.PoseEstimation.PoseEstimator;
 import frc.robot.Subsystem.Swerve.SwerveConstants;
-import frc.robot.commands.Swerve.TeleopSwerveController;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;

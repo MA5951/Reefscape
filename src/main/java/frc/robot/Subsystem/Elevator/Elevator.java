@@ -19,7 +19,7 @@ public class Elevator extends StateControlledSubsystem {
   private LoggedBool atPointLog;
   private Debouncer atPointDebouncer = new Debouncer(RobotConstants.kDELTA_TIME * 2);
 
-  private Elevator() { 
+  private Elevator() {
     super(ElevatorConstants.SUBSYSTEM_STATES, "Elevator");
     atPointLog = new LoggedBool("/Subsystems/Elevator/AtPoint");
   }
@@ -72,11 +72,15 @@ public class Elevator extends StateControlledSubsystem {
     elevatorIO.setHight(hight);
   }
 
+  public boolean physicalCanMove() {
+    return getHight() <= ElevatorConstants.MAX_HIGHT && getHight() >= ElevatorConstants.MIN_HIGHT &&
+        Math.abs(getCurrent()) <= ElevatorConstants.CAN_MOVE_CURRENT_LIMIT;
+  }
+
   @Override
   public boolean canMove() {
     return getSystemFunctionState() == StatesConstants.MANUEL
-        || getHight() <= ElevatorConstants.MAX_HIGHT && getHight() >= ElevatorConstants.MIN_HIGHT &&
-            Math.abs(getCurrent()) <= ElevatorConstants.CAN_MOVE_CURRENT_LIMIT;
+        || physicalCanMove();
   }
 
   public static Elevator getInstance() {

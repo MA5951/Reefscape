@@ -29,6 +29,7 @@ public class RobotConstants {
     public static final State SORTING = new State("SORTING ");
     public static final State EJECT = new State("EJECT");
     public static final State SKYHOOK = new State("SKYHOOK");
+    public static final State HOLDBALL = new State("HOLDBALL");
 
     // Automation Constants
     public static final double DistanceToBallRemove = 2.2;

@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotControl.Field;
 import frc.robot.RobotControl.SuperStructure;
@@ -61,7 +60,6 @@ public class RobotContainer extends DeafultRobotContainer {
 
     configureBindings();
     setUpAutoCommands();
-    
 
   }
 
@@ -91,7 +89,6 @@ public class RobotContainer extends DeafultRobotContainer {
 
   public static void setIDLE() {
     setCurrentState(RobotConstants.IDLE);
-    Intake.armAtPointLatch.reset();
     intake.setTargetState(IntakeConstants.IDLE);
     arm.setTargetState(ArmConstants.IDLE);
     elevator.setTargetState(ElevatorConstants.IDLE);
@@ -106,6 +103,7 @@ public class RobotContainer extends DeafultRobotContainer {
   }
 
   public static void setSCORING() {
+    Intake.armAtPointLatch.reset();
     intake.setTargetState(IntakeConstants.HOLD);
     arm.setTargetState(ArmConstants.SCORING);
     elevator.setTargetState(ElevatorConstants.SCORING);
@@ -145,8 +143,15 @@ public class RobotContainer extends DeafultRobotContainer {
 
   public static void setSKYHOOK() {
     setCurrentState(RobotConstants.SKYHOOK);
-    arm.setTargetState(ArmConstants.SKTHOOK);
-    elevator.setTargetState(ElevatorConstants.SKTHOOK);
+    arm.setTargetState(ArmConstants.SKYHOOK);
+    elevator.setTargetState(ElevatorConstants.SKYHOOK);
+  }
+
+  public static void setHOLDBALL() {
+    setCurrentState(RobotConstants.HOLDBALL);
+    arm.setTargetState(ArmConstants.HOLD);
+    elevator.setTargetState(ElevatorConstants.IDLE);
+    intake.setTargetState(IntakeConstants.IDLE);
   }
 
   private static void configureBindings() {
@@ -170,12 +175,12 @@ public class RobotContainer extends DeafultRobotContainer {
         .onTrue(Do(() -> setSORTING()));
 
     // // Scoring
-    new Trigger(() -> driverController.getL1Button() 
+    new Trigger(() -> driverController.getL1Button()
         && currentRobotState != RobotConstants.SORTING && SuperStructure.hasGamePiece())
         .onTrue(Do(() -> SuperStructure.setScoringLocation(Field.ScoringLocation.LEFT)))
         .onTrue(Do(() -> setSCORINGALIGN()));
 
-    new Trigger(() -> driverController.getR1Button() 
+    new Trigger(() -> driverController.getR1Button()
         && currentRobotState != RobotConstants.SORTING && SuperStructure.hasGamePiece())
         .onTrue(Do(() -> SuperStructure.updateScoringFace()))
         .onTrue(Do(() -> SuperStructure.setScoringLocation(Field.ScoringLocation.RIGHT)))
@@ -185,14 +190,14 @@ public class RobotContainer extends DeafultRobotContainer {
         && SuperStructure.isDistanceToCloseArm()).onTrue(Do(() -> setIDLE()));
 
     new Trigger(() -> currentRobotState == RobotConstants.SCORING && SuperStructure.isDitancetToOpenSystems())
-    .onTrue(Do(() -> setSCORING()));
+        .onTrue(Do(() -> setSCORING()));
 
     // Ball Removing
     new Trigger(() -> driverController.getL2Button() && !SuperStructure.hasGamePiece())
         .onTrue(Do(() -> setBALLREMOVING())); // Not too close
 
     new Trigger(() -> currentRobotState == RobotConstants.BALLREMOVING && SuperStructure.isDistanceToEndBallRemove())
-        .onTrue(Do(() -> setIDLE()));
+        .onTrue(Do(() -> setHOLDBALL()));
 
     // // Climb
     // new Trigger(() -> driverController.getSquareButton() && currentRobotState ==
@@ -218,8 +223,9 @@ public class RobotContainer extends DeafultRobotContainer {
     new Trigger(() -> driverController.getPOV() == 90)
         .onTrue(Do(() -> SuperStructure.setScoringPreset(ScoringLevel.L2)));
 
-    new Trigger(() -> driverController.getCircleButton()).onTrue(Do(() -> setSKYHOOK()));
-  
+    // Skyhook
+    new Trigger(() -> driverController.getCircleButton() && currentRobotState == RobotConstants.HOLDBALL).onTrue(Do(() -> setSKYHOOK()));
+
   }
 
   private static Command Do(Runnable toRun) {
