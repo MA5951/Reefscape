@@ -1,5 +1,6 @@
 package frc.robot.Subsystem.Arm;
 
+import com.ma5951.utils.DashBoard.MABoard;
 import com.ma5951.utils.Logger.LoggedBool;
 import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
@@ -17,12 +18,18 @@ public class Arm extends StateControlledSubsystem {
 
     private ArmIO armIO = ArmConstants.getArmIO();
     private Debouncer atPointDebouncer = new Debouncer(RobotConstants.kDELTA_TIME * 2);
+    public MABoard board;
 
     private Arm() {
         super(ArmConstants.SUBSYSTEM_STATES, "Arm");
         atPointLog = new LoggedBool("/Subsystems/Arm/AtPoint");
+        board = new MABoard("BallTests");
+        board.addNum("StartAngle", 0);
+        board.addNum("EndAngle", 0);
 
         resetPose();
+
+        
     }
 
     public double getFeedForwardVoltage() {

@@ -59,8 +59,9 @@ public class ElevatorConstants {
     public static final State SCORING = new State("SCORING");
     public static final State CLIMB = new State("SORTING");
     public static final State BALLREMOVING  = new State("BALLREMOVING");
+    public static final State SKTHOOK = new State("SKTHOOK");
 
-    public static final State[] SUBSYSTEM_STATES = new State[] {IDLE , HOLD , INTAKE , SCORING , CLIMB , BALLREMOVING , HOME};
+    public static final State[] SUBSYSTEM_STATES = new State[] {IDLE , HOLD , INTAKE , SCORING , CLIMB , BALLREMOVING , HOME , SKTHOOK};
 
     public static final ElevatorIO getElevatorIO() {
         if (Robot.isReal()) {

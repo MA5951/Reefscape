@@ -13,7 +13,6 @@ public class ElevatorDeafultCommand extends RobotFunctionStatesCommand {
     private static Elevator elevator = RobotContainer.elevator;
     private static Debouncer homeDebouncer = new Debouncer(ElevatorConstants.HOME_TIME);
 
-
     public ElevatorDeafultCommand() {
         super(elevator);
         addRequirements(elevator);
@@ -44,19 +43,19 @@ public class ElevatorDeafultCommand extends RobotFunctionStatesCommand {
         super.AutomaticLoop();
         switch (elevator.getTargetState().getName()) {
             case "IDLE":
-                if (elevator.atPoint() && elevator.getHight() < 0.1) { 
-                    elevator.setVoltage(0); 
+                if (elevator.atPoint() && elevator.getHight() < 0.1) {
+                    elevator.setVoltage(0);
                 } else {
-                    elevator.setHight(ElevatorConstants.MIN_HIGHT);
+                    elevator.setHight(1.1);// ElevatorConstants.MIN_HIGHT
                 }
                 break;
             case "HOME":
-            if (!homeDebouncer.calculate(elevator.getCurrent() < ElevatorConstants.HOME_CURRENT)) {
-                elevator.setVoltage(ElevatorConstants.HOME_VOLTAGE);
-            } else {
-                elevator.resetPose(ElevatorConstants.MIN_HIGHT);
-                RobotContainer.setIDLE();
-            }
+                if (!homeDebouncer.calculate(elevator.getCurrent() < ElevatorConstants.HOME_CURRENT)) {
+                    elevator.setVoltage(ElevatorConstants.HOME_VOLTAGE);
+                } else {
+                    elevator.resetPose(ElevatorConstants.MIN_HIGHT);
+                    RobotContainer.setIDLE();
+                }
                 break;
             case "INTAKE":
                 elevator.setHight(ElevatorConstants.HIGHT_INTAKE_CORAL);
@@ -70,7 +69,8 @@ public class ElevatorDeafultCommand extends RobotFunctionStatesCommand {
             case "CLIMB":
                 elevator.setVoltage(elevator.getFeedForwardVoltage());
                 break;
-
+            case "SKTHOOK":
+                elevator.setHight(1.47);
 
         }
     }
@@ -89,7 +89,8 @@ public class ElevatorDeafultCommand extends RobotFunctionStatesCommand {
     @Override
     public void ManuelLoop() {
         super.ManuelLoop();
-        elevator.setVoltage(-RobotContainer.operatorController.getLeftY() * ElevatorConstants.MANUEL_VOLTAGE_LIMIT);
+        elevator.setVoltage(-RobotContainer.operatorController.getLeftY() * ElevatorConstants.MANUEL_VOLTAGE_LIMIT
+                + elevator.getFeedForwardVoltage());
     }
 
     @Override

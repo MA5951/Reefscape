@@ -8,14 +8,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 @SuppressWarnings("unused")
-public class MAShuffleboard {
+public class MABoard {
     private ShuffleboardTab board;
     private HashMap<String, GenericEntry> values;
 
     private static final String dashboardTitleColorEntry = "/MALog/Dash/TabColor";
     
 
-    public MAShuffleboard(String tab) {
+    public MABoard(String tab) {
         board = Shuffleboard.getTab(tab);
         values = new HashMap<>();
         
@@ -82,9 +82,9 @@ public class MAShuffleboard {
         private String KP_STRING;
         private String KI_STRING;
         private String KD_STRING;
-        private MAShuffleboard shuffleboard;
+        private MABoard shuffleboard;
 
-        private pidControllerGainSupplier(MAShuffleboard shuffleboard, String PIDname, double KP, double KI, double KD) {
+        private pidControllerGainSupplier(MABoard shuffleboard, String PIDname, double KP, double KI, double KD) {
             this.shuffleboard = shuffleboard;
             KP_STRING = PIDname + " KP";
             KI_STRING = PIDname + " KI";

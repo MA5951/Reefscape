@@ -143,6 +143,12 @@ public class RobotContainer extends DeafultRobotContainer {
     elevator.setTargetState(ElevatorConstants.IDLE);
   }
 
+  public static void setSKYHOOK() {
+    setCurrentState(RobotConstants.SKYHOOK);
+    arm.setTargetState(ArmConstants.HOLD);
+    elevator.setTargetState(ElevatorConstants.IDLE);
+  }
+
   private static void configureBindings() {
 
     // Update Offset
@@ -211,6 +217,9 @@ public class RobotContainer extends DeafultRobotContainer {
 
     new Trigger(() -> driverController.getPOV() == 90)
         .onTrue(Do(() -> SuperStructure.setScoringPreset(ScoringLevel.L2)));
+
+    new Trigger(() -> driverController.getCircleButton()).onTrue(Do(() -> setSKYHOOK()));
+  
   }
 
   private static Command Do(Runnable toRun) {

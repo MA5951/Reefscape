@@ -46,7 +46,7 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
                 if (arm.atPoint() && arm.atMinPose()) {
                     arm.setVoltage(arm.getFeedForwardVoltage());
                 } else {
-                    arm.setAngle(17);
+                    arm.setAngle(90);
                 }
 
                 break;
@@ -67,6 +67,10 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
             case "BALLREMOVING":
                 arm.setAngle(ArmConstants.EJECT_BALL_STOP_ANGLE);
                 break;
+            case "SKTHOOK":
+                if (RobotContainer.elevator.getHight() > 1.22) {
+                    arm.setAngle(180);
+                }
         }
     }
 

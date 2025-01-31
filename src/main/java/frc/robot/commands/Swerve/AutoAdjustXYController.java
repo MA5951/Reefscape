@@ -80,9 +80,13 @@ public class AutoAdjustXYController implements SwerveController {
         atPointLog.update(atPoint());
         targetPoseLog.update(targetPose);
 
-
-        return ChassisSpeedsUtil.FromFieldToRobot(chassisSpeeds, new Rotation2d(
+        if (isFieldRelativ) {
+            return ChassisSpeedsUtil.FromFieldToRobot(chassisSpeeds, new Rotation2d(
                     Math.toRadians(-(gyromMeasurment.get() - gyroOffset.get()))));
+        }
+
+        return chassisSpeeds;
+        
     }
 
     public void updateSetPoint(Pose2d setPoint) { 
