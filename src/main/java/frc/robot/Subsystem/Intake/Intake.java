@@ -75,7 +75,7 @@ public class Intake extends StateControlledSubsystem {
 
   public boolean BallRemovingCanMove() {
     return RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && RobotContainer.elevator.atPoint()
-        && !RobotContainer.arm.atPoint() && RobotContainer.arm.getPosition() > IntakeConstants.BALLREMOVING_ANGLE;
+         && RobotContainer.arm.getPosition() > IntakeConstants.BALLREMOVING_ANGLE && !TeleopSwerveController.ballsLatch.get();
   }
 
   public boolean SortingCanMove() {
@@ -85,7 +85,7 @@ public class Intake extends StateControlledSubsystem {
 
   @Override
   public boolean canMove() {
-    return IntakeCanMove() || scoringAtPointDebouncer.calculate(ScoringCanMove()) || BallRemovingCanMove()
+    return RobotContainer.currentRobotState == RobotConstants.HOLDBALL ||  IntakeCanMove() || scoringAtPointDebouncer.calculate(ScoringCanMove()) || BallRemovingCanMove()
         || SortingCanMove()
         || getSystemFunctionState() == StatesConstants.MANUEL
         || RobotContainer.intake.getTargetState() == IntakeConstants.HOLD

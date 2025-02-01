@@ -278,12 +278,13 @@ public class SwerveConstants {
         public final static double REL_X_KP = 0;
         public final static double REL_X_KI = 0;
         public final static double REL_X_KD = 0;
-        public final static double REL_Y_KP = 0.01;
+        public final static double REL_Y_KP = 0;
         public final static double REL_Y_KI = 0;
         public final static double REL_Y_KD = 0;
 
         public final static Constraints ABS_XY_CONSTRAINTS = new Constraints(0.5, 1);
-        public final static double ABS_XY_TOLORANCE = 0.35;
+        public final static double ABS_XY_TOLORANCE = 0.05;
+        public final static double ABS_XY_BALLS_TOLORANCE = 0.55;
 
         public final static Constraints REL_XY_CONSTRAINTS = new Constraints(4.9, 6);
         public final static double REL_XY_TOLORANCE = 0.1;

@@ -96,6 +96,11 @@ public class AutoAdjustXYController implements SwerveController {
         targetPose = setPoint;
     }
 
+    public void setTolerance(double tolerance) {
+        xController.setTolerance(tolerance);
+        yController.setTolerance(tolerance);
+    }
+
     public Pose2d getSetPoint() {
         return targetPose;
     }

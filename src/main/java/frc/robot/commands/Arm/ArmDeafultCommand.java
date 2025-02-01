@@ -46,7 +46,7 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
                 if (arm.atPoint() && arm.atMinPose()) {
                     arm.setVoltage(arm.getFeedForwardVoltage());
                 } else {
-                    arm.setAngle(0);
+                    arm.setAngle(10);
                 }
                 break;
             case "HOLD":
@@ -76,6 +76,7 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
                 } else {
                     arm.setAngle(ArmConstants.SKYHOOK_START_ANGLE);
                 }
+                break;
         }
     }
 

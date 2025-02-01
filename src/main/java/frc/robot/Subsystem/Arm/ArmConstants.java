@@ -37,21 +37,21 @@ public class ArmConstants {
     public static final double GEAR_RATIO = 18;
     public static final double CANCODER_RATIO = 3;
 
-    public static final double kP = 35;//35
+    public static final double kP = 25;//35
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kS = 0;
     public static final double FEED_FORWARD_VOLTAGE = 0.085;
 
     public static final int CONTROL_SLOT = 0;
-    public static final double TOLERANCE = 1.7;
+    public static final double TOLERANCE = 2;
 
     public static final double PEAK_CURRENT_LIMIT = 7;
     public static final double CONTINUOUS_CURRENT_LIMIT = 6;
     public static final double CONTINUOUS_CURRENT_DURATION = 0.05;
     public static final boolean ENABLE_CURRENT_LIMIT = true;
 
-    public static final double kCAN_MOVE_CURRENT_LIMIT = 7;
+    public static final double kCAN_MOVE_CURRENT_LIMIT = 25;
     public static final double kMANUEL_VOLTAGE_LIMIT = 5;
 
     public static final State IDLE = StatesConstants.IDLE;

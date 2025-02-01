@@ -41,7 +41,7 @@ public class ElevatorConstants {
     public static final double HOME_VOLTAGE = -1;
     public static final double HOME_CURRENT = -30;
     public static final double HOME_TIME = 0.2;
-    public static final double CAN_MOVE_CURRENT_LIMIT = 40;
+    public static final double CAN_MOVE_CURRENT_LIMIT = 150;
     public static final double MANUEL_VOLTAGE_LIMIT = 6;
     
     public static final double ACCELERATION = 30 / SPROKET_CIRCUMFERENCE;

@@ -118,10 +118,15 @@ public class RobotContainer extends DeafultRobotContainer {
     SuperStructure.setAbsXY();
     SuperStructure.updateAngleAdjustController();
   }
-
+  
   public static void setBALLREMOVING() {
-    SuperStructure.updatePose();
+    SuperStructure.isFine = false;
+    arm.ballsPoseLatch.reset();
+    SuperStructure.updateScoringFace();
+    SuperStructure.setAbsXY();
+    TeleopSwerveController.ballsLatch.reset();
     setCurrentState(RobotConstants.BALLREMOVING);
+    SuperStructure.updateAngleAdjustController();
     intake.setTargetState(IntakeConstants.BALLREMOVING);
     arm.setTargetState(ArmConstants.BALLREMOVING);
     elevator.setTargetState(ElevatorConstants.BALLREMOVING);
@@ -151,7 +156,7 @@ public class RobotContainer extends DeafultRobotContainer {
     setCurrentState(RobotConstants.HOLDBALL);
     arm.setTargetState(ArmConstants.HOLD);
     elevator.setTargetState(ElevatorConstants.IDLE);
-    intake.setTargetState(IntakeConstants.IDLE);
+    intake.setTargetState(IntakeConstants.SKYHOOK);
   }
 
   private static void configureBindings() {
@@ -165,7 +170,7 @@ public class RobotContainer extends DeafultRobotContainer {
         .onTrue(Do(() -> Vision.getInstance().updateOdometry()));
 
     // Intake
-    new Trigger(() -> driverController.getR1Button() && !SuperStructure.hasGamePiece())
+    new Trigger(() -> driverController.getR1Button() || driverController.getL1Button() && !SuperStructure.hasGamePiece())
         .onTrue(Do(() -> setINTAKE()));
 
     new Trigger(
@@ -193,10 +198,10 @@ public class RobotContainer extends DeafultRobotContainer {
         .onTrue(Do(() -> setSCORING()));
 
     // Ball Removing
-    new Trigger(() -> driverController.getL2Button() && !SuperStructure.hasGamePiece())
+    new Trigger(() -> driverController.getR2Button() && !SuperStructure.hasGamePiece())
         .onTrue(Do(() -> setBALLREMOVING())); // Not too close
 
-    new Trigger(() -> currentRobotState == RobotConstants.BALLREMOVING && SuperStructure.isDistanceToEndBallRemove())
+    new Trigger(() -> currentRobotState == RobotConstants.BALLREMOVING && SuperStructure.isFine && SuperStructure.isDistanceToEndBallRemove())
         .onTrue(Do(() -> setHOLDBALL()));
 
     // // Climb

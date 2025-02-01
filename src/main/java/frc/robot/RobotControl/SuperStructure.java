@@ -53,6 +53,7 @@ public class SuperStructure extends GenericSuperStracture {
 
         reefFace = new LoggedPose2d("/SuperStructure/Reef Face");
         alignAngle = new LoggedDouble("/SuperStructure/Align Angle");
+        ejectPose = new Pose2d();
         updateScoringFace();
     }
 
@@ -140,7 +141,7 @@ public class SuperStructure extends GenericSuperStracture {
     public static void updateAngleAdjustController() {
         if (RobotContainer.currentRobotState == RobotConstants.INTAKE) {
             TeleopSwerveController.angleAdjustController.setSetPoint(getAngleForIntakeAlign());
-        } else if (RobotContainer.currentRobotState == RobotConstants.SCORING) {
+        } else if (RobotContainer.currentRobotState == RobotConstants.SCORING || RobotContainer.currentRobotState == RobotConstants.BALLREMOVING) {
             TeleopSwerveController.angleAdjustController.setSetPoint(scoringFace.AbsAngle());
         }
     }
@@ -162,36 +163,48 @@ public class SuperStructure extends GenericSuperStracture {
 
     public static String updateXYAdjustController() {
         if (RobotContainer.currentRobotState == RobotConstants.SCORING) {
-             if (isDitancetToFineAlign() || isFine) {
+            if (isDitancetToFineAlign() || isFine) {
                 if (scoringLocation == Field.ScoringLocation.LEFT) {
                     if ((isDitancetToFinalAlignLeft() || isFinalLeft) && arm.atPoint() && elevator.atPoint()) {
                         TeleopSwerveController.autoAdjustXYController
-                            .updateSetPoint(scoringFace.getLeftAlignPose());
-                            isFinalLeft = true;
+                                .updateSetPoint(scoringFace.getLeftAlignPose());
+                        isFinalLeft = true;
                     } else if (arm.atPoint() && elevator.atPoint()) {
                         TeleopSwerveController.autoAdjustXYController
-                            .updateSetPoint(scoringFace.getLeftSemiAlignPose());
+                                .updateSetPoint(scoringFace.getLeftSemiAlignPose());
                     }
-                } else if ((scoringLocation == Field.ScoringLocation.RIGHT || isFinalRight) && arm.atPoint() && elevator.atPoint()) {
+                } else if ((scoringLocation == Field.ScoringLocation.RIGHT || isFinalRight) && arm.atPoint()
+                        && elevator.atPoint()) {
                     if (isDitancetToFinalAlignRight()) {
                         TeleopSwerveController.autoAdjustXYController
-                            .updateSetPoint(scoringFace.getRightAlignPose());
-                            isFinalRight = true;
+                                .updateSetPoint(scoringFace.getRightAlignPose());
+                        isFinalRight = true;
                     } else if (arm.atPoint() && elevator.atPoint()) {
                         TeleopSwerveController.autoAdjustXYController
-                            .updateSetPoint(scoringFace.getRightSemiAlignPose());
+                                .updateSetPoint(scoringFace.getRightSemiAlignPose());
                     }
                 }
-                
+
                 isFine = true;
 
-
-                return "ABS XY Final Pose";
-            } else if (!isFine && !isFinalLeft && !isFinalRight){
-                TeleopSwerveController.autoAdjustXYController.updateSetPoint(scoringFace.getAlignPose() );
-                return "ABS XY";
+                return "Scoring ABS XY Final Pose";
+            } else if (!isFine && !isFinalLeft && !isFinalRight) {
+                TeleopSwerveController.autoAdjustXYController.updateSetPoint(scoringFace.getAlignPose());
+                return "Scoring ABS XY";
             }
             return "NONE";
+        } else if (RobotContainer.currentRobotState == RobotConstants.BALLREMOVING) {
+
+            if (isDitancetToFineAlign() || isFine) {
+                TeleopSwerveController.autoAdjustXYController
+                        .updateSetPoint(scoringFace.getBallRemovingPose());
+                isFine = true;
+                return "BALLS ABS XY Final Pose";
+            } else {
+                TeleopSwerveController.autoAdjustXYController
+                        .updateSetPoint(scoringFace.getAlignPose());
+                return "BALLS ABS XY Pose";
+            }
         } else {
             return "NONE";
         }
@@ -225,10 +238,17 @@ public class SuperStructure extends GenericSuperStracture {
     public static boolean isDitancetToScore() {
         return currentPoseSupplier.get().getTranslation()
                 .getDistance(
-                        scoringFace.getLeftAlignPose().getTranslation()) < 0.07
-                        || currentPoseSupplier.get().getTranslation()
+                        scoringFace.getLeftAlignPose().getTranslation()) < 0.05
+                || currentPoseSupplier.get().getTranslation()
                         .getDistance(
-                                scoringFace.getRightAlignPose().getTranslation()) < 0.07;
+                                scoringFace.getRightAlignPose().getTranslation()) < 0.05;
+    }
+
+    public static boolean isDitancetToBallRemove() {
+        return currentPoseSupplier.get().getTranslation()
+                .getDistance(
+                        scoringFace.getBallRemovingPose().getTranslation()) < 0.07;
+                
     }
 
     public static boolean hasGamePiece() {

@@ -95,6 +95,10 @@ public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
                 break;
             case "BALLREMOVING":
                 intake.setVoltage(IntakeConstants.BALLREMOVING_VOLTAGE);
+                break;
+            case "SKYHOOK":
+                intake.setVoltage(-0.5);
+                break;
         }
     }
 

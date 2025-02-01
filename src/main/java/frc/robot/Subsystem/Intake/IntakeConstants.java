@@ -41,8 +41,9 @@ public class IntakeConstants {
     public static final State SCORING = new State("SCORING");
     public static final State SORTING = new State("SORTING");
     public static final State BALLREMOVING  = new State("BALLREMOVING");
+    public static final State SKYHOOK = new State("SKYHOOK");
 
-    public static final State[] SUBSYSTEM_STATES = new State[] {IDLE , HOLD , INTAKE , SCORING , SORTING , BALLREMOVING};
+    public static final State[] SUBSYSTEM_STATES = new State[] {IDLE , HOLD , INTAKE , SCORING , SORTING , BALLREMOVING , SKYHOOK};
 
     public static final IntakeIO getIntakeIO() {
         if (Robot.isReal()) {

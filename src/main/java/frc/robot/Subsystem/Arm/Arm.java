@@ -4,11 +4,13 @@ import com.ma5951.utils.DashBoard.MABoard;
 import com.ma5951.utils.Logger.LoggedBool;
 import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
+import com.ma5951.utils.Utils.BooleanLatch;
 import com.ma5951.utils.Utils.ConvUtil;
 
 import edu.wpi.first.math.filter.Debouncer;
 import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
+import frc.robot.RobotControl.SuperStructure;
 import frc.robot.Subsystem.Arm.IOs.ArmIO;
 
 public class Arm extends StateControlledSubsystem {
@@ -19,6 +21,7 @@ public class Arm extends StateControlledSubsystem {
     private ArmIO armIO = ArmConstants.getArmIO();
     private Debouncer atPointDebouncer = new Debouncer(RobotConstants.kDELTA_TIME * 2);
     public MABoard board;
+    public BooleanLatch ballsPoseLatch;
 
     private Arm() {
         super(ArmConstants.SUBSYSTEM_STATES, "Arm");
@@ -26,6 +29,8 @@ public class Arm extends StateControlledSubsystem {
         board = new MABoard("BallTests");
         board.addNum("StartAngle", 0);
         board.addNum("EndAngle", 0);
+
+        ballsPoseLatch = new BooleanLatch(() -> SuperStructure.isDitancetToBallRemove());
 
         resetPose();
 

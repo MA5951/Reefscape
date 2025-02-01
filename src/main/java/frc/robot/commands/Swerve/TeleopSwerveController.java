@@ -5,7 +5,9 @@
 package frc.robot.commands.Swerve;
 
 import com.ma5951.utils.Logger.LoggedString;
+import com.ma5951.utils.Utils.BooleanLatch;
 
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -38,22 +40,23 @@ public class TeleopSwerveController extends Command {
   private static LoggedString theathControllerLog;
   private static SwerveModuleState[] currentStates;
   private static String alignType = "NONE";
+  public static BooleanLatch ballsLatch;
 
   public TeleopSwerveController(PS5Controller controller) {
     swerve = SwerveSubsystem.getInstance();
 
-    driveController = new FieldCentricDriveController(controller, () -> controller.getR2Button(),
+    driveController = new FieldCentricDriveController(controller, () -> controller.getL2Button(),
         SwerveConstants.DRIVER_SLOW_FACTOR, () -> SwerveSubsystem.getInstance().getFusedHeading());
 
     angleAdjustController = new AngleAdjustController(() -> SwerveSubsystem.getInstance().getAbsYaw());
 
     autoAdjustXYController = new AutoAdjustXYController(() -> PoseEstimator.getInstance().getEstimatedRobotPose(),
-        () -> SwerveSubsystem.getInstance().getFusedHeading(), () -> driveController.getGyroOffset()
-        );
+        () -> SwerveSubsystem.getInstance().getFusedHeading(), () -> driveController.getGyroOffset());
+
+    ballsLatch = new BooleanLatch(() -> RobotContainer.arm.getCurrent() > 15d);
 
     xyControllerLog = new LoggedString("/Subsystems/Swerve/Controllers/XY Controller");
     theathControllerLog = new LoggedString("/Subsystems/Swerve/Controllers/Theath Controller");
-    //currentStates = swerve.getSwerveModuleStates();
 
     addRequirements(swerve);
   }
@@ -66,52 +69,43 @@ public class TeleopSwerveController extends Command {
   @Override
   public void execute() { // 40 precent //add ball removing // deadbound in swerve
 
-    // if (RobotContainer.currentRobotState == RobotConstants.INTAKE) {
-    // robotSpeeds = driveController.update();
-    // robotSpeeds.omegaRadiansPerSecond =
-    // angleAdjustController.update().omegaRadiansPerSecond;
-    // xyControllerLog.update("Drive Controller");
-    // theathControllerLog.update("Angle Controller");
-    // } else if (RobotContainer.currentRobotState == RobotConstants.SCORING &&
-    // RobotContainer.intake.getRearSensor()) {
-    // xyControllerLog.update(SuperStructure.updateXYAdjustController());
-    // robotSpeeds = autoAdjustXYController.update();
-    // robotSpeeds.omegaRadiansPerSecond =
-    // angleAdjustController.update().omegaRadiansPerSecond;
-    // theathControllerLog.update("Angle Controller");
-    // } else {
-    // xyControllerLog.update("Drive Controller");
-    // theathControllerLog.update("Drive Controller");
-    // robotSpeeds = driveController.update();
-    // }
+    
 
-    if (RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && RobotContainer.arm.getPosition() > 90) {
-      robotSpeeds.vxMetersPerSecond = -1;
-      robotSpeeds.vyMetersPerSecond = 0;
-      robotSpeeds.omegaRadiansPerSecond = 0;
-    } else if (RobotContainer.currentRobotState == RobotConstants.SCORING &&  SuperStructure.isScoringAutomatic && RobotContainer.intake.getFrontSensor()) {
-      alignType = SuperStructure.updateXYAdjustController();
-      xyControllerLog.update(alignType);
-      robotSpeeds = autoAdjustXYController.update();
-      robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
-      theathControllerLog.update("Angle Controller");
-    } else {
-      xyControllerLog.update("Drive Controller");
-      theathControllerLog.update("Drive Controller");
-      robotSpeeds = driveController.update();
-    }
+      if (RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && ballsLatch.get()) {
+        robotSpeeds.vxMetersPerSecond = -0.6;
+        robotSpeeds.vyMetersPerSecond = 0;
+        robotSpeeds.omegaRadiansPerSecond = 0;
+      } else if (RobotContainer.currentRobotState == RobotConstants.BALLREMOVING) {
+        SuperStructure.updatePose();
+        alignType = SuperStructure.updateXYAdjustController();
+        xyControllerLog.update(alignType);
+        robotSpeeds = autoAdjustXYController.update();
+        robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
+        theathControllerLog.update("Angle Controller");
+      } else if (RobotContainer.currentRobotState == RobotConstants.SCORING && SuperStructure.isScoringAutomatic
+          && RobotContainer.intake.getFrontSensor()) {
+        alignType = SuperStructure.updateXYAdjustController();
+        xyControllerLog.update(alignType);
+        robotSpeeds = autoAdjustXYController.update();
+        robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
+        theathControllerLog.update("Angle Controller");
+      } else {
+        xyControllerLog.update("Drive Controller");
+        theathControllerLog.update("Drive Controller");
+        robotSpeeds = driveController.update();
+      }
 
     swerve.drive(robotSpeeds);
   }
 
   @Override
   public void end(boolean interrupted) {
-    //currentStates = swerve.getSwerveModuleStates();
+    // currentStates = swerve.getSwerveModuleStates();
     // swerve.setModules(new SwerveModuleState[] {
-    //     new SwerveModuleState(0, currentStates[0].angle),
-    //     new SwerveModuleState(0, currentStates[1].angle),
-    //     new SwerveModuleState(0, currentStates[2].angle),
-    //     new SwerveModuleState(0, currentStates[3].angle),
+    // new SwerveModuleState(0, currentStates[0].angle),
+    // new SwerveModuleState(0, currentStates[1].angle),
+    // new SwerveModuleState(0, currentStates[2].angle),
+    // new SwerveModuleState(0, currentStates[3].angle),
     // });
   }
 
@@ -121,7 +115,7 @@ public class TeleopSwerveController extends Command {
   }
 
   public static boolean atPointForScoring() {
-    return  autoAdjustXYController.atPoint()
+    return autoAdjustXYController.atPoint()
         && angleAdjustController.getAtPoint() && SuperStructure.isDitancetToScore();
   }
 }
