@@ -1,30 +1,26 @@
 
-package frc.robot.Subsystem.climb;
+package frc.robot.Subsystem.Climb;
 
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
 
-import frc.robot.Subsystem.climb.IOs.ClimbIO;
+import frc.robot.Subsystem.Climb.IOs.ClimbIO;
 
 public class Climb extends StateControlledSubsystem {
   private static Climb climb;
 
-  private ClimbIO climbIO = climbConstants.getClimbIO();
+  private ClimbIO climbIO = ClimbConstants.getClimbIO();
 
 
   private Climb() {
-    super(climbConstants.SUBSYSTEM_STATES, "Climb");
+    super(ClimbConstants.SUBSYSTEM_STATES, "Climb");
   }
 
   public void setVoltage(double volt) {
     climbIO.setVoltage(volt);
   }
 
-  public Boolean getFirstSensor() {
-    return climbIO.getFirstSensor();
-  }
-
-  public Boolean getSecondSensor() {
-    return climbIO.getSecondSensor();
+  public Boolean getLimitSensor() {
+    return climbIO.getLimitSensor();
   }
 
   public double getCurrent() {

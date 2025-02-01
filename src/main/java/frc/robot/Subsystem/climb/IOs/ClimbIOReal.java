@@ -1,5 +1,5 @@
 
-package frc.robot.Subsystem.climb.IOs;
+package frc.robot.Subsystem.Climb.IOs;
 
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -15,7 +15,7 @@ import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.PortMap;
-import frc.robot.Subsystem.climb.climbConstants;
+import frc.robot.Subsystem.Climb.ClimbConstants;
 
 public class ClimbIOReal implements ClimbIO{
     
@@ -24,8 +24,7 @@ public class ClimbIOReal implements ClimbIO{
 
     protected TalonFXConfiguration masterConfig;
 
-    private DigitalInput firstSensor;
-    private DigitalInput secondSensor;
+    private DigitalInput limitSensor;
 
     private StatusSignal<Current> masterMotorCurrent; 
 
@@ -41,15 +40,14 @@ public class ClimbIOReal implements ClimbIO{
 
 
     public ClimbIOReal() {
-        masterMotor = new TalonFX(PortMap.Climb.ClimbMasterMotor, PortMap.CanBus.CANivoreBus);
-        slaveMotor = new TalonFX(PortMap.Climb.ClimbSlaveMotor, PortMap.CanBus.CANivoreBus);
+        masterMotor = new TalonFX(PortMap.Climb.masterMotor, PortMap.CanBus.CANivoreBus);
+        slaveMotor = new TalonFX(PortMap.Climb.slaveMotor, PortMap.CanBus.CANivoreBus);
 
         masterConfig = new TalonFXConfiguration();
 
-        firstSensor = new DigitalInput(PortMap.Climb.ClimbFirstSensor);
-        secondSensor = new DigitalInput(PortMap.Climb.ClimbSecondSensor);
+        limitSensor = new DigitalInput(PortMap.Climb.limitSensor);
 
-        masterFollwer = new StrictFollower(PortMap.Climb.ClimbMasterMotor);
+        masterFollwer = new StrictFollower(PortMap.Climb.masterMotor);
 
         masterMotorCurrent = masterMotor.getStatorCurrent();
 
@@ -63,7 +61,7 @@ public class ClimbIOReal implements ClimbIO{
     }
 
     public void masterConfig() {
-        masterConfig.Feedback.RotorToSensorRatio = climbConstants.GEAR;
+        masterConfig.Feedback.RotorToSensorRatio = ClimbConstants.GEAR;
 
         masterConfig.Voltage.PeakForwardVoltage = 12;
         masterConfig.Voltage.PeakReverseVoltage = -12;
@@ -71,10 +69,10 @@ public class ClimbIOReal implements ClimbIO{
         masterConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         masterConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
-        masterConfig.CurrentLimits.SupplyCurrentLimitEnable = climbConstants.kENABLE_CURRENT_LIMIT;
-        masterConfig.CurrentLimits.SupplyCurrentLimit = climbConstants.kCURRENT_LIMIT;
-        masterConfig.CurrentLimits.SupplyCurrentLowerLimit = climbConstants.kCONTINUOUS_LOWER_LIMIT;
-        masterConfig.CurrentLimits.SupplyCurrentLowerTime = climbConstants.kCONTINUOUS_CURRENT_TIME;
+        masterConfig.CurrentLimits.SupplyCurrentLimitEnable = ClimbConstants.kENABLE_CURRENT_LIMIT;
+        masterConfig.CurrentLimits.SupplyCurrentLimit = ClimbConstants.kCURRENT_LIMIT;
+        masterConfig.CurrentLimits.SupplyCurrentLowerLimit = ClimbConstants.kCONTINUOUS_LOWER_LIMIT;
+        masterConfig.CurrentLimits.SupplyCurrentLowerTime = ClimbConstants.kCONTINUOUS_CURRENT_TIME;
 
         masterMotor.getConfigurator().apply(masterConfig);
         slaveMotor.getConfigurator().apply(masterConfig);
@@ -110,12 +108,8 @@ public class ClimbIOReal implements ClimbIO{
         return masterMotorapliedVolts.getValueAsDouble();
     }
 
-    public Boolean getFirstSensor() {
-        return firstSensor.get();
-    }
-
-    public Boolean getSecondSensor() {
-        return secondSensor.get();
+    public Boolean getLimitSensor() {
+        return limitSensor.get();
     }
 
     public void updatePeriodic() {

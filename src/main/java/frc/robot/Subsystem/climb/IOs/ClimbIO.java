@@ -1,5 +1,5 @@
 
-package frc.robot.Subsystem.climb.IOs;
+package frc.robot.Subsystem.Climb.IOs;
 
 public interface ClimbIO {
 
@@ -13,9 +13,7 @@ public interface ClimbIO {
 
     double getMasterAppliedVolts();
 
-    Boolean getFirstSensor();
-
-    Boolean getSecondSensor();
+    Boolean getLimitSensor();
 
     void updatePeriodic();
     

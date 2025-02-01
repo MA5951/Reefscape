@@ -1,5 +1,5 @@
 
-package frc.robot.Subsystem.climb.IOs;
+package frc.robot.Subsystem.Climb.IOs;
 
 import com.ma5951.utils.ControlledMotors.Sim.TalonFXMotorSim;
 
