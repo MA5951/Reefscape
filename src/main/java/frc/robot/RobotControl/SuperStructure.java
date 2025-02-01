@@ -1,6 +1,8 @@
 
 package frc.robot.RobotControl;
 
+import java.util.function.Supplier;
+
 import org.photonvision.simulation.VideoSimUtil;
 
 import com.ma5951.utils.Logger.LoggedDouble;
@@ -22,6 +24,7 @@ import frc.robot.Subsystem.Swerve.SwerveConstants;
 import frc.robot.Subsystem.Swerve.SwerveSubsystem;
 import frc.robot.Subsystem.Vision.Vision;
 import frc.robot.Subsystem.Vision.VisionConstants;
+import frc.robot.Utils.ModuleLimits;
 import frc.robot.Utils.ReefFace;
 import frc.robot.commands.Swerve.TeleopSwerveController;
 
@@ -55,6 +58,8 @@ public class SuperStructure extends GenericSuperStracture {
         alignAngle = new LoggedDouble("/SuperStructure/Align Angle");
         ejectPose = new Pose2d();
         updateScoringFace();
+
+        swerve.setCurrentLimits(updateSwerveLimits());
     }
 
     public static void toggleAutoScoring() {
@@ -258,6 +263,14 @@ public class SuperStructure extends GenericSuperStracture {
     public static void update() {
         reefFace.update(scoringFace.getAlignPose());
         alignAngle.update(scoringFace.AbsAngle());
+    }
+
+    public static Supplier<ModuleLimits> updateSwerveLimits() {
+        if (elevator.getHight() > SwerveConstants.HIGHT_TO_LIMIT) {
+            return () -> SwerveConstants.OPEN_ELEVATOR;
+        } 
+        
+        return () -> SwerveConstants.DEFUALT;
     }
 
 }

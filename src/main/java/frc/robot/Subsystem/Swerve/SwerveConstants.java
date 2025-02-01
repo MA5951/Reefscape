@@ -1,5 +1,7 @@
 package frc.robot.Subsystem.Swerve;
 
+import java.nio.file.DirectoryNotEmptyException;
+
 import org.ironmaple.simulation.drivesims.COTS;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
 import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
@@ -249,8 +251,13 @@ public class SwerveConstants {
                         DRIVE_TRAIN_SIMULATION_CONFIG, new Pose2d(2, 2, new Rotation2d()));
 
         // Module Limits
-        public final static ModuleLimits DEFUALT = new ModuleLimits(4.9, Units.feetToMeters(75),
+        public final static ModuleLimits DEFUALT = new ModuleLimits(MAX_VELOCITY, Units.feetToMeters(75),
                         Units.degreesToRadians(700));
+
+        public final static ModuleLimits OPEN_ELEVATOR = new ModuleLimits(MAX_VELOCITY, Units.feetToMeters(50), 
+        Units.degreesToRadians(700));
+
+        public final static double HIGHT_TO_LIMIT = 1.2;
 
         // Odometry
         public final static double ODOMETRY_UPDATE_RATE = 250;

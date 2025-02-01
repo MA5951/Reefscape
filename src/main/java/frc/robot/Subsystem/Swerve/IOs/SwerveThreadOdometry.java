@@ -83,7 +83,7 @@ public class SwerveThreadOdometry implements SwerveOdometry{
         modulesData = swerveSubsystem.getModulesData();
         gyroData = swerveSubsystem.getGyroData();
         modulesArry = swerveSubsystem.getModulesArry();
-        swerveLimits = swerveSubsystem.getCurrentLimits();
+        swerveLimits = swerveSubsystem.getCurrentLimits().get();
 
     }
 
