@@ -13,6 +13,8 @@ import frc.robot.RobotControl.SuperStructure;
 import frc.robot.RobotControl.Field.ScoringLevel;
 import frc.robot.Subsystem.Arm.Arm;
 import frc.robot.Subsystem.Arm.ArmConstants;
+import frc.robot.Subsystem.Climb.Climb;
+import frc.robot.Subsystem.Climb.ClimbConstants;
 import frc.robot.Subsystem.Elevator.Elevator;
 import frc.robot.Subsystem.Elevator.ElevatorConstants;
 import frc.robot.Subsystem.Intake.Intake;
@@ -39,6 +41,7 @@ public class RobotContainer extends DeafultRobotContainer {
   public static Elevator elevator;
   public static Alliance alliance;
   public static boolean setAllianceData = true;
+  public static Climb climb;
 
   public RobotContainer() {
     super(
@@ -53,6 +56,7 @@ public class RobotContainer extends DeafultRobotContainer {
     intake = Intake.getInstance();
     arm = Arm.getInstance();
     elevator = Elevator.getInstance();
+    climb = Climb.getInstance();
 
     @SuppressWarnings("unused")
     SuperStructure superStructure = new SuperStructure();
@@ -92,6 +96,7 @@ public class RobotContainer extends DeafultRobotContainer {
     intake.setTargetState(IntakeConstants.IDLE);
     arm.setTargetState(ArmConstants.IDLE);
     elevator.setTargetState(ElevatorConstants.IDLE);
+    climb.setTargetState(ClimbConstants.IDLE);
   }
 
   public static void setINTAKE() {
@@ -137,6 +142,7 @@ public class RobotContainer extends DeafultRobotContainer {
     intake.setTargetState(IntakeConstants.IDLE);
     arm.setTargetState(ArmConstants.IDLE);
     elevator.setTargetState(ElevatorConstants.CLIMB);
+    climb.setTargetState(ClimbConstants.ALIGN);
   }
 
   public static void setSORTING() {
@@ -204,10 +210,10 @@ public class RobotContainer extends DeafultRobotContainer {
     new Trigger(() -> currentRobotState == RobotConstants.BALLREMOVING && SuperStructure.isFine && SuperStructure.isDistanceToEndBallRemove())
         .onTrue(Do(() -> setHOLDBALL()));
 
-    // // Climb
-    // new Trigger(() -> driverController.getSquareButton() && currentRobotState ==
-    // RobotConstants.IDLE)
-    // .onTrue(Do(() -> setCLIMB()));
+    // Climb
+    new Trigger(() -> driverController.getSquareButton() && currentRobotState ==
+    RobotConstants.IDLE)
+    .onTrue(Do(() -> setCLIMB()));
 
     // IDLE
     new Trigger(() -> driverController.getTouchpadButton()).onTrue(Do(() -> setIDLE()));

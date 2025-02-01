@@ -65,6 +65,12 @@ public class PortMap {
         public static final int armEncoder = 19;
     }
 
+    public class Climb {
+        public static final int masterMotor = 41;
+        public static final int slaveMotor = 42;
+        public static final int limitSensor = 9;
+    }
+
     public class Led {
         public static final int ledPort = 0;
     }

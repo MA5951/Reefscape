@@ -83,7 +83,7 @@ public class TeleopSwerveController extends Command {
         robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
         theathControllerLog.update("Angle Controller");
       } else if (RobotContainer.currentRobotState == RobotConstants.SCORING && SuperStructure.isScoringAutomatic
-          && RobotContainer.intake.getFrontSensor()) {
+          && RobotContainer.intake.getFrontSensor() && SuperStructure.getScoringPreset() != Field.ScoringLevel.L1) {
         alignType = SuperStructure.updateXYAdjustController();
         xyControllerLog.update(alignType);
         robotSpeeds = autoAdjustXYController.update();
