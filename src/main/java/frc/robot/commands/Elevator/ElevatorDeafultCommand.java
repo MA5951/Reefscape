@@ -67,7 +67,7 @@ public class ElevatorDeafultCommand extends RobotFunctionStatesCommand {
                 elevator.setHight(SuperStructure.getBallRemoveHight());
                 break;
             case "CLIMB":
-                elevator.setVoltage(elevator.getFeedForwardVoltage());
+                elevator.setVoltage(0);
                 break;
             case "SKYHOOK":
                 if (elevator.getHight() < ElevatorConstants.SKYHOOK_STOP_HIGHT) {
