@@ -243,10 +243,10 @@ public class SuperStructure extends GenericSuperStracture {
     public static boolean isDitancetToScore() {
         return currentPoseSupplier.get().getTranslation()
                 .getDistance(
-                        scoringFace.getLeftAlignPose().getTranslation()) < 0.05
+                        scoringFace.getLeftAlignPose().getTranslation()) < 0.07
                 || currentPoseSupplier.get().getTranslation()
                         .getDistance(
-                                scoringFace.getRightAlignPose().getTranslation()) < 0.05;
+                                scoringFace.getRightAlignPose().getTranslation()) < 0.07;
     }
 
     public static boolean isDitancetToBallRemove() {

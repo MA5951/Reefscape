@@ -1,9 +1,9 @@
 
 package frc.robot.Subsystem.Climb;
 
+import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
 
-import frc.robot.Subsystem.Arm.ArmConstants;
 import frc.robot.Subsystem.Climb.IOs.ClimbIO;
 
 public class Climb extends StateControlledSubsystem {
@@ -24,7 +24,7 @@ public class Climb extends StateControlledSubsystem {
   }
 
   public double getPosition() {
-    return climbIO.getPosition();
+    return -Math.abs(climbIO.getPosition());
   }
 
   public double getCurrent() {
@@ -39,12 +39,20 @@ public class Climb extends StateControlledSubsystem {
     return climbIO.getMasterVelocity();
   }
 
+  public void setServo(double pose) {
+    climbIO.setServo(pose);
+  }
+
+  public double getServoPose() {
+    return climbIO.getServoPose();
+  }
+
   public boolean atAlignAngle() {
     return Math.abs(getPosition() - ClimbConstants.ALIGN_ANGLE) <= ClimbConstants.TOLERANCE;
   }
 
   private boolean physicalCanMove() {
-    return ((getPosition() >= ArmConstants.MIN_ANGLE || getAppliedVolts() > 0.1) && (getPosition() <= ArmConstants.MAX_ANGLE || getAppliedVolts() < -0.1));
+    return ((getPosition() >= ClimbConstants.MIN_ANGLE || getAppliedVolts() < -0.1));
   }
 
   private boolean alignCanMove() {
@@ -57,7 +65,7 @@ public class Climb extends StateControlledSubsystem {
 
   @Override
   public boolean canMove() {
-    return physicalCanMove() && (alignCanMove() || climbCanMove()|| getTargetState() == ClimbConstants.IDLE);
+    return (physicalCanMove() && (alignCanMove() || climbCanMove() || getTargetState() == ClimbConstants.IDLE)) || getSystemFunctionState() == StatesConstants.MANUEL;
   }
 
   public static Climb getInstance() {

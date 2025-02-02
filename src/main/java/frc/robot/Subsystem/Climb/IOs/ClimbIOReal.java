@@ -15,6 +15,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Servo;
 import frc.robot.PortMap;
 import frc.robot.Subsystem.Climb.ClimbConstants;
 
@@ -22,6 +23,7 @@ public class ClimbIOReal implements ClimbIO{
     
     protected TalonFX masterMotor;
     protected TalonFX slaveMotor;
+    private static Servo servo;
 
     protected TalonFXConfiguration masterConfig;
 
@@ -44,6 +46,8 @@ public class ClimbIOReal implements ClimbIO{
         masterMotor = new TalonFX(PortMap.Climb.masterMotor, PortMap.CanBus.CANivoreBus);
         slaveMotor = new TalonFX(PortMap.Climb.slaveMotor, PortMap.CanBus.CANivoreBus);
 
+        servo = new Servo(PortMap.Climb.servoPort);
+
         masterConfig = new TalonFXConfiguration();
 
         limitSensor = new DigitalInput(PortMap.Climb.limitSensor);
@@ -59,10 +63,13 @@ public class ClimbIOReal implements ClimbIO{
         masterMotorVelocityLog = new LoggedDouble("/Subsystems/Climb/IO/master Motor Velocity");
         masterMotorapliedVoltsLog = new LoggedDouble("/Subsystems/Climb/IO/master Motor aplied Volts");
         masterPositionLog = new LoggedDouble("/Subsystems/Climb/IO/Position");
+
+        masterConfig();
+        masterMotor.setPosition(0);
     }
 
     public void masterConfig() {
-        masterConfig.Feedback.RotorToSensorRatio = ClimbConstants.GEAR;
+        masterConfig.Feedback.SensorToMechanismRatio = ClimbConstants.GEAR;
 
         masterConfig.Voltage.PeakForwardVoltage = 12;
         masterConfig.Voltage.PeakReverseVoltage = -12;
@@ -79,6 +86,13 @@ public class ClimbIOReal implements ClimbIO{
         slaveMotor.getConfigurator().apply(masterConfig);
     }
 
+    public double getServoPose() {
+        return servo.get();
+    }
+
+    public void setServo(double position) {
+        servo.set(position);
+    }
 
     public void setVoltage(double volt) {
         masterMotor.setVoltage(volt);

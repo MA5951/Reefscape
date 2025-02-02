@@ -26,6 +26,7 @@ import frc.robot.Subsystem.Swerve.SwerveSubsystem;
 import frc.robot.Subsystem.Vision.Vision;
 import frc.robot.Utils.CommandUtil;
 import frc.robot.commands.Arm.ArmDeafultCommand;
+import frc.robot.commands.Climb.ClimbDeafultCommand;
 import frc.robot.commands.Elevator.ElevatorDeafultCommand;
 import frc.robot.commands.Intake.IntakeDeafultCommand;
 import frc.robot.commands.Swerve.TeleopSwerveController;
@@ -80,6 +81,8 @@ public class RobotContainer extends DeafultRobotContainer {
         new ArmDeafultCommand());
     CommandScheduler.getInstance().setDefaultCommand(elevator,
         new ElevatorDeafultCommand());
+        CommandScheduler.getInstance().setDefaultCommand(climb,
+        new ClimbDeafultCommand());
 
   }
 
@@ -176,7 +179,7 @@ public class RobotContainer extends DeafultRobotContainer {
         .onTrue(Do(() -> Vision.getInstance().updateOdometry()));
 
     // Intake
-    new Trigger(() -> driverController.getR1Button() || driverController.getL1Button() && !SuperStructure.hasGamePiece())
+    new Trigger(() -> driverController.getR1Button()  && !SuperStructure.hasGamePiece())
         .onTrue(Do(() -> setINTAKE()));
 
     new Trigger(
@@ -215,8 +218,11 @@ public class RobotContainer extends DeafultRobotContainer {
     RobotConstants.IDLE)
     .onTrue(Do(() -> setCLIMB()));
 
+    new Trigger(() -> driverController.getSquareButton() && climb.getTargetState() ==
+    ClimbConstants.ALIGN && climb.atAlignAngle()).onTrue(Do(() -> climb.setTargetState(ClimbConstants.CLIMB);));
+
     // IDLE
-    new Trigger(() -> driverController.getTouchpadButton()).onTrue(Do(() -> setIDLE()));
+    //new Trigger(() -> driverController.getTouchpadButton()).onTrue(Do(() -> setIDLE()));
 
     // Auto Scoring
     new Trigger(() -> driverController.getRawButton(9)).onTrue(Do(() -> SuperStructure.toggleAutoScoring()));

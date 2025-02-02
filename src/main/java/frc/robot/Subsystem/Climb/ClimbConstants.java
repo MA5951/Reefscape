@@ -18,19 +18,19 @@ public class ClimbConstants {
     public static final Boolean kENABLE_CURRENT_LIMIT = false;
     
     public static final double GEAR = 192;
-    public static final double TOLERANCE = 3;
+    public static final double TOLERANCE = 10;
 
-    public static final double FREE_POSITION = 0;
+    public static final double FREE_POSITION = 0.15;
     public static final double LOCK_POSITION = 0;
 
     public static final double MAX_ANGLE = 0;
-    public static final double MIN_ANGLE = 30;
-    public static final double ALIGN_ANGLE = 90;
-    public static final double CLIMB_ANGLE = 0;
+    public static final double MIN_ANGLE = -200;
+    public static final double ALIGN_ANGLE = -220;
+    public static final double CLIMB_ANGLE = -63;
 
-    public static final double IDLE_VOLTAGE = 0;
-    public static final double ALIGN_VOLTAGE = 0;
-    public static final double CLIMB_VOLTAGE = 0;
+    public static final double IDLE_VOLTAGE = 3;
+    public static final double ALIGN_VOLTAGE = -3;
+    public static final double CLIMB_VOLTAGE = 1.5;
 
     public static final double MANUEL_VOLTAGE_LIMIT = 0;
     public static final double HOME_VOLTAGE = 0;
@@ -38,8 +38,9 @@ public class ClimbConstants {
     public static final State IDLE = StatesConstants.IDLE;
     public static final State ALIGN = new State("ALIGN");
     public static final State CLIMB = new State("CLIMB");
+    public static final State OPEN_RACHET = new State("OPEN_RACHET");
 
-    public static final State[] SUBSYSTEM_STATES = new State[] {IDLE , ALIGN , CLIMB};
+    public static final State[] SUBSYSTEM_STATES = new State[] {IDLE , ALIGN , CLIMB, OPEN_RACHET};
 
     public static ClimbIO getClimbIO() {
         if (Robot.isReal()) {

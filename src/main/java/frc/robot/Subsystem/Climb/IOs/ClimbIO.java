@@ -7,6 +7,10 @@ public interface ClimbIO {
 
     void setMasterNutralMode(boolean isBreak);
 
+    void setServo(double position);
+
+    double getServoPose();
+
     double getMasterVelocity();
 
     double getMasterCurrent();

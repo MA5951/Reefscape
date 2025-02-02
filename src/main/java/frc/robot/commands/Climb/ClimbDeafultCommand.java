@@ -3,6 +3,8 @@ package frc.robot.commands.Climb;
 
 import com.ma5951.utils.RobotControl.Commands.RobotFunctionStatesCommand;
 
+import edu.wpi.first.math.filter.Debouncer;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Subsystem.Arm.ArmConstants;
 import frc.robot.Subsystem.Climb.Climb;
@@ -10,9 +12,12 @@ import frc.robot.Subsystem.Climb.ClimbConstants;
 
 public class ClimbDeafultCommand extends RobotFunctionStatesCommand {
     private static Climb climb = RobotContainer.climb;
+    private Debouncer servoDebounder;
+    private boolean openServo = false;
 
     public ClimbDeafultCommand() {
         super(climb);
+        servoDebounder = new Debouncer(10);
         addRequirements(climb);
     }
 
@@ -41,13 +46,19 @@ public class ClimbDeafultCommand extends RobotFunctionStatesCommand {
         super.AutomaticLoop();
         switch (climb.getTargetState().getName()) {
             case "IDLE":
-                if (climb.getPosition() > ClimbConstants.ALIGN_ANGLE) {
-                    climb.setVoltage(ClimbConstants.IDLE_VOLTAGE);
-                } else {
-                    climb.setVoltage(0);
-                }
+                climb.setServo(ClimbConstants.FREE_POSITION);
+                climb.setVoltage(0);
                 break;
+            case "OPEN_RACHET":
+                // climb.setServo(ClimbConstants.FREE_POSITION);
+                // climb.setVoltage(0.32);
+                // openServo = true;
+
+                 if (true) { //servoDebounder.calculate(openServo)
+                    climb.setTargetState(ClimbConstants.ALIGN);
+                } 
             case "ALIGN":
+
                 climb.setVoltage(ClimbConstants.ALIGN_VOLTAGE);
 
                 if (RobotContainer.driverController.getSquareButton() && climb.atAlignAngle()) {
@@ -55,11 +66,13 @@ public class ClimbDeafultCommand extends RobotFunctionStatesCommand {
                 }
                 break;
             case "CLIMB":
+                climb.setServo(ClimbConstants.LOCK_POSITION);
                 climb.setVoltage(ClimbConstants.CLIMB_VOLTAGE);
 
-                if (RobotContainer.driverController.getSquareButton() && !climb.atAlignAngle()) {
-                    climb.setTargetState(ClimbConstants.ALIGN);
-                }
+                 if (RobotContainer.driverController.getSquareButton() &&
+                 !climb.atAlignAngle()) {
+                 climb.setTargetState(ClimbConstants.OPEN_RACHET);
+                 }
                 break;
         }
     }
@@ -72,13 +85,25 @@ public class ClimbDeafultCommand extends RobotFunctionStatesCommand {
     @Override
     public void CANT_MOVE() {
         super.CANT_MOVE();
+        // if (RobotContainer.driverController.getSquareButton() && climb.getTargetState() == ClimbConstants.ALIGN) {
+        //     climb.setTargetState(ClimbConstants.CLIMB);
+        // }
         climb.setVoltage(0);
+
     }
 
     @Override
     public void ManuelLoop() {
         super.ManuelLoop();
         climb.setVoltage(-RobotContainer.driverController.getRightY() * ArmConstants.kMANUEL_VOLTAGE_LIMIT);
+
+        if (RobotContainer.driverController.getPOV() == 270) {
+            climb.setServo(ClimbConstants.LOCK_POSITION);
+        } else if (RobotContainer.driverController.getPOV() == 90) {
+            climb.setServo(ClimbConstants.FREE_POSITION);
+
+        }
+
     }
 
     @Override
