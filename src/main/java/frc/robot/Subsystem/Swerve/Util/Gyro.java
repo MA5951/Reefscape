@@ -20,6 +20,8 @@ public interface Gyro {
 
     double getAccelY();
 
+    void setYaw(double yaw);
+
     GyroData update(ChassisSpeeds robotSpeeds);
 
 }

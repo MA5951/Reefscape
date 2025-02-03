@@ -60,6 +60,10 @@ public class GyroSim implements Gyro{
         return 0;
     }
 
+    public void setYaw(double yaw) {
+
+    }
+
     public GyroData update(ChassisSpeeds robotSpeeds) {
         gyroData.updateData(
             0d,

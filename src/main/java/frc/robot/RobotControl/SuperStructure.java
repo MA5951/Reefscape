@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
+import frc.robot.RobotControl.Field.ScoringLocation;
 import frc.robot.Subsystem.Arm.Arm;
 import frc.robot.Subsystem.Elevator.Elevator;
 import frc.robot.Subsystem.Elevator.ElevatorConstants;
@@ -39,11 +40,12 @@ public class SuperStructure extends GenericSuperStracture {
     private static Elevator elevator = RobotContainer.elevator;
     private static Field.ScoringLevel scoringLevel;
     private static Field.ScoringLocation scoringLocation;
-    private static ReefFace scoringFace;
+    public static ReefFace scoringFace;
     private static Pose2d ejectPose;
     public static boolean isScoringAutomatic = true;
     private static LoggedPose2d reefFace;
     private static LoggedDouble alignAngle;
+    private static LoggedDouble yDistance;;
     public static boolean isFine;
     public static boolean isFinalLeft;
     public static boolean isFinalRight;
@@ -56,6 +58,7 @@ public class SuperStructure extends GenericSuperStracture {
 
         reefFace = new LoggedPose2d("/SuperStructure/Reef Face");
         alignAngle = new LoggedDouble("/SuperStructure/Align Angle");
+        yDistance = new LoggedDouble("/SuperStructure/Y Distance");
         ejectPose = new Pose2d();
         updateScoringFace();
 
@@ -141,6 +144,10 @@ public class SuperStructure extends GenericSuperStracture {
 
     public static void updateScoringFace() {
         scoringFace = Field.getClosestReefFace(currentPoseSupplier.get());
+    }
+
+    public static ScoringLocation geScoringLocation() {
+        return scoringLocation;
     }
 
     public static void updateAngleAdjustController() {
@@ -262,6 +269,15 @@ public class SuperStructure extends GenericSuperStracture {
                 || currentPoseSupplier.get().getTranslation()
                         .getDistance(
                                 scoringFace.getRightAlignPose().getTranslation()) < 0.07;
+    }
+
+    public static boolean isDitancetToScoreTeleop() {
+        return currentPoseSupplier.get().getTranslation()
+                .getDistance(
+                        scoringFace.getLeftAlignPose().getTranslation()) < 0.20
+                || currentPoseSupplier.get().getTranslation()
+                        .getDistance(
+                                scoringFace.getRightAlignPose().getTranslation()) < 0.20;
     }
 
     public static boolean isDitancetToBallRemove() {

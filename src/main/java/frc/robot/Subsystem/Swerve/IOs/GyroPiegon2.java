@@ -136,6 +136,10 @@ public class GyroPiegon2 implements Gyro{
         return gyroVeloRoll.getValueAsDouble();
     }
 
+    public void setYaw(double yaw) {
+        gyro.setYaw(yaw);
+    }
+
     public double normalYaw(double yaw) {
         yaw = yaw % 360;
 

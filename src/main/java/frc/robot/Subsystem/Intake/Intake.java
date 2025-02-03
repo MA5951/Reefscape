@@ -9,6 +9,7 @@ import edu.wpi.first.math.filter.Debouncer;
 import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
 import frc.robot.RobotControl.SuperStructure;
+import frc.robot.RobotControl.Field.ScoringLevel;
 import frc.robot.Subsystem.Arm.Arm;
 import frc.robot.Subsystem.Intake.IOs.IntakeIO;
 import frc.robot.commands.Swerve.TeleopSwerveController;
@@ -17,13 +18,13 @@ public class Intake extends StateControlledSubsystem {
   private static Intake intake;
 
   private IntakeIO intakeIO = IntakeConstants.getIntakeIO();
-  public static BooleanLatch armAtPointLatch;
+  public static BooleanLatch scoringAtPointLatch;
   public static Debouncer scoringAtPointDebouncer;
 
   private Intake() {
     super(IntakeConstants.SUBSYSTEM_STATES, "Intake");
-    armAtPointLatch = new BooleanLatch(() -> Arm.getInstance().atPoint());
-    scoringAtPointDebouncer = new Debouncer(0.15);
+    scoringAtPointLatch = new BooleanLatch(() -> TeleopSwerveController.atPointForScoring());
+    scoringAtPointDebouncer = new Debouncer(0.55);
   }
 
   public boolean getFrontSensor() {
@@ -65,10 +66,10 @@ public class Intake extends StateControlledSubsystem {
   public boolean ScoringCanMove() {
     return SuperStructure.isScoringAutomatic == true
         ? RobotContainer.currentRobotState == RobotConstants.SCORING && ((RobotContainer.elevator.atPoint()
-            && TeleopSwerveController.atPointForScoring() && armAtPointLatch.get() && getFrontSensor())
+            && (scoringAtPointLatch.get() || (SuperStructure.getScoringPreset() == ScoringLevel.L1 && (RobotContainer.driverController.getL1Button() || RobotContainer.driverController.getR1Button()))) && RobotContainer.arm.atPoint() && getFrontSensor())
             || getTargetState() == IntakeConstants.HOLD)
         : RobotContainer.currentRobotState == RobotConstants.SCORING && ((RobotContainer.elevator.atPoint()
-            && armAtPointLatch.get() && (getFrontSensor() || getRearSensor()))
+            && RobotContainer.arm.atPoint() && (getFrontSensor() || getRearSensor()))
             || getTargetState() == IntakeConstants.HOLD) &&
             (RobotContainer.driverController.getL1Button() || RobotContainer.driverController.getR1Button());
   }

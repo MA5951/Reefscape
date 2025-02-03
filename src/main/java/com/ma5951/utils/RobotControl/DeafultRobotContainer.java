@@ -31,7 +31,7 @@ public class DeafultRobotContainer {
     private static double IsAtStartingPoseDistance = 0.15;
 
     public static PS5Controller driverController;
-    public static PS5Controller operatorController;
+    public static XboxController operatorController;
     public static XboxController driverControllerRumble;
     public static XboxController operatorControllerRumble;
 
@@ -53,7 +53,7 @@ public class DeafultRobotContainer {
     public DeafultRobotContainer(int DriverControllerID, int OperatorControllerID, int DriverControllerRumbleID,
             int OperatorControllerRumbleID) {
         driverController = new PS5Controller(DriverControllerID);
-        operatorController = new PS5Controller(OperatorControllerID);
+        operatorController = new XboxController(OperatorControllerID);
         driverControllerRumble = new XboxController(DriverControllerRumbleID);
         operatorControllerRumble = new XboxController(OperatorControllerRumbleID);
         autoSelector = new AutoSelector(() -> PoseEstimator.getInstance().getEstimatedRobotPose());

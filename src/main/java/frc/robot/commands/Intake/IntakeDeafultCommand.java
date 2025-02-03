@@ -117,13 +117,13 @@ public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
     @Override
     public void ManuelLoop() {
         super.ManuelLoop();
-        if (RobotContainer.operatorController.getL1Button()) {
-            intake.setVoltage(-IntakeConstants.MANUEL_VOLTAGE_LIMIT);
-        } else if (RobotContainer.operatorController.getR1Button()) {
-            intake.setVoltage(IntakeConstants.MANUEL_VOLTAGE_LIMIT);
-        } else {
-            intake.setVoltage(0);
-        }
+        // if (RobotContainer.operatorController.getL1Button()) {
+        //     intake.setVoltage(-IntakeConstants.MANUEL_VOLTAGE_LIMIT);
+        // } else if (RobotContainer.operatorController.getR1Button()) {
+        //     intake.setVoltage(IntakeConstants.MANUEL_VOLTAGE_LIMIT);
+        // } else {
+        //     intake.setVoltage(0);
+        // }
     }
 
     @Override

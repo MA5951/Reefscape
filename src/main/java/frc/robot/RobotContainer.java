@@ -2,6 +2,7 @@
 package frc.robot;
 
 import com.ma5951.utils.RobotControl.DeafultRobotContainer;
+import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -111,7 +112,7 @@ public class RobotContainer extends DeafultRobotContainer {
   }
 
   public static void setSCORING() {
-    Intake.armAtPointLatch.reset();
+    Intake.scoringAtPointLatch.reset();
     intake.setTargetState(IntakeConstants.HOLD);
     arm.setTargetState(ArmConstants.SCORING);
     elevator.setTargetState(ElevatorConstants.SCORING);
@@ -229,21 +230,35 @@ public class RobotContainer extends DeafultRobotContainer {
     new Trigger(() -> driverController.getRawButton(9)).onTrue(Do(() -> SuperStructure.toggleAutoScoring()));
 
     // Scoring Levels
-    new Trigger(() -> driverController.getPOV() == 180)
+    new Trigger(() -> operatorController.getPOV() == 180)
         .onTrue(Do(() -> SuperStructure.setScoringPreset(ScoringLevel.L1)));
 
-    new Trigger(() -> driverController.getPOV() == 0)
+    new Trigger(() -> operatorController.getPOV() == 0)
         .onTrue(Do(() -> SuperStructure.setScoringPreset(ScoringLevel.L4)));
 
-    new Trigger(() -> driverController.getPOV() == 270)
+    new Trigger(() -> operatorController.getPOV() == 270)
         .onTrue(Do(() -> SuperStructure.setScoringPreset(ScoringLevel.L3)));
 
-    new Trigger(() -> driverController.getPOV() == 90)
+    new Trigger(() -> operatorController.getPOV() == 90)
         .onTrue(Do(() -> SuperStructure.setScoringPreset(ScoringLevel.L2)));
 
     // Skyhook
     new Trigger(() -> driverController.getCircleButton() && currentRobotState == RobotConstants.HOLDBALL)
         .onTrue(Do(() -> setSKYHOOK()));
+
+
+    //Manuels
+    new Trigger(() -> operatorController.getRightBumperButton() || operatorController.getLeftBumperButton())
+    .onTrue(Do(() -> intake.setSystemFunctionState(StatesConstants.MANUEL)))
+    .onFalse(Do(() -> intake.setSystemFunctionState(StatesConstants.AUTOMATIC)));
+
+    new Trigger(() -> Math.abs(operatorController.getLeftY() ) < 0.05 )
+    .onTrue(Do(() -> elevator.setSystemFunctionState(StatesConstants.MANUEL)))
+    .onFalse(Do(() -> elevator.setSystemFunctionState(StatesConstants.AUTOMATIC)));
+
+    new Trigger(() -> Math.abs(operatorController.getRightY() ) < 0.05 )
+    .onTrue(Do(() -> arm.setSystemFunctionState(StatesConstants.MANUEL)))
+    .onFalse(Do(() -> arm.setSystemFunctionState(StatesConstants.AUTOMATIC)));
 
   }
 

@@ -274,11 +274,11 @@ public class SwerveConstants {
         public final static double ANGLE_RANGE = 180;
 
         // Swerve AutoAdjustXY
-        public final static double ABS_X_KP = 2.9;//3.4
+        public final static double ABS_X_KP = 2.3;//3.4
         public final static double ABS_X_KI = 0;
         public final static double ABS_X_KD = 0;
         
-        public final static double ABS_Y_KP = 2.9;//3.4
+        public final static double ABS_Y_KP = 2.3;//3.4
         public final static double ABS_Y_KI = 0;
         public final static double ABS_Y_KD = 0;
 

@@ -33,7 +33,7 @@ public class TeleopSwerveController extends Command {
   public static FieldCentricDriveController driveController;
   public static AngleAdjustController angleAdjustController;
   public static AutoAdjustXYController autoAdjustXYController;
-  public static ReefXController reefXController;
+  public static ReefXYController reefXController;
 
   private static SwerveSubsystem swerve;
   private static ChassisSpeeds robotSpeeds;
@@ -55,7 +55,7 @@ public class TeleopSwerveController extends Command {
     autoAdjustXYController = new AutoAdjustXYController(() -> PoseEstimator.getInstance().getEstimatedRobotPose(),
         () -> SwerveSubsystem.getInstance().getFusedHeading(), () -> driveController.getGyroOffset());
 
-    reefXController = new ReefXController(() -> SwerveSubsystem.getInstance().getFusedHeading(),
+    reefXController = new ReefXYController(() -> SwerveSubsystem.getInstance().getFusedHeading(),
         () -> driveController.getGyroOffset(),
         () -> RobotContainer.vision.getTx());
 
@@ -131,6 +131,6 @@ public class TeleopSwerveController extends Command {
   }
 
   public static boolean atPointForScoring() {
-    return  angleAdjustController.getAtPoint() && SuperStructure.isDitancetToScore() && reefXController.atPoint();
+    return  angleAdjustController.getAtPoint() && SuperStructure.isDitancetToScoreTeleop() && reefXController.atPoint();
   }
 }
