@@ -131,8 +131,6 @@ public class TeleopSwerveController extends Command {
   }
 
   public static boolean atPointForScoring() {
-    return false;
-    // return autoAdjustXYController.atPoint()
-    // && angleAdjustController.getAtPoint() && SuperStructure.isDitancetToScore();
+    return  angleAdjustController.getAtPoint() && SuperStructure.isDitancetToScore() && reefXController.atPoint();
   }
 }

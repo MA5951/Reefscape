@@ -26,9 +26,9 @@ public class ReefXController implements SwerveController{
         this.gyroOffset = gyroOffset;
         measurment = inputSupplier;
         
-        xPidController = new PIDController(0.046, 0, 0);
+        xPidController = new PIDController(0.059, 0, 0);
         xPidController.setSetpoint(-12.15);
-        xPidController.setTolerance(0.15);
+        xPidController.setTolerance(1.2);
         speeds.vxMetersPerSecond = 0;
     }
 
