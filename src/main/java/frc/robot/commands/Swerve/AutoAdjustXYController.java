@@ -14,6 +14,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.RobotContainer;
 import frc.robot.Subsystem.Swerve.SwerveConstants;
 
 public class AutoAdjustXYController implements SwerveController {
@@ -80,9 +82,12 @@ public class AutoAdjustXYController implements SwerveController {
         atPointLog.update(atPoint());
         targetPoseLog.update(targetPose);
 
-        if (isFieldRelativ) {
+        if (isFieldRelativ && RobotContainer.alliance == Alliance.Blue) {
             return ChassisSpeedsUtil.FromFieldToRobot(chassisSpeeds, new Rotation2d(
                     Math.toRadians(-(gyromMeasurment.get() - gyroOffset.get()))));
+        } else if (isFieldRelativ) {
+            return ChassisSpeedsUtil.FromFieldToRobot(chassisSpeeds, new Rotation2d(
+                    Math.toRadians((gyromMeasurment.get() - gyroOffset.get()))));
         }
 
         return chassisSpeeds;
@@ -108,6 +113,8 @@ public class AutoAdjustXYController implements SwerveController {
     public boolean atPoint() {
         return xController.atSetpoint() && yController.atSetpoint();
     }
+
+
 
     public void updateMeaurment(Supplier<Pose2d> newPose2d) {
         currentPoseSupplier = newPose2d;

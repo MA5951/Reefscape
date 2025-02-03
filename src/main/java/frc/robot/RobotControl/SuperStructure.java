@@ -168,23 +168,25 @@ public class SuperStructure extends GenericSuperStracture {
 
     public static String updateXYAdjustController() {
         if (RobotContainer.currentRobotState == RobotConstants.SCORING) {
-            if (isDitancetToFineAlign() || isFine) {
+            if ((isDitancetToFineAlign() || isFine) && arm.atPoint() && elevator.atPoint()) {
                 if (scoringLocation == Field.ScoringLocation.LEFT) {
-                    if ((isDitancetToFinalAlignLeft() || isFinalLeft) && arm.atPoint() && elevator.atPoint()) {
+                    TeleopSwerveController.reefXController.updateSetPoint(VisionConstants.RELATIV_LEFT_REEF_SET_POINT);
+                    if (isDitancetToFinalAlignLeft() || isFinalLeft) {
                         TeleopSwerveController.autoAdjustXYController
                                 .updateSetPoint(scoringFace.getLeftAlignPose());
                         isFinalLeft = true;
-                    } else if (arm.atPoint() && elevator.atPoint()) {
+                    } else {
                         TeleopSwerveController.autoAdjustXYController
                                 .updateSetPoint(scoringFace.getLeftSemiAlignPose());
                     }
                 } else if ((scoringLocation == Field.ScoringLocation.RIGHT || isFinalRight) && arm.atPoint()
                         && elevator.atPoint()) {
                     if (isDitancetToFinalAlignRight()) {
+                        TeleopSwerveController.reefXController.updateSetPoint(VisionConstants.RELATIV_RIGHT_REEF_SET_POINT);
                         TeleopSwerveController.autoAdjustXYController
                                 .updateSetPoint(scoringFace.getRightAlignPose());
                         isFinalRight = true;
-                    } else if (arm.atPoint() && elevator.atPoint()) {
+                    } else {
                         TeleopSwerveController.autoAdjustXYController
                                 .updateSetPoint(scoringFace.getRightSemiAlignPose());
                     }

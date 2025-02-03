@@ -33,6 +33,7 @@ public class TeleopSwerveController extends Command {
   public static FieldCentricDriveController driveController;
   public static AngleAdjustController angleAdjustController;
   public static AutoAdjustXYController autoAdjustXYController;
+  public static ReefXController reefXController;
 
   private static SwerveSubsystem swerve;
   private static ChassisSpeeds robotSpeeds;
@@ -41,6 +42,7 @@ public class TeleopSwerveController extends Command {
   private static SwerveModuleState[] currentStates;
   private static String alignType = "NONE";
   public static BooleanLatch ballsLatch;
+  public static BooleanLatch SCORINGlATCH;
 
   public TeleopSwerveController(PS5Controller controller) {
     swerve = SwerveSubsystem.getInstance();
@@ -53,7 +55,13 @@ public class TeleopSwerveController extends Command {
     autoAdjustXYController = new AutoAdjustXYController(() -> PoseEstimator.getInstance().getEstimatedRobotPose(),
         () -> SwerveSubsystem.getInstance().getFusedHeading(), () -> driveController.getGyroOffset());
 
+    reefXController = new ReefXController(() -> SwerveSubsystem.getInstance().getFusedHeading(),
+        () -> driveController.getGyroOffset(),
+        () -> RobotContainer.vision.getTx());
+
     ballsLatch = new BooleanLatch(() -> RobotContainer.arm.getCurrent() > 15d);
+
+    SCORINGlATCH = new BooleanLatch(() ->  SuperStructure.isDitancetToScore());
 
     xyControllerLog = new LoggedString("/Subsystems/Swerve/Controllers/XY Controller");
     theathControllerLog = new LoggedString("/Subsystems/Swerve/Controllers/Theath Controller");
@@ -69,31 +77,39 @@ public class TeleopSwerveController extends Command {
   @Override
   public void execute() { // 40 precent //add ball removing // deadbound in swerve
 
-    
-
-      if (RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && ballsLatch.get()) {
-        robotSpeeds.vxMetersPerSecond = -0.6;
-        robotSpeeds.vyMetersPerSecond = 0;
-        robotSpeeds.omegaRadiansPerSecond = 0;
-      } else if (RobotContainer.currentRobotState == RobotConstants.BALLREMOVING) {
-        SuperStructure.updatePose();
-        alignType = SuperStructure.updateXYAdjustController();
-        xyControllerLog.update(alignType);
-        robotSpeeds = autoAdjustXYController.update();
-        robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
-        theathControllerLog.update("Angle Controller");
-      } else if (RobotContainer.currentRobotState == RobotConstants.SCORING && SuperStructure.isScoringAutomatic
-          && RobotContainer.intake.getFrontSensor() && SuperStructure.getScoringPreset() != Field.ScoringLevel.L1) {
-        alignType = SuperStructure.updateXYAdjustController();
-        xyControllerLog.update(alignType);
-        robotSpeeds = autoAdjustXYController.update();
-        robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
-        theathControllerLog.update("Angle Controller");
-      } else {
-        xyControllerLog.update("Drive Controller");
-        theathControllerLog.update("Drive Controller");
-        robotSpeeds = driveController.update();
-      }
+    if (RobotContainer.currentRobotState == RobotConstants.BALLREMOVING && ballsLatch.get()) {
+      robotSpeeds.vxMetersPerSecond = -0.6;
+      robotSpeeds.vyMetersPerSecond = 0;
+      robotSpeeds.omegaRadiansPerSecond = 0;
+    } else if (RobotContainer.currentRobotState == RobotConstants.BALLREMOVING) {
+      SuperStructure.updatePose();
+      alignType = SuperStructure.updateXYAdjustController();
+      xyControllerLog.update(alignType);
+      robotSpeeds = autoAdjustXYController.update();
+      robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
+      theathControllerLog.update("Angle Controller");
+    } else if (RobotContainer.currentRobotState == RobotConstants.SCORING && SuperStructure.isScoringAutomatic
+        && RobotContainer.intake.getFrontSensor() && SuperStructure.getScoringPreset() != Field.ScoringLevel.L1
+        && autoAdjustXYController.atPoint() && SCORINGlATCH.get() && RobotContainer.vision.isTarget()) {
+      autoAdjustXYController.setTolerance(2);
+      robotSpeeds = reefXController.update();
+      robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
+      theathControllerLog.update("Angle Controller");
+      xyControllerLog.update("VISION");
+    } else if (RobotContainer.currentRobotState == RobotConstants.SCORING && SuperStructure.isScoringAutomatic
+        && RobotContainer.intake.getFrontSensor() && SuperStructure.getScoringPreset() != Field.ScoringLevel.L1) {
+      alignType = SuperStructure.updateXYAdjustController();
+      xyControllerLog.update(alignType);
+      robotSpeeds = autoAdjustXYController.update();
+      robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
+      theathControllerLog.update("Angle Controller");
+    } else {
+      SCORINGlATCH.reset();
+      autoAdjustXYController.setTolerance(SwerveConstants.ABS_XY_TOLORANCE);
+      xyControllerLog.update("Drive Controller");
+      theathControllerLog.update("Drive Controller");
+      robotSpeeds = driveController.update();
+    }
 
     swerve.drive(robotSpeeds);
   }
@@ -115,7 +131,8 @@ public class TeleopSwerveController extends Command {
   }
 
   public static boolean atPointForScoring() {
-    return autoAdjustXYController.atPoint()
-        && angleAdjustController.getAtPoint() && SuperStructure.isDitancetToScore();
+    return false;
+    // return autoAdjustXYController.atPoint()
+    // && angleAdjustController.getAtPoint() && SuperStructure.isDitancetToScore();
   }
 }

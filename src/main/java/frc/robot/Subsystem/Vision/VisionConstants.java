@@ -25,9 +25,9 @@ public class VisionConstants {
     public final static Rotation3d ROBOT_TO_CAMERA_ROTATION = new Rotation3d(0, Math.toRadians(-15), 0);
     public final static Transform3d ROBOT_TO_CAMERA = new Transform3d(ROBOT_TO_CAMERA_XYZ, ROBOT_TO_CAMERA_ROTATION);
 
-    public final static Pose2d RELATIV_REEF_SET_POINT = new Pose2d(2.65, 0, Rotation2d.kZero);
-    public final static Pose2d RELATIV_RIGHT_REEF_SET_POINT = new Pose2d(7, -10, Rotation2d.kZero);
-    public final static Pose2d RELATIV_LEFT_REEF_SET_POINT = new Pose2d(2.6, 13.8, Rotation2d.kZero);
+    public final static double RELATIV_REEF_SET_POINT = 0;
+    public final static double RELATIV_RIGHT_REEF_SET_POINT = -12.54;
+    public final static double RELATIV_LEFT_REEF_SET_POINT = 12.54;
     
 
     public final static double[] TAG_HIGHTS = {

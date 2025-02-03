@@ -81,8 +81,8 @@ public class RobotContainer extends DeafultRobotContainer {
         new ArmDeafultCommand());
     CommandScheduler.getInstance().setDefaultCommand(elevator,
         new ElevatorDeafultCommand());
-        CommandScheduler.getInstance().setDefaultCommand(climb,
-        new ClimbDeafultCommand());
+    // CommandScheduler.getInstance().setDefaultCommand(climb,
+    // new ClimbDeafultCommand());
 
   }
 
@@ -126,7 +126,7 @@ public class RobotContainer extends DeafultRobotContainer {
     SuperStructure.setAbsXY();
     SuperStructure.updateAngleAdjustController();
   }
-  
+
   public static void setBALLREMOVING() {
     SuperStructure.isFine = false;
     arm.ballsPoseLatch.reset();
@@ -179,7 +179,7 @@ public class RobotContainer extends DeafultRobotContainer {
         .onTrue(Do(() -> Vision.getInstance().updateOdometry()));
 
     // Intake
-    new Trigger(() -> driverController.getR1Button()  && !SuperStructure.hasGamePiece())
+    new Trigger(() -> driverController.getR1Button() && !SuperStructure.hasGamePiece())
         .onTrue(Do(() -> setINTAKE()));
 
     new Trigger(
@@ -210,19 +210,20 @@ public class RobotContainer extends DeafultRobotContainer {
     new Trigger(() -> driverController.getR2Button() && !SuperStructure.hasGamePiece())
         .onTrue(Do(() -> setBALLREMOVING())); // Not too close
 
-    new Trigger(() -> currentRobotState == RobotConstants.BALLREMOVING && SuperStructure.isFine && SuperStructure.isDistanceToEndBallRemove())
+    new Trigger(() -> currentRobotState == RobotConstants.BALLREMOVING && SuperStructure.isFine
+        && SuperStructure.isDistanceToEndBallRemove())
         .onTrue(Do(() -> setHOLDBALL()));
 
     // Climb
-    new Trigger(() -> driverController.getSquareButton() && currentRobotState ==
-    RobotConstants.IDLE)
-    .onTrue(Do(() -> setCLIMB()));
+    new Trigger(() -> driverController.getSquareButton() && currentRobotState == RobotConstants.IDLE)
+        .onTrue(Do(() -> setCLIMB()));
 
-    new Trigger(() -> driverController.getSquareButton() && climb.getTargetState() ==
-    ClimbConstants.ALIGN && climb.atAlignAngle()).onTrue(Do(() -> climb.setTargetState(ClimbConstants.CLIMB);));
+    new Trigger(() -> driverController.getSquareButton() && climb.getTargetState() == ClimbConstants.ALIGN
+        && climb.atAlignAngle()).onTrue(Do(() -> climb.setTargetState(ClimbConstants.CLIMB)));
 
     // IDLE
-    //new Trigger(() -> driverController.getTouchpadButton()).onTrue(Do(() -> setIDLE()));
+    new Trigger(() -> driverController.getTouchpadButton()).onTrue(Do(() ->
+    setIDLE()));
 
     // Auto Scoring
     new Trigger(() -> driverController.getRawButton(9)).onTrue(Do(() -> SuperStructure.toggleAutoScoring()));
@@ -241,7 +242,8 @@ public class RobotContainer extends DeafultRobotContainer {
         .onTrue(Do(() -> SuperStructure.setScoringPreset(ScoringLevel.L2)));
 
     // Skyhook
-    new Trigger(() -> driverController.getCircleButton() && currentRobotState == RobotConstants.HOLDBALL).onTrue(Do(() -> setSKYHOOK()));
+    new Trigger(() -> driverController.getCircleButton() && currentRobotState == RobotConstants.HOLDBALL)
+        .onTrue(Do(() -> setSKYHOOK()));
 
   }
 

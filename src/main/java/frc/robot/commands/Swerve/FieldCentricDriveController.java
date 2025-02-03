@@ -69,4 +69,8 @@ public class FieldCentricDriveController implements SwerveController {
         return gyroOffset;
     }
 
+    public boolean isInDeadBound() {
+        return Math.abs(controller.getLeftX()) < 0.05 && Math.abs(controller.getLeftY()) < 0.05;
+    }
+
 }
