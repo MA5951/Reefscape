@@ -59,7 +59,7 @@ public class TeleopSwerveController extends Command {
         () -> driveController.getGyroOffset(),
         () -> RobotContainer.vision.getTx());
 
-    ballsLatch = new BooleanLatch(() -> RobotContainer.arm.getCurrent() > 15d);
+    ballsLatch = new BooleanLatch(() -> Math.abs(RobotContainer.arm.getCurrent()) > 32d);
 
     SCORINGlATCH = new BooleanLatch(() ->  SuperStructure.isDitancetToScore());
 

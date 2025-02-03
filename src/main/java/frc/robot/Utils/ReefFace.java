@@ -33,4 +33,8 @@ public record ReefFace(double AbsAngle, int TagID, Field.BallHight BallHight , P
         public Pose2d getBallRemovingPose() {
             return tagPose.plus(new Transform2d((-0.86/2) , 0, tagPose.getRotation()));
         }
+
+        public double getYDistance(Pose2d RobotPose) {
+            return Math.sqrt(Math.pow(RobotPose.getX() - tagPose.getX(), 2) + Math.pow(RobotPose.getY() - tagPose.getY(), 2));
+        }
     }

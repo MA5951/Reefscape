@@ -26,7 +26,7 @@ public class ArmConstants {
     public static final double EJECT_BALL_START_ANGLE = 0;
     public static final double EJECT_BALL_STOP_ANGLE = 130;
 
-    public static final double SKYHOOK_START_ANGLE = 97;
+    public static final double SKYHOOK_START_ANGLE = 96;
     public static final double SKYHOOK_START_HIGHT = 1.2;
     public static final double SKYHOOK_END_ANGLE = 180;
     

@@ -131,7 +131,7 @@ public class RobotContainer extends DeafultRobotContainer {
     SuperStructure.isFine = false;
     arm.ballsPoseLatch.reset();
     SuperStructure.updateScoringFace();
-    SuperStructure.setAbsXY();
+    SuperStructure.setAbsXYBalls();
     TeleopSwerveController.ballsLatch.reset();
     setCurrentState(RobotConstants.BALLREMOVING);
     SuperStructure.updateAngleAdjustController();

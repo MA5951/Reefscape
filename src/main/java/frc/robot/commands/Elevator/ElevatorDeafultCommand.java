@@ -70,9 +70,10 @@ public class ElevatorDeafultCommand extends RobotFunctionStatesCommand {
                 elevator.setVoltage(0);
                 break;
             case "SKYHOOK":
-                if (elevator.getHight() < ElevatorConstants.SKYHOOK_STOP_HIGHT) {
+                if ((elevator.getHight() < ElevatorConstants.SKYHOOK_STOP_HIGHT) && ((RobotContainer.arm.atPoint() && elevator.getHight() < 0.1) ||elevator.getHight() > 0.09) ) {
                     elevator.setVoltage(ElevatorConstants.SKYHOOK_VOLTAGE);
-                                } else {
+                                
+                } else {
                     elevator.setVoltage(elevator.getFeedForwardVoltage());
                 }
                 break;

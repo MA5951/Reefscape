@@ -163,7 +163,20 @@ public class SuperStructure extends GenericSuperStracture {
                 SwerveConstants.ABS_Y_KI,
                 SwerveConstants.ABS_Y_KD,
                 SwerveConstants.ABS_XY_TOLORANCE);
-        TeleopSwerveController.autoAdjustXYController.setConstrains(SwerveConstants.ABS_XY_CONSTRAINTS);
+    }
+
+    public static void setAbsXYBalls() {
+        TeleopSwerveController.autoAdjustXYController.updateSetPoint(scoringFace.getAlignPose());
+        TeleopSwerveController.autoAdjustXYController.updateMeaurment(currentPoseSupplier);
+        TeleopSwerveController.autoAdjustXYController.setPID(
+                SwerveConstants.ABS_X_KP /1.5,
+                SwerveConstants.ABS_X_KI,
+                SwerveConstants.ABS_X_KD,
+                SwerveConstants.ABS_XY_TOLORANCE,
+                SwerveConstants.ABS_Y_KP / 1.5,
+                SwerveConstants.ABS_Y_KI,
+                SwerveConstants.ABS_Y_KD,
+                SwerveConstants.ABS_XY_TOLORANCE);
     }
 
     public static String updateXYAdjustController() {
@@ -201,7 +214,7 @@ public class SuperStructure extends GenericSuperStracture {
             }
             return "NONE";
         } else if (RobotContainer.currentRobotState == RobotConstants.BALLREMOVING) {
-
+            
             if (isDitancetToFineAlign() || isFine) {
                 TeleopSwerveController.autoAdjustXYController
                         .updateSetPoint(scoringFace.getBallRemovingPose());
