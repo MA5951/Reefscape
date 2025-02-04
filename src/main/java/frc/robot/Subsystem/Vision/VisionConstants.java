@@ -26,8 +26,8 @@ public class VisionConstants {
     public final static Transform3d ROBOT_TO_CAMERA = new Transform3d(ROBOT_TO_CAMERA_XYZ, ROBOT_TO_CAMERA_ROTATION);
 
     public final static double RELATIV_REEF_SET_POINT = 0;
-    public final static double RELATIV_RIGHT_REEF_SET_POINT = -12.54;
-    public final static double RELATIV_LEFT_REEF_SET_POINT = 12.54;
+    public final static double RELATIV_RIGHT_REEF_SET_POINT = -11.51;
+    public final static double RELATIV_LEFT_REEF_SET_POINT = 14.3;
     
 
     public final static double[] TAG_HIGHTS = {

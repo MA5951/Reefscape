@@ -44,19 +44,20 @@ public class VisionFilters {
     }
 
     public boolean isValidForGyroReset() {
-        return visionIO.getTargetCount() > 1 && visionIO.getRawFiducial().distToCamera < 2
-                && visionIO.getRawFiducial().ambiguity < config.AMBIGUITY_FOR_GYRO_RESET &&
-                robotSpeeds.vxMetersPerSecond < config.SPEED_FOR_GYRO_RESET &&
-                robotSpeeds.vyMetersPerSecond < config.SPEED_FOR_GYRO_RESET &&
-                robotSpeeds.omegaRadiansPerSecond < config.SPEED_FOR_GYRO_RESET;
+        // return visionIO.getTargetCount() > 1 && visionIO.getRawFiducial().distToCamera < 2
+        //         && visionIO.getRawFiducial().ambiguity < config.AMBIGUITY_FOR_GYRO_RESET &&
+        //         robotSpeeds.vxMetersPerSecond < config.SPEED_FOR_GYRO_RESET &&
+        //         robotSpeeds.vyMetersPerSecond < config.SPEED_FOR_GYRO_RESET &&
+        //         robotSpeeds.omegaRadiansPerSecond < config.SPEED_FOR_GYRO_RESET;
+        return false;
     }
 
     public boolean isValidForUpdate(Pose2d visionPose2d) {
-        return //inVelocityFilter() && inField(visionPose2d)
+        return inVelocityFilter() && inField(visionPose2d)
         // && notInFieldObstacles(visionPose2d)
-                //&& inOdometryRange(visionPose2d)
+                && inOdometryRange(visionPose2d)
                 //&& shouldUpdateByRobotState() 
-                 notDeafultPose() 
+                 &&notDeafultPose() 
                 //&& isVisionMatchingVelocity(visionPose2d);
                 ;
     }

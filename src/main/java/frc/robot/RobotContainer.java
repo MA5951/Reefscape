@@ -62,6 +62,7 @@ public class RobotContainer extends DeafultRobotContainer {
 
     @SuppressWarnings("unused")
     SuperStructure superStructure = new SuperStructure();
+    Field field = new Field();
     Leds.getInstance();
 
     configureBindings();
@@ -90,7 +91,7 @@ public class RobotContainer extends DeafultRobotContainer {
   public static void setAllianceData() {
     if (setAllianceData && DriverStation.getAlliance().isPresent()) {
       alliance = DriverStation.getAlliance().get();
-      Field.setAllianceReefFaces(alliance);
+      //Field.setAllianceReefFaces(alliance);
       setAllianceData = false;
     }
   }

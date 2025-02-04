@@ -101,9 +101,9 @@ public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
                 break;
             case "EJECT":
                 if (SuperStructure.isIntakeFliped()) {
-                    intake.setVoltage(6);
-                } else {
                     intake.setVoltage(-6);
+                } else {
+                    intake.setVoltage(6);
                 }
         }
     }

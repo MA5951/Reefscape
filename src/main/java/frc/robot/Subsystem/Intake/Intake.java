@@ -23,7 +23,7 @@ public class Intake extends StateControlledSubsystem {
 
   private Intake() {
     super(IntakeConstants.SUBSYSTEM_STATES, "Intake");
-    scoringAtPointLatch = new BooleanLatch(() -> TeleopSwerveController.atPointForScoring());
+    scoringAtPointLatch = new BooleanLatch(() -> RobotContainer.arm.atPoint() );
     scoringAtPointDebouncer = new Debouncer(0.55);
   }
 
@@ -66,7 +66,7 @@ public class Intake extends StateControlledSubsystem {
   public boolean ScoringCanMove() {
     return SuperStructure.isScoringAutomatic == true
         ? RobotContainer.currentRobotState == RobotConstants.SCORING && ((RobotContainer.elevator.atPoint()
-            && (scoringAtPointLatch.get() || (SuperStructure.getScoringPreset() == ScoringLevel.L1 && (RobotContainer.driverController.getL1Button() || RobotContainer.driverController.getR1Button()))) && RobotContainer.arm.atPoint() && getFrontSensor())
+            && (TeleopSwerveController.atPointForScoring() || (SuperStructure.getScoringPreset() == ScoringLevel.L1 && (RobotContainer.driverController.getL1Button() || RobotContainer.driverController.getR1Button()))) && scoringAtPointLatch.get() && getFrontSensor())
             || getTargetState() == IntakeConstants.HOLD)
         : RobotContainer.currentRobotState == RobotConstants.SCORING && ((RobotContainer.elevator.atPoint()
             && RobotContainer.arm.atPoint() && (getFrontSensor() || getRearSensor()))
@@ -80,8 +80,8 @@ public class Intake extends StateControlledSubsystem {
   }
 
   public boolean SortingCanMove() {
-    return RobotContainer.currentRobotState == RobotConstants.SORTING && RobotContainer.arm.atPoint()
-        && RobotContainer.arm.getPosition() > IntakeConstants.SORTING_ANGLE;
+    return RobotContainer.currentRobotState == RobotConstants.SORTING && //RobotContainer.arm.atPoint() &&
+         RobotContainer.arm.getPosition() > IntakeConstants.SORTING_ANGLE;
   }
 
   @Override

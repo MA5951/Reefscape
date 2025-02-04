@@ -101,7 +101,7 @@ public class SuperStructure extends GenericSuperStracture {
     }
 
     public static boolean isIntakeFliped() {
-        return intake.getPosition() > 90;
+        return arm.getPosition() > 90;
     }
 
     public static double getElevatorHight() {
@@ -132,8 +132,8 @@ public class SuperStructure extends GenericSuperStracture {
     public static double getAngleForIntakeAlign() {
         if (RobotContainer.alliance == Alliance.Red) {
             return currentPoseSupplier.get().getY() > RobotConstants.FieldMiddlePoint.getY()
-                    ? RobotConstants.Tag1Pose.getRotation().getDegrees()
-                    : RobotConstants.Tag2Pose.getRotation().getDegrees();
+                    ? RobotConstants.Tag2Pose.getRotation().getDegrees()
+                    : RobotConstants.Tag1Pose.getRotation().getDegrees();
 
         } else {
             return currentPoseSupplier.get().getY() > RobotConstants.FieldMiddlePoint.getY()

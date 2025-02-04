@@ -103,6 +103,11 @@ public class TeleopSwerveController extends Command {
       robotSpeeds = autoAdjustXYController.update();
       robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
       theathControllerLog.update("Angle Controller");
+    } else if (RobotContainer.currentRobotState == RobotConstants.INTAKE) {
+      robotSpeeds = driveController.update();
+      robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
+      xyControllerLog.update("Drive Controller");
+      theathControllerLog.update("Angle Controller");
     } else {
       SCORINGlATCH.reset();
       autoAdjustXYController.setTolerance(SwerveConstants.ABS_XY_TOLORANCE);
@@ -131,6 +136,6 @@ public class TeleopSwerveController extends Command {
   }
 
   public static boolean atPointForScoring() {
-    return  angleAdjustController.getAtPoint() && SuperStructure.isDitancetToScoreTeleop() && reefXController.atPoint();
+    return  angleAdjustController.getAtPoint() && SuperStructure.isDitancetToScoreTeleop() && reefXController.atPoint() && SuperStructure.scoringFace.getYDistance(PoseEstimator.getInstance().getEstimatedRobotPose()) < 0.46;
   }
 }

@@ -74,7 +74,7 @@ public class AutoAdjustXYController implements SwerveController {
     }
 
     public ChassisSpeeds update() {
-        chassisSpeeds.vxMetersPerSecond =  xController.calculate(currentPoseSupplier.get().getX());
+        chassisSpeeds.vxMetersPerSecond = xController.calculate(currentPoseSupplier.get().getX());
         chassisSpeeds.vyMetersPerSecond = yController.calculate(currentPoseSupplier.get().getY());
 
         xSpeedLog.update(chassisSpeeds.vxMetersPerSecond);
@@ -84,10 +84,10 @@ public class AutoAdjustXYController implements SwerveController {
 
         if (isFieldRelativ && RobotContainer.alliance == Alliance.Blue) {
             return ChassisSpeedsUtil.FromFieldToRobot(chassisSpeeds, new Rotation2d(
-                    Math.toRadians(-(gyromMeasurment.get() - gyroOffset.get()))));
+                    Math.toRadians((-(gyromMeasurment.get() - gyroOffset.get()) - 180))));
         } else if (isFieldRelativ) {
             return ChassisSpeedsUtil.FromFieldToRobot(chassisSpeeds, new Rotation2d(
-                    Math.toRadians((gyromMeasurment.get() - gyroOffset.get()))));
+                    Math.toRadians((-(gyromMeasurment.get() - gyroOffset.get()) - 180))));
         }
 
         return chassisSpeeds;
