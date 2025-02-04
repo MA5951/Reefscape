@@ -52,11 +52,11 @@ public class VisionFilters {
     }
 
     public boolean isValidForUpdate(Pose2d visionPose2d) {
-        return inVelocityFilter() && inField(visionPose2d)
+        return //inVelocityFilter() && inField(visionPose2d)
         // && notInFieldObstacles(visionPose2d)
-                && inOdometryRange(visionPose2d)
-                && shouldUpdateByRobotState() 
-                && notDeafultPose() 
+                //&& inOdometryRange(visionPose2d)
+                //&& shouldUpdateByRobotState() 
+                 notDeafultPose() 
                 //&& isVisionMatchingVelocity(visionPose2d);
                 ;
     }

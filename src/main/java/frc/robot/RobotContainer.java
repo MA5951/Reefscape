@@ -82,8 +82,8 @@ public class RobotContainer extends DeafultRobotContainer {
         new ArmDeafultCommand());
     CommandScheduler.getInstance().setDefaultCommand(elevator,
         new ElevatorDeafultCommand());
-    // CommandScheduler.getInstance().setDefaultCommand(climb,
-    // new ClimbDeafultCommand());
+    CommandScheduler.getInstance().setDefaultCommand(climb,
+    new ClimbDeafultCommand());
 
   }
 
@@ -169,6 +169,11 @@ public class RobotContainer extends DeafultRobotContainer {
     intake.setTargetState(IntakeConstants.SKYHOOK);
   }
 
+  public static void setEject() {
+    setCurrentState(RobotConstants.EJECT);
+    intake.setTargetState(IntakeConstants.EJECT);
+  }
+
   private static void configureBindings() {
 
     // Update Offset
@@ -245,6 +250,8 @@ public class RobotContainer extends DeafultRobotContainer {
     // Skyhook
     new Trigger(() -> driverController.getCircleButton() && currentRobotState == RobotConstants.HOLDBALL)
         .onTrue(Do(() -> setSKYHOOK()));
+
+    new Trigger(() -> driverController.getCrossButton()).onTrue(Do(() -> setEject()));
 
 
     //Manuels

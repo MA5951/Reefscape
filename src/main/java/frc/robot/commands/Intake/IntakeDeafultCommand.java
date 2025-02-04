@@ -99,6 +99,12 @@ public class IntakeDeafultCommand extends RobotFunctionStatesCommand {
             case "SKYHOOK":
                 intake.setVoltage(-0.5);
                 break;
+            case "EJECT":
+                if (SuperStructure.isIntakeFliped()) {
+                    intake.setVoltage(6);
+                } else {
+                    intake.setVoltage(-6);
+                }
         }
     }
 

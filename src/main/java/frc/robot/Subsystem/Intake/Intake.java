@@ -87,6 +87,7 @@ public class Intake extends StateControlledSubsystem {
   @Override
   public boolean canMove() {
     return RobotContainer.currentRobotState == RobotConstants.HOLDBALL ||  IntakeCanMove() || scoringAtPointDebouncer.calculate(ScoringCanMove()) || BallRemovingCanMove()
+    || getTargetState() == IntakeConstants.EJECT
         || SortingCanMove()
         || getSystemFunctionState() == StatesConstants.MANUEL
         || RobotContainer.intake.getTargetState() == IntakeConstants.HOLD
