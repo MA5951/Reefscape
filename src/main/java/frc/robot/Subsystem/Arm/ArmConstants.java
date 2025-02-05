@@ -52,7 +52,7 @@ public class ArmConstants {
     public static final boolean ENABLE_CURRENT_LIMIT = true;
 
     public static final double kCAN_MOVE_CURRENT_LIMIT = 25;
-    public static final double kMANUEL_VOLTAGE_LIMIT = 5;
+    public static final double kMANUEL_VOLTAGE_LIMIT = 7;
 
     public static final State IDLE = StatesConstants.IDLE;
     public static final State HOLD = new State("HOLD");

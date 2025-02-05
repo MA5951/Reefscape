@@ -66,13 +66,13 @@ public class ClimbDeafultCommand extends RobotFunctionStatesCommand {
                 }
                 break;
             case "CLIMB":
-                climb.setServo(ClimbConstants.LOCK_POSITION);
+                //climb.setServo(ClimbConstants.LOCK_POSITION);
                 climb.setVoltage(ClimbConstants.CLIMB_VOLTAGE);
 
-                 if (RobotContainer.driverController.getSquareButton() &&
-                 !climb.atAlignAngle()) {
-                 climb.setTargetState(ClimbConstants.OPEN_RACHET);
-                 }
+                //  if (RobotContainer.driverController.getSquareButton() &&
+                //  !climb.atAlignAngle()) {
+                //  climb.setTargetState(ClimbConstants.);
+                //  }
                 break;
         }
     }

@@ -25,12 +25,12 @@ public class ClimbConstants {
 
     public static final double MAX_ANGLE = 0;
     public static final double MIN_ANGLE = -200;
-    public static final double ALIGN_ANGLE = -220;
-    public static final double CLIMB_ANGLE = -63;
+    public static final double ALIGN_ANGLE = 135;
+    public static final double CLIMB_ANGLE = 45;
 
     public static final double IDLE_VOLTAGE = 3;
-    public static final double ALIGN_VOLTAGE = -3;
-    public static final double CLIMB_VOLTAGE = 1.5;
+    public static final double ALIGN_VOLTAGE = -11;
+    public static final double CLIMB_VOLTAGE = 3;
 
     public static final double MANUEL_VOLTAGE_LIMIT = 0;
     public static final double HOME_VOLTAGE = 0;

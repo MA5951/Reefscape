@@ -68,7 +68,7 @@ public class PortMap {
     public class Climb {
         public static final int masterMotor = 20;
         public static final int slaveMotor = 21;
-        public static final int limitSensor = 9;
+        public static final int limitSensor = 1;
         public static final int servoPort = 9;
     }
 

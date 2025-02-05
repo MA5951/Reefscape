@@ -35,7 +35,6 @@ public class RobotConstants {
     public static final double DistanceToBallRemove = 2.2;
     public static final double DistanceToCloseArm = 0.1;
     public static final double DistanceOffsetScoring = 0.1;
-    public static final double DistanceToAlign = 1;
     public static final double DistanceToRelativAlign = 0.6;
     public static final double SpeedToScore = 0.5;
     public static final double ToloranceToScoring = 0.02;

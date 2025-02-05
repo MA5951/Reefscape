@@ -7,6 +7,7 @@ import com.ctre.phoenix6.controls.StrictFollower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ma5951.utils.Logger.LoggedBool;
 import com.ma5951.utils.Logger.LoggedDouble;
 import com.ma5951.utils.Utils.ConvUtil;
 
@@ -38,6 +39,7 @@ public class ClimbIOReal implements ClimbIO{
     private LoggedDouble masterMotorVelocityLog;
     private LoggedDouble masterMotorapliedVoltsLog;
     private LoggedDouble masterPositionLog;
+    private LoggedBool limitSwitchLog;
 
     private StrictFollower masterFollwer;
 
@@ -63,9 +65,11 @@ public class ClimbIOReal implements ClimbIO{
         masterMotorVelocityLog = new LoggedDouble("/Subsystems/Climb/IO/master Motor Velocity");
         masterMotorapliedVoltsLog = new LoggedDouble("/Subsystems/Climb/IO/master Motor aplied Volts");
         masterPositionLog = new LoggedDouble("/Subsystems/Climb/IO/Position");
+        limitSwitchLog = new LoggedBool("/Subsystems/Climb/IO/Limit");
 
         masterConfig();
         masterMotor.setPosition(0);
+        
     }
 
     public void masterConfig() {
@@ -128,7 +132,7 @@ public class ClimbIOReal implements ClimbIO{
     }
 
     public double getPosition() {
-        return masterPosition.getValueAsDouble() * 360;
+        return -masterPosition.getValueAsDouble() * 360;
     }
 
     public void updatePeriodic() {
@@ -143,6 +147,9 @@ public class ClimbIOReal implements ClimbIO{
         masterMotorVelocityLog.update(getMasterVelocity());
         masterMotorapliedVoltsLog.update(getMasterAppliedVolts());
         masterPositionLog.update(getPosition());
+        limitSwitchLog.update(getLimitSensor());
+
+
         
     }
 

@@ -24,7 +24,7 @@ public class Climb extends StateControlledSubsystem {
   }
 
   public double getPosition() {
-    return -Math.abs(climbIO.getPosition());
+    return climbIO.getPosition();
   }
 
   public double getCurrent() {
@@ -52,20 +52,20 @@ public class Climb extends StateControlledSubsystem {
   }
 
   private boolean physicalCanMove() {
-    return ((getPosition() >= ClimbConstants.MIN_ANGLE || getAppliedVolts() < -0.1));
+    return true;//((getPosition() >= ClimbConstants.MIN_ANGLE || getAppliedVolts() < -0.1));
   }
 
   private boolean alignCanMove() {
-    return getTargetState() == ClimbConstants.ALIGN && getPosition() > ClimbConstants.ALIGN_ANGLE;
+    return getTargetState() == ClimbConstants.ALIGN && getPosition() < ClimbConstants.ALIGN_ANGLE;
   }
 
   private boolean climbCanMove() {
-    return getTargetState() == ClimbConstants.CLIMB && getPosition() < ClimbConstants.CLIMB_ANGLE;
+    return getTargetState() == ClimbConstants.CLIMB && getPosition() > ClimbConstants.CLIMB_ANGLE;
   }
 
   @Override
   public boolean canMove() {
-    return (physicalCanMove() && (alignCanMove() || climbCanMove() || getTargetState() == ClimbConstants.IDLE)) || getSystemFunctionState() == StatesConstants.MANUEL;
+    return alignCanMove() || climbCanMove() || getSystemFunctionState() == StatesConstants.MANUEL; //|| climbCanMove() || getSystemFunctionState() == StatesConstants.MANUEL
   }
 
   public static Climb getInstance() {
