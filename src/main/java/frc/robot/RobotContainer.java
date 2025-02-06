@@ -256,17 +256,17 @@ public class RobotContainer extends DeafultRobotContainer {
 
 
     //Manuels
-    new Trigger(() -> operatorController.getRightBumperButton() || operatorController.getLeftBumperButton())
-    .onTrue(Do(() -> intake.setSystemFunctionState(StatesConstants.MANUEL)))
-    .onFalse(Do(() -> intake.setSystemFunctionState(StatesConstants.AUTOMATIC)));
+    // new Trigger(() -> operatorController.getRightBumperButton() || operatorController.getLeftBumperButton())
+    // .onTrue(Do(() -> intake.setSystemFunctionState(StatesConstants.MANUEL)))
+    // .onFalse(Do(() -> intake.setSystemFunctionState(StatesConstants.AUTOMATIC)));
 
-    new Trigger(() -> Math.abs(operatorController.getLeftY() ) < 0.05 )
-    .onTrue(Do(() -> elevator.setSystemFunctionState(StatesConstants.MANUEL)))
-    .onFalse(Do(() -> elevator.setSystemFunctionState(StatesConstants.AUTOMATIC)));
+    // new Trigger(() -> Math.abs(operatorController.getLeftY() ) < 0.05 )
+    // .onTrue(Do(() -> elevator.setSystemFunctionState(StatesConstants.MANUEL)))
+    // .onFalse(Do(() -> elevator.setSystemFunctionState(StatesConstants.AUTOMATIC)));
 
-    new Trigger(() -> Math.abs(operatorController.getRightY() ) < 0.05 )
-    .onTrue(Do(() -> arm.setSystemFunctionState(StatesConstants.MANUEL)))
-    .onFalse(Do(() -> arm.setSystemFunctionState(StatesConstants.AUTOMATIC)));
+    // new Trigger(() -> Math.abs(operatorController.getRightY() ) < 0.05 )
+    // .onTrue(Do(() -> arm.setSystemFunctionState(StatesConstants.MANUEL)))
+    // .onFalse(Do(() -> arm.setSystemFunctionState(StatesConstants.AUTOMATIC)));
 
   }
 

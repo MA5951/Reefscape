@@ -18,15 +18,15 @@ public class ClimbConstants {
     public static final Boolean kENABLE_CURRENT_LIMIT = false;
     
     public static final double GEAR = 192;
-    public static final double TOLERANCE = 10;
+    public static final double TOLERANCE = 30;
 
     public static final double FREE_POSITION = 0.15;
     public static final double LOCK_POSITION = 0;
 
     public static final double MAX_ANGLE = 0;
     public static final double MIN_ANGLE = -200;
-    public static final double ALIGN_ANGLE = 135;
-    public static final double CLIMB_ANGLE = 45;
+    public static final double ALIGN_ANGLE = 200;
+    public static final double CLIMB_ANGLE = 70;
 
     public static final double IDLE_VOLTAGE = 3;
     public static final double ALIGN_VOLTAGE = -11;

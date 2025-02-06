@@ -30,7 +30,7 @@ public class PoseEstimator {
             new SwerveModulePosition(),
             new SwerveModulePosition()
         },
-        new Pose2d(14.7,4, Rotation2d.kZero),
+        new Pose2d(5,5.4, Rotation2d.k180deg),
         PoseEstimatorConstants.ODOMETRY_DEVS,//Oodmetry Devs
         PoseEstimatorConstants.VISION_DEVS);//Vision Devs
 
@@ -41,6 +41,8 @@ public class PoseEstimator {
     public void resetPose(Pose2d pose) {
         robotPoseEstimator.resetPosition(swerve.getRotation2d() , swerve.getSwerveModulePositions() ,pose) ;
     }
+
+
     
     public void updateOdometry(SwerveModulePosition[] wheelPositions , Rotation2d yaw , double timestemp) {
         robotPoseEstimator.updateWithTime(timestemp,yaw, wheelPositions);

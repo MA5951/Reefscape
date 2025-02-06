@@ -42,7 +42,7 @@ public class FieldCentricDriveController implements SwerveController {
 
         xSpeed = Math.abs(xSpeed) < 0.1 ? 0 : -xSpeed * SwerveConstants.DRIVER_XY_SCALER * SwerveConstants.MAX_VELOCITY;
         ySpeed = Math.abs(ySpeed) < 0.1 ? 0 : -ySpeed * SwerveConstants.DRIVER_XY_SCALER * SwerveConstants.MAX_VELOCITY;
-        turningSpeed = Math.abs(turningSpeed) < 0.3 ? 0
+        turningSpeed = Math.abs(turningSpeed) < 0.1 ? 0
                 : -turningSpeed * SwerveConstants.DRIVER_THATA_SCALER
                         * SwerveConstants.MAX_ANGULAR_VELOCITY;
 

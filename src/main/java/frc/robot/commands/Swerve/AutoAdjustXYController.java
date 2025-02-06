@@ -84,7 +84,7 @@ public class AutoAdjustXYController implements SwerveController {
 
         if (isFieldRelativ && RobotContainer.alliance == Alliance.Blue) {
             return ChassisSpeedsUtil.FromFieldToRobot(chassisSpeeds, new Rotation2d(
-                    Math.toRadians((-(gyromMeasurment.get() - gyroOffset.get()) - 180))));
+                    Math.toRadians((-(gyromMeasurment.get() - gyroOffset.get())))));
         } else if (isFieldRelativ) {
             return ChassisSpeedsUtil.FromFieldToRobot(chassisSpeeds, new Rotation2d(
                     Math.toRadians((-(gyromMeasurment.get() - gyroOffset.get()) - 180))));

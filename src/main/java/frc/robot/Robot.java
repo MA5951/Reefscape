@@ -6,14 +6,19 @@ import org.ironmaple.simulation.SimulatedArena;
 import com.ma5951.utils.Logger.LoggedPose2d;
 import com.ma5951.utils.Logger.LoggedPose3d;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 
 import com.ma5951.utils.Logger.MALog;
 import com.ma5951.utils.Utils.ConvUtil;
+import com.ma5951.utils.Utils.DriverStationUtil;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.RobotControl.SuperStructure;
@@ -40,6 +45,10 @@ public class Robot extends TimedRobot {
     maLog = MALog.getInstance(RobotConstants.COMP_LOG);
 
     RobotContainer.configureTeleopCommands();
+
+    if (DriverStationUtil.getAlliance() == Alliance.Red) {
+      PoseEstimator.getInstance().resetPose(new Pose2d(14.7,4, Rotation2d.kZero));
+    }
 
   }
 

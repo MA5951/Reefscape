@@ -51,6 +51,10 @@ public class Climb extends StateControlledSubsystem {
     return Math.abs(getPosition() - ClimbConstants.ALIGN_ANGLE) <= ClimbConstants.TOLERANCE;
   }
 
+  public boolean atClimbAngle() {
+    return Math.abs(getPosition() - ClimbConstants.CLIMB_ANGLE) <= 1;
+  }
+
   private boolean physicalCanMove() {
     return true;//((getPosition() >= ClimbConstants.MIN_ANGLE || getAppliedVolts() < -0.1));
   }
