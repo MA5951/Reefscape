@@ -26,7 +26,7 @@ public class IntakeConstants {
     public static final double SORTING_ANGLE = 32;
     
     public static final double GEAR = 5;
-    public static final int SORTIN_NUM = 2;
+    public static final int SORTIN_NUM = 3;
     public static final double MANUEL_VOLTAGE_LIMIT = 3;
 
 

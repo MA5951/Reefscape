@@ -176,9 +176,9 @@ public class SwerveConstants {
         public static final PPHolonomicDriveController getHolonomicController() {
                 if (Robot.isReal()) {
                         return new PPHolonomicDriveController(
-                                        new PIDConstants(0.09, 0, 0),//TODO
-                                        new PIDConstants(0.4, 0, 0),//TODO
-                                        new PIDConstants(0.25, 0, 0));//TODO
+                                        new PIDConstants(0.1, 0, 0),//TODO
+                                        new PIDConstants(0.1, 0, 0),//TODO
+                                        new PIDConstants(0, 0, 0));//TODO
                 }
 
                 return new PPHolonomicDriveController(
@@ -254,7 +254,7 @@ public class SwerveConstants {
         public final static ModuleLimits DEFUALT = new ModuleLimits(MAX_VELOCITY, Units.feetToMeters(75),
                         Units.degreesToRadians(700));
 
-        public final static ModuleLimits OPEN_ELEVATOR = new ModuleLimits(MAX_VELOCITY, Units.feetToMeters(50), 
+        public final static ModuleLimits OPEN_ELEVATOR = new ModuleLimits(MAX_VELOCITY, Units.feetToMeters(46), 
         Units.degreesToRadians(700));
 
         public final static double HIGHT_TO_LIMIT = 1.2;
@@ -274,11 +274,11 @@ public class SwerveConstants {
         public final static double ANGLE_RANGE = 180;
 
         // Swerve AutoAdjustXY
-        public final static double ABS_X_KP = 2.3;
+        public final static double ABS_X_KP = 2.5;
         public final static double ABS_X_KI = 0;
         public final static double ABS_X_KD = 0;
         
-        public final static double ABS_Y_KP = 2.3;//2.3
+        public final static double ABS_Y_KP = 2.5;//2.3
         public final static double ABS_Y_KI = 0;
         public final static double ABS_Y_KD = 0;
 

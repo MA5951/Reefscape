@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.PortMap.Swerve;
 import frc.robot.RobotControl.Field;
 import frc.robot.RobotControl.SuperStructure;
 import frc.robot.RobotControl.Field.ScoringLevel;
@@ -255,23 +256,15 @@ public class RobotContainer extends DeafultRobotContainer {
     new Trigger(() -> driverController.getCrossButton()).onTrue(Do(() -> setEject()));
 
 
-    //Manuels
-    // new Trigger(() -> operatorController.getRightBumperButton() || operatorController.getLeftBumperButton())
-    // .onTrue(Do(() -> intake.setSystemFunctionState(StatesConstants.MANUEL)))
-    // .onFalse(Do(() -> intake.setSystemFunctionState(StatesConstants.AUTOMATIC)));
-
-    // new Trigger(() -> Math.abs(operatorController.getLeftY() ) < 0.05 )
-    // .onTrue(Do(() -> elevator.setSystemFunctionState(StatesConstants.MANUEL)))
-    // .onFalse(Do(() -> elevator.setSystemFunctionState(StatesConstants.AUTOMATIC)));
-
-    // new Trigger(() -> Math.abs(operatorController.getRightY() ) < 0.05 )
-    // .onTrue(Do(() -> arm.setSystemFunctionState(StatesConstants.MANUEL)))
-    // .onFalse(Do(() -> arm.setSystemFunctionState(StatesConstants.AUTOMATIC)));
-
   }
 
   private static Command Do(Runnable toRun) {
     return CommandUtil.instantOf(toRun);
   }
+
+  
+  public static Command getAutonomousCommand() {
+    return SwerveAutoFollower.buildAuto("Test1");
+}
 
 }

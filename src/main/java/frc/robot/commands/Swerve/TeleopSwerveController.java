@@ -90,14 +90,18 @@ public class TeleopSwerveController extends Command {
       theathControllerLog.update("Angle Controller");
     } else if (RobotContainer.currentRobotState == RobotConstants.SCORING && SuperStructure.isScoringAutomatic
         && RobotContainer.intake.getFrontSensor() && SuperStructure.getScoringPreset() != Field.ScoringLevel.L1
-        && autoAdjustXYController.atPoint() && SCORINGlATCH.get() && RobotContainer.vision.isTarget()) {
+        && autoAdjustXYController.atPoint() && SCORINGlATCH.get() && RobotContainer.vision.isTarget() && 
+        ((
+        SuperStructure.scoringFace.getSystemsMoveDistance(RobotContainer.poseEstimator.getEstimatedRobotPose()) > 1) || RobotContainer.arm.atPoint() && RobotContainer.elevator.atPoint())) {
       autoAdjustXYController.setTolerance(2);
       robotSpeeds = reefXController.update();
       robotSpeeds.omegaRadiansPerSecond = angleAdjustController.update().omegaRadiansPerSecond;
       theathControllerLog.update("Angle Controller");
       xyControllerLog.update("VISION");
     } else if (RobotContainer.currentRobotState == RobotConstants.SCORING && SuperStructure.isScoringAutomatic
-        && RobotContainer.intake.getFrontSensor() && SuperStructure.getScoringPreset() != Field.ScoringLevel.L1) {
+        && RobotContainer.intake.getFrontSensor() && SuperStructure.getScoringPreset() != Field.ScoringLevel.L1
+        && ((
+        SuperStructure.scoringFace.getSystemsMoveDistance(RobotContainer.poseEstimator.getEstimatedRobotPose()) > 1) || RobotContainer.arm.atPoint() && RobotContainer.elevator.atPoint())) {
       alignType = SuperStructure.updateXYAdjustController();
       xyControllerLog.update(alignType);
       robotSpeeds = autoAdjustXYController.update();

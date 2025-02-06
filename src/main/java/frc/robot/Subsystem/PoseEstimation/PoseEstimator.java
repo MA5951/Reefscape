@@ -30,7 +30,7 @@ public class PoseEstimator {
             new SwerveModulePosition(),
             new SwerveModulePosition()
         },
-        new Pose2d(5,5.4, Rotation2d.k180deg),
+        new Pose2d(14.7,4, Rotation2d.kZero),
         PoseEstimatorConstants.ODOMETRY_DEVS,//Oodmetry Devs
         PoseEstimatorConstants.VISION_DEVS);//Vision Devs
 

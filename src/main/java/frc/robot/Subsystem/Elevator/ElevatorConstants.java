@@ -13,13 +13,13 @@ public class ElevatorConstants {
 
     public static final double MAX_HIGHT = 1.485;
     public static final double MIN_HIGHT = -0.003;
-    public static final double HIGHT_L2 = 0.49;
+    public static final double HIGHT_L2 = 0.52;//0.49
     public static final double HIGHT_L3 = 0.85;
     public static final double HIGHT_L1 = 0.13;
-    public static final double HIGHT_L4 = 1.47;
+    public static final double HIGHT_L4 = 1.48;
     public static final double HIGHT_INTAKE_CORAL = 0.59;
     public static final double HIGHT_EJECT_BALL_LOW = 0.25;
-    public static final double HIGHT_EJECT_BALL_HIGH = 0.5;
+    public static final double HIGHT_EJECT_BALL_HIGH = 0.7;
     public static final double HIGHT_PROSESOR = 0;
     public static final double HIGHT_ZERO = 0;
 

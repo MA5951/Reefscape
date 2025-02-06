@@ -14,20 +14,32 @@ public record ReefFace(double AbsAngle, int TagID, Field.BallHight BallHight , P
             return tagPose.plus(new Transform2d(-0.5, 0, tagPose.getRotation()));
         }
 
+        public double getSystemsMoveDistance(Pose2d RobotPose) {
+            return tagPose.getTranslation().getDistance(RobotPose.getTranslation());
+        }
+
         public Pose2d getLeftAlignPose() {
-            return tagPose.plus(new Transform2d((-0.86/2) + 0.01,0.15, tagPose.getRotation()));
+            return tagPose.plus(new Transform2d((-0.86/2) + 0.04,0.15, tagPose.getRotation()));
         }
 
         public Pose2d getRightAlignPose() {
-            return tagPose.plus(new Transform2d((-0.86/2) + 0.01, -0.15, tagPose.getRotation()));
+            return tagPose.plus(new Transform2d((-0.86/2) + 0.04, -0.15, tagPose.getRotation()));
         }
 
+        // public Pose2d getLeftSemiAlignPose() {
+        //     return tagPose.plus(new Transform2d((-0.86/2) ,0.15, tagPose.getRotation()));
+        // }
+
+        // public Pose2d getRightSemiAlignPose() {
+        //     return tagPose.plus(new Transform2d((-0.86/2) , -0.15, tagPose.getRotation()));
+        // }
+
         public Pose2d getLeftSemiAlignPose() {
-            return tagPose.plus(new Transform2d((-0.86/2) - 0.1,0.15, tagPose.getRotation()));
+            return tagPose.plus(new Transform2d((-0.86/2) + 0.04,0.15, tagPose.getRotation()));
         }
 
         public Pose2d getRightSemiAlignPose() {
-            return tagPose.plus(new Transform2d((-0.86/2) - 0.1, -0.15, tagPose.getRotation()));
+            return tagPose.plus(new Transform2d((-0.86/2) + 0.04, -0.15, tagPose.getRotation()));
         }
 
         public Pose2d getBallRemovingPose() {

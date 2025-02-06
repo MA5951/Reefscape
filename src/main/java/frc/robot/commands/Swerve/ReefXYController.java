@@ -38,7 +38,7 @@ public class ReefXYController implements SwerveController{
         ySpeed = new LoggedDouble("/Subsystems/Swerve/Controllers/Reef XY/Y Speed");
         xSpeed = new LoggedDouble("/Subsystems/Swerve/Controllers/Reef XY/X Speed");
 
-        xPidController = new PIDController(0.068, 0, 0);
+        xPidController = new PIDController(0.069, 0, 0);
         yPidController = new PIDController(2.4, 0, 0);
         xPidController.setSetpoint(-12.15);
         xPidController.setTolerance(2);

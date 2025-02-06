@@ -46,9 +46,7 @@ public class Robot extends TimedRobot {
 
     RobotContainer.configureTeleopCommands();
 
-    if (DriverStationUtil.getAlliance() == Alliance.Red) {
-      PoseEstimator.getInstance().resetPose(new Pose2d(14.7,4, Rotation2d.kZero));
-    }
+
 
   }
 

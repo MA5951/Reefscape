@@ -24,7 +24,7 @@ public class Intake extends StateControlledSubsystem {
   private Intake() {
     super(IntakeConstants.SUBSYSTEM_STATES, "Intake");
     scoringAtPointLatch = new BooleanLatch(() -> RobotContainer.arm.atPoint() );
-    scoringAtPointDebouncer = new Debouncer(0.55);
+    scoringAtPointDebouncer = new Debouncer(0.3);
   }
 
   public boolean getFrontSensor() {

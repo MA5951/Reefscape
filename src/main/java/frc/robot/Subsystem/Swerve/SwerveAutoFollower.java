@@ -61,7 +61,7 @@ public class SwerveAutoFollower {
               }, swerve);
 
 
-        Pathfinding.setPathfinder(new LocalADStar());
+        //Pathfinding.setPathfinder(new LocalADStar());
         PathPlannerLogging.setLogTargetPoseCallback(pose -> targetPoseLog.update(pose));
         PathPlannerLogging.setLogCurrentPoseCallback(pose -> currentPoseLog.update(pose));
 
